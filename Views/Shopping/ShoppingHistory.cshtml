@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ShopCore.ViewModel.ShoppingHistoryModel>
+
+@{
+
+    ViewBag.Title = "ShoppingHistory";
+    int current = 0;
+    List<int> listofordersIds = new List<int>();
+    listofordersIds.Add(0);
+    decimal TotalAmount = 0.00M;
+
+}
+@using (Html.BeginForm("ShoppingHistory", "Shopping", FormMethod.Post))
+{
+    <h2>Shopping history of @ViewData["UserName"].ToString()</h2>
+    <table class="table-condensed" style="width:100%;border:2px solid grey;background-color:white">
+        @foreach (var item in Model)
+        {
+            TotalAmount += item.Total;
+            listofordersIds.Add(item.OrderNumber);
+            if (listofordersIds[current] != listofordersIds[current + 1])
+            {
+            <tr style="border-top:2px solid blue">
+            <td>
+                <span class="border border-info">Date of the order: @item.OrderDate</span>
+            </td>
+            </tr>
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemBrand
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                    <td style="text-align: right">
+                        <h3>@item.Total.ToString("#,##,00лв.")</h3>
+                    </td>
+                </tr>
+
+
+            }
+            else
+            {
+
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemBrand
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                    <td style="text-align: right">
+                        <h3>@item.Total.ToString("#,##,00лв.")</h3>
+                    </td>
+                </tr>
+
+            }
+            current = current + 1;
+        }
+        <tr style="border-top:2px solid blue">
+            <td colspan="5" style="text-align: right">
+                <h3>Total Amount Of All @ViewData["Username"].ToString()'s Orders:</h3>
+            </td>
+            <td style="text-align: right">
+                <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
+            </td>
+        </tr>
+    </table>
+    <tr style=" text-align: center">
+        <td colspan="5">
+            @Html.ActionLink("Back to Catalog", "Index", "Shopping")
+        </td>
+    </tr>
+
+}
+<div>
+    @Html.ActionLink("Back to cart", "ShoppingCart")
+</div>

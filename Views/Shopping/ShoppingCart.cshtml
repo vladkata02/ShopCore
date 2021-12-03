@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ShopCore.ViewModel.ShoppingCartModel>
+@{
+    ViewBag.Title = "ShoppingCart";
+    decimal TotalAmount = 0.00M;
+}
+
+
+@using (Html.BeginForm("AddOrder", "Shopping", FormMethod.Post))
+{
+    if (ViewData["Username"] == null)
+    {
+        <h2>Log in first!</h2>
+    }
+    else if (ViewData["Username"] != null &&  Model == null)
+    {
+        <h2>There aren't any items in the cart.</h2>
+        <tr style=" text-align: center">
+            <td colspan="5">
+                @Html.ActionLink("History of your orders", "ShoppingHistory", "Shopping")
+            </td>
+        </tr>
+    }
+    else
+    {
+        <h2>ShoppingCart</h2>
+        <table class="table-condensed" style="width:100%">
+            @foreach (var item in Model)
+            {
+                TotalAmount += item.Total;
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                </tr>
+            }
+            <tr style="border-top:2px solid blue">
+                <td colspan="3" style="text-align: right">
+                    <h3>Total Amount:</h3>
+                </td>
+                <td style="text-align: right">
+                    <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
+                </td>
+            </tr>
+            <tr style=" text-align: right">
+                <td colspan="5">
+                    <input type="submit" value="Send request" name="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+            <tr style=" text-align: center">
+                <td colspan="5">
+                    @Html.ActionLink("Back to Catalog", "Index", "Shopping")
+                </td>
+                <td colspan="5">
+                    @Html.ActionLink("History", "ShoppingHistory", "Shopping")
+                </td>
+            </tr>
+        </table>
+    }
+}
