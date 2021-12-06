@@ -60,7 +60,7 @@
     <div class="col-md-4">
         <div class="form-group">
             Category :
-            @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.CategorySelectListItem, "Value", "Text"),
+            @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(Model.CategorySelectListItem, "Value", "Text"),
    new { @class = "form-control" })
         </div>
     </div>
@@ -68,35 +68,35 @@
     <div class="col-md-4">
         <div class="form-group">
             Item Code :
-            @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control", autocomplete = "Off" })
+            @Html.TextBoxFor(Model => Model.ItemCode, new { @class = "form-control", autocomplete = "Off" })
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="form-group">
             Item Name :
-            @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control", autocomplete = "Off" })
+            @Html.TextBoxFor(Model => Model.ItemName, new { @class = "form-control", autocomplete = "Off" })
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="form-group">
             Item Brand :
-            @Html.TextBoxFor(model => model.ItemBrand, new { @class = "form-control", autocomplete = "Off" })
+            @Html.TextBoxFor(Model => Model.ItemBrand, new { @class = "form-control", autocomplete = "Off" })
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="form-group">
             Description :
-            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", autocomplete = "Off" })
+            @Html.TextBoxFor(Model => Model.Description, new { @class = "form-control", autocomplete = "Off" })
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="form-group">
             Item Price :
-            @Html.TextBoxFor(model => model.ItemPrice, new { @class = "form-control", autocomplete = "Off" })
+            @Html.TextBoxFor(Model => Model.ItemPrice, new { @class = "form-control", autocomplete = "Off" })
         </div>
     </div>
 

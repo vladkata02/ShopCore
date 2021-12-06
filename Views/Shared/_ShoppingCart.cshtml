@@ -1,12 +1,12 @@
 ﻿<ul class="nav navbar-nav navbar-right">
     <li>
-        @if (ViewData["CartCounter"] == null)
+        @if (TempData["CartCounter"] == null)
         {
             @Html.ActionLink("Cart", "ShoppingCart", "Shopping", new { id = "cartItem" })
         }
         else
         {
-            @Html.ActionLink("Cart("+ ViewData["CartCounter"]+")", "ShoppingCart", "Shopping", new { id = "cartItem" })
+            @Html.ActionLink("Cart("+ TempData["CartCounter"]+")", "ShoppingCart", "Shopping", new { id = "cartItem" })
         }
 
     </li>

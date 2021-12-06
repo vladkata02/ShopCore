@@ -6,7 +6,7 @@ namespace ShopCore.Models
 {     
     public class Item
     {
-        public System.Guid ItemId { get; set; }
+        public Guid ItemId { get; set; }
         public int CategoryId { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }

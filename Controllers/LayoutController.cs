@@ -13,19 +13,15 @@ namespace ShopCore.Controllers
     {
         // GET: Layout
 
-        private ShopDBEntities3 db;
+        private readonly ShopDBContext _context;
+
+        public LayoutController(ShopDBContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
-        }
-        private bool UserVerified(user log)
-        {
-            var user = db.users.Where(a => a.Username.Equals(log.Username) && a.Password.Equals(log.Password)).FirstOrDefault();
-            if (user != null)
-            {
-                return true;
-            }
-            return false;
         }
     }
 }

@@ -3,17 +3,17 @@ using ShopCore.Models;
 
 namespace ShopCore.Data
     {
-        public class ShopDBEntities3 : DbContext
+        public class ShopDBContext : DbContext
         {
-        public ShopDBEntities3(DbContextOptions<ShopDBEntities3> options)
+        public ShopDBContext(DbContextOptions<ShopDBContext> options)
                 : base(options)
             {
             }
 
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<user> users { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

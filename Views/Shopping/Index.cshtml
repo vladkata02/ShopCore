@@ -1,39 +1,38 @@
 ﻿@model IEnumerable<ShopCore.ViewModel.ShoppingViewModel>
-    @{
-    ViewBag.Title = "Index";
+@{
+    TempData["Title"] = "Index";
     int counter = 0;
-    }
-    <script type="text/javascript">
-        function AddToCart(item) {
-            let itemId = $(item).attr("itemid");
-            let formData = new FormData();
-            formData.append("ItemId", itemId);
+}
+<script type="text/javascript">
+    function AddToCart(item) {
+        let itemId = $(item).attr("itemid");
+        let formData = new FormData();
+        formData.append("ItemId", itemId);
 
-            $.ajax({
-                async: true,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                data: formData,
-                url: '/Shopping/Index',
-                success: function (data) {
-                    if (data.Success) {
-                        $("#cartItem").text("Cart(" + data.Counter + ")");
-                    }
-
-                },
-                error: function () {
-                    alert("There is some problem.")
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            url: '/Shopping/Index',
+            success: function (data) {
+                if (data.Success) {
+                    $("#cartItem").text("Cart(" + data.Counter + ")");
                 }
-            });
-        }
-    </script>
-    <h2 class="text-center">Catalog</h2>
 
+            },
+            error: function () {
+                alert("There is some problem.")
+            }
+        });
+    }
+</script>
+<h2 class="text-center">Catalog</h2>
+
+<div class="container">
     @foreach (var item in Model)
-    {
-    <ul class="products" style="background-color:white">
-        <div class="col-md-4" style="border: 2px solid grey; background-color:white">
+    {<div class="col-md-4" style="border: 2px solid grey; background-color:white">
             <div style="text-align: center; border-bottom: 2px solid blue">
                 <h3> @item.ItemName</h3>
             </div>
@@ -53,8 +52,8 @@
                 <b>@item.ItemPrice.ToString("#,##,00лв.")</b>
             </div>
             <div class="col-md-4" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
-                <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)"/>
+                <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" />
             </div>
         </div>
-    </ul>
     }
+</div>

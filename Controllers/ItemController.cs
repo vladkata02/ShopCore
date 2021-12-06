@@ -11,17 +11,16 @@ namespace ShopCore.Controllers
 {
     public class ItemController : Controller
     {
-        private readonly  ShopDBEntities3 objShopDbEntities;
+        private readonly ShopDBContext _context;
 
-        // GET: Item
-        public ItemController(ShopDBEntities3 _objCartDbEntities)
+        public ItemController(ShopDBContext context)
         {
-            objShopDbEntities = _objCartDbEntities;
+            _context = context;
         }
         public IActionResult Index()
         {
             ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = (from objCat in objShopDbEntities.Categories
+            objItemViewModel.CategorySelectListItem = (from objCat in _context.Categories
 
                                                        select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
                                                        {
@@ -45,8 +44,8 @@ namespace ShopCore.Controllers
             objItem.ItemName = objItemViewModel.ItemName;
             objItem.ItemBrand = objItemViewModel.ItemBrand;
             objItem.ItemPrice = objItemViewModel.ItemPrice;
-            objShopDbEntities.Items.Add(objItem);
-            objShopDbEntities.SaveChanges();
+            _context.Items.Add(objItem);
+            _context.SaveChanges();
 
             return Json(new { Success = true, Message = "Item is added Succesfully." });
         }
