@@ -10,17 +10,11 @@ using ShopCore.Data;
 namespace ShopCore.Controllers
 {
     public class LayoutController : Controller
-    {
-        // GET: Layout
-
-        private readonly ShopDBContext _context;
-
-        public LayoutController(ShopDBContext context)
-        {
-            _context = context;
-        }
+    { 
         public IActionResult Index()
         {
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             return View();
         }
     }

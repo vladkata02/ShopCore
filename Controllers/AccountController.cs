@@ -38,7 +38,7 @@ namespace ShopCore.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                ViewData["message"] = "User created successfully!";
+                TempData["message"] = "User created successfully!";
             }
             return View();
         }
@@ -93,7 +93,7 @@ namespace ShopCore.Controllers
             }
             else
             {
-                ViewData["message"] = "Invalid UserName or Password!";
+                TempData["message"] = "Invalid UserName or Password!";
             }
 
             return View();

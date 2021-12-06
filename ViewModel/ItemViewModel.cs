@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -16,7 +17,7 @@ namespace ShopCore.ViewModel
         public string ItemBrand { get; set; }
         public string Description { get; set; }
         public decimal ItemPrice { get; set; }
-        //public HttpPostedFileBase ImagePath { get; set; }
+        public IFormFile ImagePath { get; set; }
 
         public IEnumerable<SelectListItem> CategorySelectListItem { get; set; }
     }

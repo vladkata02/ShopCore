@@ -19,6 +19,8 @@ namespace ShopCore.Controllers
         }
         public IActionResult Index()
         {
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             ItemViewModel objItemViewModel = new ItemViewModel();
             objItemViewModel.CategorySelectListItem = (from objCat in _context.Categories
 
@@ -31,12 +33,14 @@ namespace ShopCore.Controllers
             return View(objItemViewModel);
         }
         [HttpPost]
-        public JsonResult Index(ItemViewModel objItemViewModel)
+        public IActionResult Index(ItemViewModel objItemViewModel)
         {
-            //string NewImage = Guid.NewGuid() + Path.GetExtension(objItemViewModel.ImagePath.FileName);
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
+            string NewImage = Guid.NewGuid() + Path.GetExtension(objItemViewModel.ImagePath.FileName);
 
             Item objItem = new Item();
-            //objItem.ImagePath = "~/Images/" + NewImage;
+            objItem.ImagePath = "~/Images/" + NewImage;
             objItem.CategoryId = objItemViewModel.CategoryId;
             objItem.Description = objItemViewModel.Description;
             objItem.ItemCode = objItemViewModel.ItemCode;

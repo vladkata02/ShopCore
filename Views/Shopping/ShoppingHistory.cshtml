@@ -11,7 +11,7 @@
 }
 @using (Html.BeginForm("ShoppingHistory", "Shopping", FormMethod.Post))
 {
-    <h2>Shopping history of @ViewData["UserName"].ToString()</h2>
+    <h2>Shopping history of @TempData["UserName"].ToString()</h2>
     <table class="table-condensed" style="width:100%;border:2px solid grey;background-color:white">
         @foreach (var item in Model)
         {

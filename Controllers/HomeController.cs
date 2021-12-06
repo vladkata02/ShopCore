@@ -18,43 +18,17 @@ namespace ShopCore.Controllers
 
             if (HttpContext.User.IsInRole("Administrator"))
             {
-                ViewData["adminMessage"] = "You are an Administrator!";
+                TempData["adminMessage"] = "You are an Administrator!";
             }
 
             if (HttpContext.User.IsInRole("Manager"))
             {
-                ViewData["managerMessage"] = "You are a Manager!";
+                TempData["managerMessage"] = "You are a Manager!";
             }
 
-            ViewData["username"] = userName;
+            TempData["username"] = userName;
 
             return View();
         }
-        [Authorize]
-        public IActionResult ConfidentialData()
-        {
-            string userName = HttpContext.User.Identity.Name;
-            ViewData["username"] = userName;
-            return View();
-        }
-        public IActionResult Shopping()
-        {
-            string userName = HttpContext.User.Identity.Name;
-            ViewData["username"] = userName;
-            return View();
-        }
-        public IActionResult About()
-        {
-            string userName = HttpContext.User.Identity.Name;
-            ViewData["username"] = userName;
-            return View();
-        }
-        public IActionResult Service()
-        {
-            string userName = HttpContext.User.Identity.Name;
-            ViewData["username"] = userName;
-            return View();
-        }
-
     }
 }

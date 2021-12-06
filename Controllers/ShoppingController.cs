@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using ShopCore.ViewModel;
 using Microsoft.Extensions.Configuration;
 using ShopCore.Data;
-
 namespace ShopCore.Controllers
 {
     public class ShoppingController : Controller
@@ -44,9 +43,10 @@ namespace ShopCore.Controllers
             return View(listOfShoppingViewModels);
         }
         [HttpPost]
-        public JsonResult Index1(string ItemId)
+        public IActionResult Index(string ItemId)
         {
-
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             ShoppingCartModel objShoppingCartModel = new ShoppingCartModel();
             Item objItem = _context.Items.Single(model => model.ItemId.ToString() == ItemId);
 
@@ -77,7 +77,8 @@ namespace ShopCore.Controllers
 
         public IActionResult ShoppingCart()
         {
-            TempData["Username"] = TempData["Username"];
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
             return View(listOfShoppingCartModels);
         }
@@ -85,6 +86,8 @@ namespace ShopCore.Controllers
         [HttpPost]
         public IActionResult AddOrder()
         {
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             int OrderId = 0;
             listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
             Order orderObj = new Order()
@@ -104,7 +107,7 @@ namespace ShopCore.Controllers
                 objOrderDetail.OrderId = OrderId;
                 objOrderDetail.Quantity = item.Quantity;
                 objOrderDetail.UnitPrice = item.UnitPrice;
-                objOrderDetail.OrderAccMail = (string)TempData["Username"];
+                objOrderDetail.OrderAccMail = userName;
                 _context.OrderDetails.Add(objOrderDetail);
                 _context.SaveChanges();
             }
@@ -116,7 +119,8 @@ namespace ShopCore.Controllers
         }
         public IActionResult ShoppingHistory()
         {
-            string userName = TempData["Username"].ToString();
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             List<ShoppingHistoryModel> list = new List<ShoppingHistoryModel>();
             foreach (var order in _context.OrderDetails.Where(element => element.OrderAccMail == userName))
             {
