@@ -11,11 +11,11 @@ namespace ShopCore.Controllers
 {
     public class LayoutController : Controller
     { 
-        public IActionResult Index()
+        public IActionResult _Layout()
         {
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
-            return View();
+            return View(userName);
         }
     }
 }

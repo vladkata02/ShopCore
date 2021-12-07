@@ -22,7 +22,8 @@ namespace ShopCore.Controllers
         // GET: Shopping
         public IActionResult Index()
         {
-
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
             IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objItem in _context.Items
                                                                        join
                                                                            objCate in _context.Categories
@@ -31,7 +32,7 @@ namespace ShopCore.Controllers
                                                                        {
 
                                                                            ItemName = objItem.ItemName,
-                                                                           ImagePath = objItem.ImagePath,
+                                                                           //ImagePath = objItem.ImagePath,
                                                                            Description = objItem.Description,
                                                                            ItemPrice = objItem.ItemPrice,
                                                                            ItemBrand = objItem.ItemBrand,
@@ -43,7 +44,7 @@ namespace ShopCore.Controllers
             return View(listOfShoppingViewModels);
         }
         [HttpPost]
-        public IActionResult Index(string ItemId)
+        public JsonResult Index(string ItemId)
         {
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
@@ -63,7 +64,7 @@ namespace ShopCore.Controllers
             else
             {
                 objShoppingCartModel.ItemId = ItemId;
-                objShoppingCartModel.ImagePath = objItem.ImagePath;
+                //objShoppingCartModel.ImagePath = objItem.ImagePath;
                 objShoppingCartModel.ItemName = objItem.ItemName;
                 objShoppingCartModel.Quantity = 1;
                 objShoppingCartModel.Total = objItem.ItemPrice;
@@ -72,7 +73,7 @@ namespace ShopCore.Controllers
             }
             TempData["CartCounter"] = listOfShoppingCartModels.Count;
             TempData["CartItem"] = listOfShoppingCartModels;
-            return Json(new { Success = true, Counter = listOfShoppingCartModels.Count });
+            return Json(new { Success = true, Counter = listOfShoppingCartModels.Count});
         }
 
         public IActionResult ShoppingCart()
@@ -136,7 +137,7 @@ namespace ShopCore.Controllers
                 objShoppingHistoryModel.OrderDate = findDate.OrderDate;
 
                 var findElementById = _context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
-                objShoppingHistoryModel.ImagePath = findElementById.ImagePath;
+                //objShoppingHistoryModel.ImagePath = findElementById.ImagePath;
                 objShoppingHistoryModel.ItemBrand = findElementById.ItemBrand;
                 objShoppingHistoryModel.ItemName = findElementById.ItemName;
                 objShoppingHistoryModel.Quantity = order.Quantity;

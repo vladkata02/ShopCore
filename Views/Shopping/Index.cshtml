@@ -30,27 +30,31 @@
 <div class="container">
     @foreach (var item in Model)
     {<div class="col-md-4" style="border: 2px solid grey; background-color:white">
-            <div style="text-align: center; border-bottom: 2px solid blue">
-                <h3> @item.ItemName</h3>
-            </div>
-            <div>
-                <div class="col-md-8">
-                    <img src="@Url.Content(@item.ImagePath)" width="170px" height="170px" />
-                </div>
-                <div class="col-md-4" style="font-size: 18px">
-                    <b>@item.ItemBrand</b>
-                </div>
-                <div class="col-md-4" style="text-align: left">
-                    <b>@item.Description</b>
-                </div>
-            </div>
+             <div style="text-align: center; border-bottom: 2px solid blue">
+                 <h3> @item.ItemName</h3>
+             </div>
+             <div>
+                 <div class="col-md-8">
+                     <img src="@Url.Content(@item.ImagePath)" width="170px" height="170px" />
+                 </div>
+                 <div class="col-md-4" style="font-size: 18px">
+                     <b>@item.ItemBrand</b>
+                 </div>
+                 <div class="col-md-4" style="text-align: left">
+                     <b>@item.Description</b>
+                 </div>
+             </div>
 
-            <div class="col-md-8" style="font-size: 18px; border-top: 2px solid blue; padding: 2px">
-                <b>@item.ItemPrice.ToString("#,##,00лв.")</b>
-            </div>
-            <div class="col-md-4" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
-                <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" />
-            </div>
+             <div class="col-md-8" style="font-size: 18px; border-top: 2px solid blue; padding: 2px">
+                 <b>@item.ItemPrice.ToString("#,##,00лв.")</b>
+             </div>
+             <div class="col-md-4" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
+                 <button type="submit" class="btn btn-primary" asp-controller="Shopping" asp-action="Index" asp-route-id="@item.ItemId" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)">Buy Now</button>
+                 <button class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" asp-controller="Shopping" asp-action="Index">Add to cart test</button>
+                 <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" />
+
+             </div>
         </div>
+
     }
 </div>
