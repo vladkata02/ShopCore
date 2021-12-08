@@ -17,7 +17,7 @@ namespace ShopCore.Controllers
         public ShoppingController(ShopDBContext context)
         {
             _context = context;
-            listOfShoppingCartModels = new List<ShoppingCartModel>();
+            List<ShoppingCartModel> listOfShoppingCartModels = new();
         }
         // GET: Shopping
         public IActionResult Index()
@@ -71,17 +71,45 @@ namespace ShopCore.Controllers
                 objShoppingCartModel.UnitPrice = objItem.ItemPrice;
                 listOfShoppingCartModels.Add(objShoppingCartModel);
             }
+            foreach (var item in listOfShoppingCartModels)
+            {
+                Cart objOrderDetail = new Cart();
+                objOrderDetail.ItemId = item.ItemId;
+                objOrderDetail.Quantity = item.Quantity;
+                objOrderDetail.UnitPrice = item.UnitPrice;
+                objOrderDetail.Total = item.Total;
+                objOrderDetail.CartAcc = userName;
+                objOrderDetail.ItemName = item.ItemName;
+                _context.Carts.Add(objOrderDetail);
+                _context.SaveChanges();
+            }
             TempData["CartCounter"] = listOfShoppingCartModels.Count;
-            TempData["CartItem"] = listOfShoppingCartModels;
             return Json(new { Success = true, Counter = listOfShoppingCartModels.Count});
         }
-
         public IActionResult ShoppingCart()
         {
             string userName = HttpContext.User.Identity.Name;
-            TempData["username"] = userName;
-            listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
-            return View(listOfShoppingCartModels);
+            TempData["username"] = userName;                   
+            List<ShoppingCartModel> list = new List<ShoppingCartModel>();                                
+            foreach (var cart in _context.Carts.Where(element => element.CartAcc == userName))                 
+            {
+
+                ShoppingCartModel ObjCart = new ShoppingCartModel();                                     
+                ObjCart.ItemId = cart.ItemId;                                                                  
+                ObjCart.UnitPrice = cart.UnitPrice;                                                            
+                ObjCart.Total = cart.Total;                                                                    
+
+                var findElementById = _context.Items.Where(check => check.ItemId.ToString() == cart.ItemId).FirstOrDefault();
+                //objShoppingHistoryModel.ImagePath = findElementById.ImagePath;
+                ObjCart.ItemBrand = findElementById.ItemBrand;
+                ObjCart.ItemName = findElementById.ItemName;
+                ObjCart.Quantity = cart.Quantity;
+                ObjCart.CartAcc = userName;
+
+                list.Add(ObjCart);
+
+            }
+            return View(list);
         }
 
         [HttpPost]
@@ -90,7 +118,7 @@ namespace ShopCore.Controllers
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
             int OrderId = 0;
-            listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
+            //listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
             Order orderObj = new Order()
             {
                 OrderDate = DateTime.Now,

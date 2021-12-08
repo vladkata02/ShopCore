@@ -6,6 +6,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShopCore.Data;
+using ShopCore.ViewModel;
 
 namespace ShopCore.Controllers
 {
