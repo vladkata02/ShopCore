@@ -125,12 +125,13 @@ namespace ShopCore.Controllers
                 objOrderDetail.UnitPrice = item.UnitPrice;
                 objOrderDetail.OrderAccMail = userName;
                 _context.OrderDetails.Add(objOrderDetail);
-                _context.SaveChanges();
+
             }
-
-            TempData["CartItem"] = null;
-            TempData["CartCounter"] = null;
-
+            foreach (var item in _context.Carts.Where(checkAcc => checkAcc.CartAcc == userName))
+            {
+                _context.Carts.Remove(item);
+            }
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
         public IActionResult ShoppingHistory()

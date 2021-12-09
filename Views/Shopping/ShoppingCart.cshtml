@@ -28,23 +28,26 @@
             @foreach (var item in Model)
             {
                 TotalAmount += item.Total;
-                <tr>
-                    <td>
-                        @*<img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />*@
-                    </td>
-                    <td style="text-align: right">
-                        @item.ItemName
-                    </td>
-                    <td style="text-align: right">
-                        @item.Quantity.ToString("x#,##0")
-                    </td>
-                    <td style="text-align: right">
-                        @item.UnitPrice.ToString("#,##,00лв.")
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @*<img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />*@
+                </td>
+                <td style="text-align: right">
+                    @item.ItemName
+                </td>
+                <td style="text-align: right">
+                    @item.Quantity.ToString("x#,##0")
+                </td>
+                <td style="text-align: right">
+                    @item.UnitPrice.ToString("#,##,00лв.")
+                </td>
+                <td style="text-align: right">
+                    @item.Total.ToString("#,##,00лв.")
+                </td>
+            </tr>
             }
             <tr style="border-top:2px solid blue">
-                <td colspan="3" style="text-align: right">
+                <td colspan="4" style="text-align: right">
                     <h3>Total Amount:</h3>
                 </td>
                 <td style="text-align: right">
