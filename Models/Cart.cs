@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 namespace ShopCore.Models
 {
     [Table("Carts")]
-    [Keyless]
     public class Cart
     {
-        
+        public int CartId { get; set; }
         public string ItemId { get; set; }
         public decimal Quantity { get; set; }
         public decimal UnitPrice { get; set; }

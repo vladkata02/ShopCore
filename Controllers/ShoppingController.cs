@@ -11,13 +11,11 @@ namespace ShopCore.Controllers
     public class ShoppingController : Controller
     {
         private readonly ShopDBContext _context;
-        private List<ShoppingCartModel> listOfShoppingCartModels;
 
 
         public ShoppingController(ShopDBContext context)
         {
             _context = context;
-            List<ShoppingCartModel> listOfShoppingCartModels = new();
         }
         // GET: Shopping
         public IActionResult Index()
@@ -48,43 +46,32 @@ namespace ShopCore.Controllers
         {
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
-            ShoppingCartModel objShoppingCartModel = new ShoppingCartModel();
+            Cart objShoppingCartModel = new Cart();
             Item objItem = _context.Items.Single(model => model.ItemId.ToString() == ItemId);
 
-            if (TempData["CartCounter"] != null)
+            var ifCheckId = _context.Carts.SingleOrDefault(model => model.ItemId == ItemId);
+            if (ifCheckId==null)
             {
-                listOfShoppingCartModels = TempData["CartItem"] as List<ShoppingCartModel>;
-            }
-            if (listOfShoppingCartModels.Any(model => model.ItemId == ItemId))
-            {
-                objShoppingCartModel = listOfShoppingCartModels.Single(model => model.ItemId == ItemId);
-                objShoppingCartModel.Quantity = objShoppingCartModel.Quantity + 1;
-                objShoppingCartModel.Total = objShoppingCartModel.Quantity * objShoppingCartModel.UnitPrice;
-            }
-            else
-            {
+                objShoppingCartModel.CartId = _context.Carts.Count()+1;
                 objShoppingCartModel.ItemId = ItemId;
                 //objShoppingCartModel.ImagePath = objItem.ImagePath;
                 objShoppingCartModel.ItemName = objItem.ItemName;
                 objShoppingCartModel.Quantity = 1;
                 objShoppingCartModel.Total = objItem.ItemPrice;
+                objShoppingCartModel.CartAcc = userName;
                 objShoppingCartModel.UnitPrice = objItem.ItemPrice;
-                listOfShoppingCartModels.Add(objShoppingCartModel);
+                _context.Carts.Add(objShoppingCartModel);
+                
+               
             }
-            foreach (var item in listOfShoppingCartModels)
+            else
             {
-                Cart objOrderDetail = new Cart();
-                objOrderDetail.ItemId = item.ItemId;
-                objOrderDetail.Quantity = item.Quantity;
-                objOrderDetail.UnitPrice = item.UnitPrice;
-                objOrderDetail.Total = item.Total;
-                objOrderDetail.CartAcc = userName;
-                objOrderDetail.ItemName = item.ItemName;
-                _context.Carts.Add(objOrderDetail);
-                _context.SaveChanges();
+                var checkId = _context.Carts.Single(model => model.ItemId == ItemId);
+                checkId.Quantity++;
+                checkId.Total = checkId.Quantity * checkId.UnitPrice;
             }
-            TempData["CartCounter"] = listOfShoppingCartModels.Count;
-            return Json(new { Success = true, Counter = listOfShoppingCartModels.Count});
+            _context.SaveChanges();
+            return Json(new { Success = true});
         }
         public IActionResult ShoppingCart()
         {
@@ -128,7 +115,7 @@ namespace ShopCore.Controllers
             _context.SaveChanges();
             OrderId = orderObj.OrderId;
 
-            foreach (var item in listOfShoppingCartModels)
+            foreach (var item in _context.Carts.Where(checkAcc=> checkAcc.CartAcc== userName))
             {
                 OrderDetail objOrderDetail = new OrderDetail();
                 objOrderDetail.Total = item.Total;
