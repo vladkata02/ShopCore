@@ -14,7 +14,7 @@ namespace ShopCore.Controllers
     { 
         public IActionResult _Layout()
         {
-            string userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
             return View(userName);
         }

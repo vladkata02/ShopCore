@@ -12,15 +12,6 @@
     {
         <h2>Log in first!</h2>
     }
-    else if (TempData["username"] != null &&  Model == null)
-    {
-        <h2>There aren't any items in the cart.</h2>
-        <tr style=" text-align: center">
-            <td colspan="5">
-                @Html.ActionLink("History of your orders", "ShoppingHistory", "Shopping")
-            </td>
-        </tr>
-    }
     else
     {
         <h2>ShoppingCart</h2>
