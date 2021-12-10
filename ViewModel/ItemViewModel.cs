@@ -17,8 +17,8 @@ namespace ShopCore.ViewModel
         public string ItemBrand { get; set; }
         public string Description { get; set; }
         public decimal ItemPrice { get; set; }
-        public IFormFile ImagePath { get; set; }
-
+        public byte[] Image { get; set; }
+        public string ImageName { get; set; }
         public IEnumerable<SelectListItem> CategorySelectListItem { get; set; }
     }
 }

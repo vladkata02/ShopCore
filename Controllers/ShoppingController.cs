@@ -30,7 +30,7 @@ namespace ShopCore.Controllers
                                                                        {
 
                                                                            ItemName = objItem.ItemName,
-                                                                           //ImagePath = objItem.ImagePath,
+                                                                           Image = objItem.Image,
                                                                            Description = objItem.Description,
                                                                            ItemPrice = objItem.ItemPrice,
                                                                            ItemBrand = objItem.ItemBrand,
@@ -49,12 +49,12 @@ namespace ShopCore.Controllers
             Cart objShoppingCartModel = new Cart();
             Item objItem = _context.Items.Single(model => model.ItemId.ToString() == ItemId);
 
-            var ifCheckId = _context.Carts.SingleOrDefault(model => model.ItemId == ItemId);
+            var ifCheckId = _context.Carts.SingleOrDefault(model => model.ItemId == ItemId && model.CartAcc == userName);
             if (ifCheckId==null)
             {
                 objShoppingCartModel.CartId = _context.Carts.Count()+1;
                 objShoppingCartModel.ItemId = ItemId;
-                //objShoppingCartModel.ImagePath = objItem.ImagePath;
+                objShoppingCartModel.Image = objItem.Image;
                 objShoppingCartModel.ItemName = objItem.ItemName;
                 objShoppingCartModel.Quantity = 1;
                 objShoppingCartModel.Total = objItem.ItemPrice;
@@ -66,7 +66,7 @@ namespace ShopCore.Controllers
             }
             else
             {
-                var checkId = _context.Carts.Single(model => model.ItemId == ItemId);
+                var checkId = _context.Carts.Single(model => model.ItemId == ItemId&& model.CartAcc == userName);
                 checkId.Quantity++;
                 checkId.Total = checkId.Quantity * checkId.UnitPrice;
             }
@@ -87,7 +87,7 @@ namespace ShopCore.Controllers
                 ObjCart.Total = cart.Total;                                                                    
 
                 var findElementById = _context.Items.Where(check => check.ItemId.ToString() == cart.ItemId).FirstOrDefault();
-                //objShoppingHistoryModel.ImagePath = findElementById.ImagePath;
+                ObjCart.Image = findElementById.Image;
                 ObjCart.ItemBrand = findElementById.ItemBrand;
                 ObjCart.ItemName = findElementById.ItemName;
                 ObjCart.Quantity = cart.Quantity;
@@ -153,7 +153,7 @@ namespace ShopCore.Controllers
                 objShoppingHistoryModel.OrderDate = findDate.OrderDate;
 
                 var findElementById = _context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
-                //objShoppingHistoryModel.ImagePath = findElementById.ImagePath;
+                objShoppingHistoryModel.Image = findElementById.Image;
                 objShoppingHistoryModel.ItemBrand = findElementById.ItemBrand;
                 objShoppingHistoryModel.ItemName = findElementById.ItemName;
                 objShoppingHistoryModel.Quantity = order.Quantity;

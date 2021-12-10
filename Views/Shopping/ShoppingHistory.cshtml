@@ -26,7 +26,11 @@
             </tr>
                 <tr>
                     <td>
-                        <img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />
+                        @{
+                            string imageBase64 = Convert.ToBase64String(item.Image);
+                            string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                            <img src="@imageSrc" width="50" height="50" />
+                        }
                     </td>
                     <td style="text-align: right">
                         @item.ItemBrand
@@ -52,7 +56,11 @@
 
                 <tr>
                     <td>
-                        <img src="@Url.Content(item.ImagePath)" height="50px" width="50px" class="img-rounded" />
+                        @{
+                            string imageBase64 = Convert.ToBase64String(item.Image);
+                            string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                            <img src="@imageSrc" width="50" height="50" />
+                        }
                     </td>
                     <td style="text-align: right">
                         @item.ItemBrand

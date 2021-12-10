@@ -12,7 +12,7 @@ namespace ShopCore.ViewModel
 
         public decimal ItemPrice { get; set; }
 
-        public string ImagePath { get; set; }
+        public byte[] Image { get; set; }
 
         public string Description { get; set; }
 

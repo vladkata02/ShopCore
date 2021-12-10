@@ -12,7 +12,8 @@ namespace ShopCore.Models
         public string ItemName { get; set; }
         public string ItemBrand { get; set; }
         public string Description { get; set; }
-        public string ImagePath { get; set; }
+        public string ImageName { get; set; }
+        public byte[] Image { get; set; }
         public decimal ItemPrice { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShopCore.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace ShopCore.Controllers
 {
@@ -33,14 +34,18 @@ namespace ShopCore.Controllers
             return View(objItemViewModel);
         }
         [HttpPost]
-        public JsonResult Index(ItemViewModel objItemViewModel)
+        public IActionResult Index(ItemViewModel objItemViewModel, IFormFile files)
         {
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
-            //string NewImage = Guid.NewGuid() + Path.GetExtension(objItemViewModel.ImagePath.FileName);
+
+            var fileName = Path.GetFileName(files.FileName);
+  
+            var fileExtension = Path.GetExtension(fileName);
+            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
             Item objItem = new Item();
-            //objItem.ImagePath = "~/Images/" + NewImage;
+            objItem.ImageName = newFileName;
             objItem.CategoryId = objItemViewModel.CategoryId;
             objItem.Description = objItemViewModel.Description;
             objItem.ItemCode = objItemViewModel.ItemCode;
@@ -48,10 +53,16 @@ namespace ShopCore.Controllers
             objItem.ItemName = objItemViewModel.ItemName;
             objItem.ItemBrand = objItemViewModel.ItemBrand;
             objItem.ItemPrice = objItemViewModel.ItemPrice;
+
+            using (var target = new MemoryStream())
+            {
+                files.CopyTo(target);
+                objItem.Image = target.ToArray();
+            }
             _context.Items.Add(objItem);
             _context.SaveChanges();
 
-            return Json(new { Success = true, Message = "Item is added Succesfully." });
+            return RedirectToAction("Index");
         }
     }
 }

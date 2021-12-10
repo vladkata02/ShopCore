@@ -11,7 +11,8 @@ namespace ShopCore.ViewModel
         public decimal Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Total { get; set; }
-        //public string ImagePath { get; set; }
+
+        public byte [] Image { get; set; }
         public string ItemName { get; set; }
 
         public string ItemBrand { get; set; }

@@ -18,7 +18,7 @@
     }
 </script>
 <div class="container">
-    <form id="FormForAddingItems" asp-action="Index" method="post">
+    <form method="post" enctype="multipart/form-data" asp-controller="Item" asp-action="Index">
         <div class="col-md-4">
             <div class="form-group">
                 Category :
@@ -65,7 +65,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 Item Image :
-                @*<input class="btn btn-outline-secondary" asp-for="ImagePath" />*@
+                <input class="form-control" name="files" type="file" />
             </div>
         </div>
 
@@ -73,7 +73,7 @@
             <button class="btn btn-primary" asp-controller="Item" asp-action="Index">Save</button>
             <input class="btn btn-danger" type="reset" value="Reset" />
         </div>
-        </form>
+    </form>
 </div>
 
 

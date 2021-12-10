@@ -17,5 +17,6 @@ namespace ShopCore.Models
         public decimal Total { get; set; }
         public string CartAcc { get; set; }
         public string ItemName { get; set; }
+        public byte[] Image { get; set; }
     }
 }
