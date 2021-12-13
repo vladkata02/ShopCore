@@ -24,7 +24,7 @@
 
                 },
                 error: function () {
-                    alert("There is some problem.")
+                    alert("Login first.")
                 }
             });
         }
@@ -60,7 +60,12 @@
                 </div>
 
                 <div class="col-md-12" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
+                    @if ((string)TempData["username"] == "admin")
+                    {
 
+                        <button class="btn btn-outline-info" itemid="@item.ItemId" itemPrice="@item.ItemPrice" asp-controller="Price" asp-action="Index">Edit Price</button>
+
+                    }
                     <button class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" asp-controller="Shopping" asp-action="Index">Add to cart</button>
 
                 </div>
