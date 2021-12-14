@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopCore.Data;
+using ShopCore.Data.Context;
 using ShopCore.Models;
 using System;
 using System.Collections.Generic;

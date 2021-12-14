@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using ShopCore.ViewModel;
 using Microsoft.Extensions.Configuration;
 using ShopCore.Data;
+using ShopCore.Data.Context;
+
 namespace ShopCore.Controllers
 {
     public class ShoppingController : Controller

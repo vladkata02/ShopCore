@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ShopCore.Models;
 using ShopCore.ViewModel;
+using ShopCore.Data.Context;
 
 namespace ShopCore.Controllers
 {

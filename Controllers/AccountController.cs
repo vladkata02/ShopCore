@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using ShopCore.Data;
+using ShopCore.Data.Context;
 using ShopCore.Models;
 using ShopCore.ViewModel;
 using System;

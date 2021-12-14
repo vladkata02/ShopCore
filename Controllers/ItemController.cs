@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShopCore.Data;
 using Microsoft.AspNetCore.Http;
+using ShopCore.Data.Context;
 
 namespace ShopCore.Controllers
 {
