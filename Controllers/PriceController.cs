@@ -16,47 +16,76 @@ namespace ShopCore.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string ItemId)
+        [HttpPost]
+        public IActionResult Index(Guid button)
         {
             string userName = HttpContext.User.Identity.Name;
             TempData["username"] = userName;
-            var itemCheckId = _context.Items.SingleOrDefault(model => model.ItemId.ToString() == ItemId);
-            //var categoryCheck = _context.Categories.SingleOrDefault(model => model.CategoryId == CategoryId);
-            ShoppingViewModel objItem = new ShoppingViewModel();
+            Guid ItemId = button;
+            var itemCheckId = _context.Items.SingleOrDefault(model => model.ItemId == ItemId);
+            PriceEditorViewModel objItem = new PriceEditorViewModel();
             objItem.ItemName = itemCheckId.ItemName;
             objItem.Image = itemCheckId.Image;
-            objItem.Description = itemCheckId.Description;
             objItem.ItemPrice = itemCheckId.ItemPrice;
             objItem.ItemBrand = itemCheckId.ItemBrand;
-            objItem.ItemId = itemCheckId.ItemId;
-            objItem.ItemCode = itemCheckId.ItemCode;
+            objItem.ItemId = ItemId;
                                                                  
             return View(objItem);
+            //item price cant get though
         }
-        public IActionResult Index(string ItemId,decimal ItemPrice, PriceEditorViewModel objPriceViewModel)
+        [HttpPost]
+        public IActionResult ChangePrice(PriceEditorViewModel objItem, Guid button)
         {
-            var ifCheckId = _context.Prices.SingleOrDefault(model => model.ItemId == ItemId);
-            if (ifCheckId == null)
+            Guid ItemId = button;
+            var ifCheckId = _context.Prices.Any(model => model.ItemId == ItemId.ToString());
+            if (ifCheckId == false)
             {
+                var entityForPrice = _context.Items.FirstOrDefault(item => item.ItemId == ItemId);
                 Price objFirstPrice = new Price();
                 objFirstPrice.PriceId = _context.Prices.Count()+1;
-                objFirstPrice.ItemId = ItemId;
-                objFirstPrice.PriceOfItem = ItemPrice;
+                objFirstPrice.ItemId = ItemId.ToString();
+                objFirstPrice.PriceOfItem = entityForPrice.ItemPrice;
                 objFirstPrice.DateOfPrice = DateTime.Now;
                 _context.Prices.Add(objFirstPrice);
+                _context.SaveChanges();
             }
             
                 Price objPrice = new Price();
                 objPrice.PriceId = _context.Prices.Count() + 1;
-                objPrice.ItemId = ItemId;
-                objPrice.PriceOfItem = objPriceViewModel.CurrentPrice;
+                objPrice.ItemId = ItemId.ToString();
+                objPrice.PriceOfItem = objItem.CurrentPrice;
                 objPrice.DateOfPrice = DateTime.Now;
-                var entity = _context.Items.FirstOrDefault(item => item.ItemId.ToString() == ItemId);
-                entity.ItemPrice = objPriceViewModel.CurrentPrice;
+                var entity = _context.Items.FirstOrDefault(item => item.ItemId == ItemId);
+                entity.ItemPrice = objItem.CurrentPrice;
                 _context.Items.Update(entity);
                 _context.Prices.Add(objPrice);
                 _context.SaveChanges();
-            return View();
+            return RedirectToAction("PriceHistory", new {  button });
+        }
+        public IActionResult PriceHistory(Guid button)
+        {
+            Guid ItemId = button;
+            string userName = HttpContext.User.Identity.Name;
+            TempData["username"] = userName;
+            List<PriceHistoryViewModel> list = new List<PriceHistoryViewModel>();
+            foreach (var order in _context.Prices.Where(element => element.ItemId == ItemId.ToString()))
+            {
+
+                PriceHistoryViewModel objPriceHistoryModel = new PriceHistoryViewModel();
+                objPriceHistoryModel.ItemId = order.ItemId;
+                objPriceHistoryModel.CurrentPrice = order.PriceOfItem;
+                objPriceHistoryModel.DateOfPrice = order.DateOfPrice;
+
+                var findElementById = _context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
+                objPriceHistoryModel.Image = findElementById.Image;
+                objPriceHistoryModel.ItemBrand = findElementById.ItemBrand;
+                objPriceHistoryModel.ItemName = findElementById.ItemName;
+
+                list.Add(objPriceHistoryModel);
+
+            }
+            return View(list);
+
         }
     }
 }

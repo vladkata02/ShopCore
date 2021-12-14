@@ -50,9 +50,9 @@ namespace ShopCore.Controllers
             Item objItem = _context.Items.Single(model => model.ItemId.ToString() == ItemId);
 
             var ifCheckId = _context.Carts.SingleOrDefault(model => model.ItemId == ItemId && model.CartAcc == userName);
-            if (ifCheckId==null)
+            if (ifCheckId == null)
             {
-                objShoppingCartModel.CartId = _context.Carts.Count()+1;
+                objShoppingCartModel.CartId = _context.Carts.Count() + 1;
                 objShoppingCartModel.ItemId = ItemId;
                 objShoppingCartModel.Image = objItem.Image;
                 objShoppingCartModel.ItemName = objItem.ItemName;
@@ -61,17 +61,17 @@ namespace ShopCore.Controllers
                 objShoppingCartModel.CartAcc = userName;
                 objShoppingCartModel.UnitPrice = objItem.ItemPrice;
                 _context.Carts.Add(objShoppingCartModel);
-                
-               
+
+
             }
             else
             {
-                var checkId = _context.Carts.Single(model => model.ItemId == ItemId&& model.CartAcc == userName);
+                var checkId = _context.Carts.Single(model => model.ItemId == ItemId && model.CartAcc == userName);
                 checkId.Quantity++;
                 checkId.Total = checkId.Quantity * checkId.UnitPrice;
             }
             _context.SaveChanges();
-            return Json(new { Success = true});
+            return Json(new { Success = true });
         }
         public IActionResult ShoppingCart()
         {

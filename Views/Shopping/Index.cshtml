@@ -24,7 +24,30 @@
 
                 },
                 error: function () {
-                    alert("Login first.")
+                    alert("There is a problem, try logging in first.")
+                }
+            });
+        }
+        function TakeId(item) {
+            let itemId = $(item).attr("itemid");
+            let formData = new FormData();
+            formData.append("ItemId", itemId);
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                url: '/Price/Index',
+                success: function (data) {
+                    if (data.Success) {
+                        alert("Succesful.")
+                    }
+
+                },
+                error: function () {
+                    alert("There is a problem, try logging in first.")
                 }
             });
         }
@@ -33,6 +56,10 @@
 <h2 class="text-center">Catalog</h2>
 <div class="container">
     <div class="row justify-content-center">
+        @{ 
+            int counter = 0;
+            List<string> list = new List<string>();
+        }
         @foreach (var item in Model)
         {
             <div class="col-md-3" style="border: 2px solid grey; background-color:white">
@@ -62,14 +89,15 @@
                 <div class="col-md-12" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
                     @if ((string)TempData["username"] == "admin")
                     {
-
-                        <button class="btn btn-outline-info" itemid="@item.ItemId" itemPrice="@item.ItemPrice" asp-controller="Price" asp-action="Index">Edit Price</button>
-
+                    <form method="post" asp-controller="Price" asp-action="Index">
+                                <button name="button" class="btn btn-info" value="@item.ItemId" asp-controller="Price" asp-action="Index">Edit Price</button>
+                    </form>
                     }
                     <button class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" asp-controller="Shopping" asp-action="Index">Add to cart</button>
 
                 </div>
             </div>
-        }
+                                counter++;
+                            }
     </div>
 </div>
