@@ -1,0 +1,101 @@
+﻿
+@{
+
+    ViewBag.Title = "Get";
+    int current = 0;
+    List<int> listofordersIds = new List<int>();
+    listofordersIds.Add(0);
+    decimal TotalAmount = 0.00M;
+
+}
+{
+    <h2>Shopping history of @TempData["userName"].ToString()</h2>
+    <table class="table-condensed" style="width:100%;border:2px solid grey;background-color:white">
+        @foreach (var item in Model)
+        {
+            TotalAmount += item.Total;
+            listofordersIds.Add(item.OrderNumber);
+            if (listofordersIds[current] != listofordersIds[current + 1])
+            {
+            <tr style="border-top:2px solid blue">
+            <td>
+                <span class="border border-info">Date of the order: @item.OrderDate</span>
+            </td>
+            </tr>
+                <tr>
+                    <td>
+                        @{
+                            string imageBase64 = Convert.ToBase64String(item.Image);
+                            string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                            <img src="@imageSrc" width="50" height="50" />
+                        }
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemBrand
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                    <td style="text-align: right">
+                        <h3>@item.Total.ToString("#,##,00лв.")</h3>
+                    </td>
+                </tr>
+
+
+            }
+            else
+            {
+
+                <tr>
+                    <td>
+                        @{
+                            string imageBase64 = Convert.ToBase64String(item.Image);
+                            string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                            <img src="@imageSrc" width="50" height="50" />
+                        }
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemBrand
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                    <td style="text-align: right">
+                        <h3>@item.Total.ToString("#,##,00лв.")</h3>
+                    </td>
+                </tr>
+
+            }
+            current = current + 1;
+        }
+        <tr style="border-top:2px solid blue">
+            <td colspan="5" style="text-align: right">
+                <h3>Total Amount Of All @TempData["username"].ToString()'s Orders:</h3>
+            </td>
+            <td style="text-align: right">
+                <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
+            </td>
+        </tr>
+    </table>
+    <tr style=" text-align: center">
+        <td colspan="5">
+            @Html.ActionLink("Back to Catalog", "Index", "Shopping")
+        </td>
+    </tr>
+
+}
+<div>
+    @Html.ActionLink("Back to cart", "ShoppingCart")
+</div>
