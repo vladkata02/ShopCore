@@ -1,0 +1,36 @@
+﻿@model ShopCore.ViewModel.RegisterViewModel
+
+
+<h1>Register</h1>
+<form asp-controller="Account" asp-action="Register"
+      method="post">
+    <table>
+        <tr>
+            <td><label asp-for="UserName"></label></td>
+            <td><input asp-for="UserName" /></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Password"></label></td>
+            <td>
+                <input asp-for="Password"
+                       type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td><label asp-for="ConfirmPassword"></label></td>
+            <td>
+                <input asp-for="ConfirmPassword"
+                       type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit"
+                       value="Register" />
+            </td>
+        </tr>
+    </table>
+    <div asp-validation-summary="All"></div>
+    <br />
+    <div>@TempData["message"]</div>
+</form>

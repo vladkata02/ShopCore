@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ShopCore.ViewModel.PriceHistoryViewModel>
+
+@{
+    ViewBag.Title = "PriceHistory";
+}
+@using (Html.BeginForm("PriceHistory", "Price", FormMethod.Post))
+{
+    <table class="table-condensed" style="width:100%;border:2px solid grey;background-color:white">
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @{
+                    string imageBase64 = Convert.ToBase64String(item.Image);
+                    string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                    <img src="@imageSrc" width="50" height="50" />
+                }
+            </td>
+            <td style="text-align: right">
+                @item.DateOfPrice
+            </td>
+            <td style="text-align: right">
+                @item.ItemBrand
+            </td>
+            <td style="text-align: right">
+                @item.ItemName
+            </td>
+            <td style="text-align: right">
+                @item.CurrentPrice.ToString("#,##,00лв.")
+            </td>
+        </tr>
+            }
+    </table>
+    <tr style=" text-align: center">
+        <td colspan="5">
+            @Html.ActionLink("Back to Catalog", "Index", "Shopping")
+        </td>
+    </tr>
+}
