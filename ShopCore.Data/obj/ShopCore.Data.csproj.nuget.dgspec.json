@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\ShopCore.Data.csproj": {}
+    "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\ShopCore.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\ShopCore.Data.csproj": {
+    "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\ShopCore.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\ShopCore.Data.csproj",
+        "projectUniqueName": "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\ShopCore.Data.csproj",
         "projectName": "ShopCore.Data",
-        "projectPath": "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\ShopCore.Data.csproj",
+        "projectPath": "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\ShopCore.Data.csproj",
         "packagesPath": "C:\\Users\\VladkoDonut\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\obj\\",
+        "outputPath": "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

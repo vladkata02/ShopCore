@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "u94mbegdrEGkSlq9LJ1QHT5eBFbqMijbMMoN2I8yKYK4F8x3HcdI7ec1sIGu98lYrjsRf/Jfmirmf0hrbzad0g==",
+  "dgSpecHash": "QLKpc9y8u3PevKrFltbH+1+7zs8TVej/JrlwHX47EdFaieKPHU/YAqI/H0LAb9ti0+lsaifl2T2vLkwPSNSx6g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\VladkoDonut\\Source\\Repos\\Shopcore\\ShopCore.Data\\ShopCore.Data.csproj",
+  "projectFilePath": "C:\\Users\\VladkoDonut\\Source\\Repos\\ShopCore\\ShopCore.Data\\ShopCore.Data.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\VladkoDonut\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\VladkoDonut\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
