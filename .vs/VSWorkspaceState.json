@@ -1,10 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\ShopCore.Data",
-    "\\ShopCore.Mvc",
-    "\\ShopCore.Mvc\\Controllers"
+    ""
   ],
-  "SelectedNode": "\\ShopCore.Data\\ShopCore.Data.csproj",
+  "SelectedNode": "\\ShopCore.sln (ShopCore.Mvc\\ShopCore.sln)",
   "PreviewInSolutionExplorer": false
 }
