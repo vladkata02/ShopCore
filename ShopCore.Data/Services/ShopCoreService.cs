@@ -8,5 +8,5 @@ namespace ShopCore.Data.Services
 {
     class ShopCoreService
     {
-    }
+    } 
 }
