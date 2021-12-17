@@ -66,11 +66,6 @@
         </td>
 
     </tr>
-    @Html.ActionLink("ShoppingHistoryController", "Get", new { userName = userName })
-    <form method="get" enctype="multipart/form-data" asp-controller="ShoppingHistoryController" asp-action="Get">
-
-        <button name="userName" value="@userName" class="btn btn-secondary" asp-controller="ShoppingHistoryController" asp-action="Get">View @userName`s price history</button>
-    </form>
 </table>
     }
 }
