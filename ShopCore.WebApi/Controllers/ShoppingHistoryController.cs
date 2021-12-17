@@ -53,20 +53,5 @@ namespace ShopCore.WebApi.Controllers
             }
             return list;
         }
-
-        // GET api/<ShoppingHistoryController>/5
-       
-        // POST api/<ShoppingHistoryController>
-        // PUT api/<ShoppingHistoryController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ShoppingHistoryController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
