@@ -1,92 +1,99 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShopCore.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ShopCore.Models;
-using ShopCore.ViewModel;
-using ShopCore.Data.Context;
-
-namespace ShopCore.Controllers
+﻿namespace ShopCore.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using ShopCore.Data;
+    using ShopCore.Data.Context;
+    using ShopCore.Models;
+    using ShopCore.ViewModel;
+
     public class PriceController : Controller
     {
-        private readonly ShopDBContext _context;
+        private readonly ShopDBContext context;
+
         public PriceController(ShopDBContext context)
         {
-            _context = context;
+            this.context = context;
         }
+
         [HttpPost]
         public IActionResult Index(Guid button)
         {
-            string userName = HttpContext.User.Identity.Name;
-            TempData["username"] = userName;
-            Guid ItemId = button;
-            var itemCheckId = _context.Items.SingleOrDefault(model => model.ItemId == ItemId);
+            string userName = this.HttpContext.User.Identity.Name;
+            this.TempData["username"] = userName;
+            Guid itemId = button;
+            var itemCheckId = this.context.Items.SingleOrDefault(model => model.ItemId == itemId);
+
             PriceEditorViewModel objItem = new PriceEditorViewModel();
             objItem.ItemName = itemCheckId.ItemName;
             objItem.Image = itemCheckId.Image;
             objItem.ItemPrice = itemCheckId.ItemPrice;
             objItem.ItemBrand = itemCheckId.ItemBrand;
-            objItem.ItemId = ItemId;
-                                                                 
-            return View(objItem);
-            //item price cant get though
+            objItem.ItemId = itemId;
+
+            return this.View(objItem);
         }
+
         [HttpPost]
         public IActionResult ChangePrice(PriceEditorViewModel objItem, Guid button)
         {
-            Guid ItemId = button;
-            var ifCheckId = _context.Prices.Any(model => model.ItemId == ItemId.ToString());
+            Guid itemId = button;
+            var ifCheckId = this.context.Prices.Any(model => model.ItemId == itemId.ToString());
             if (ifCheckId == false)
             {
-                var entityForPrice = _context.Items.FirstOrDefault(item => item.ItemId == ItemId);
+                var entityForPrice = this.context.Items.FirstOrDefault(item => item.ItemId == itemId);
                 Price objFirstPrice = new Price();
-                objFirstPrice.PriceId = _context.Prices.Count()+1;
-                objFirstPrice.ItemId = ItemId.ToString();
+                objFirstPrice.PriceId = this.context.Prices.Count() + 1;
+                objFirstPrice.ItemId = itemId.ToString();
                 objFirstPrice.PriceOfItem = entityForPrice.ItemPrice;
                 objFirstPrice.DateOfPrice = DateTime.Now;
-                _context.Prices.Add(objFirstPrice);
-                _context.SaveChanges();
+
+                this.context.Prices.Add(objFirstPrice);
+                this.context.SaveChanges();
             }
-            
-                Price objPrice = new Price();
-                objPrice.PriceId = _context.Prices.Count() + 1;
-                objPrice.ItemId = ItemId.ToString();
-                objPrice.PriceOfItem = objItem.CurrentPrice;
-                objPrice.DateOfPrice = DateTime.Now;
-                var entity = _context.Items.FirstOrDefault(item => item.ItemId == ItemId);
-                entity.ItemPrice = objItem.CurrentPrice;
-                _context.Items.Update(entity);
-                _context.Prices.Add(objPrice);
-                _context.SaveChanges();
-            return RedirectToAction("PriceHistory", new {  button });
+
+            Price objPrice = new Price();
+            objPrice.PriceId = this.context.Prices.Count() + 1;
+            objPrice.ItemId = itemId.ToString();
+            objPrice.PriceOfItem = objItem.CurrentPrice;
+            objPrice.DateOfPrice = DateTime.Now;
+
+            var entity = this.context.Items.FirstOrDefault(item => item.ItemId == itemId);
+            entity.ItemPrice = objItem.CurrentPrice;
+
+            this.context.Items.Update(entity);
+            this.context.Prices.Add(objPrice);
+            this.context.SaveChanges();
+
+            return this.RedirectToAction("PriceHistory", new { button });
         }
+
         public IActionResult PriceHistory(Guid button)
         {
-            Guid ItemId = button;
-            string userName = HttpContext.User.Identity.Name;
-            TempData["username"] = userName;
+            Guid itemId = button;
+            string userName = this.HttpContext.User.Identity.Name;
+            this.TempData["username"] = userName;
             List<PriceHistoryViewModel> list = new List<PriceHistoryViewModel>();
-            foreach (var order in _context.Prices.Where(element => element.ItemId == ItemId.ToString()))
-            {
 
+            foreach (var order in this.context.Prices.Where(element => element.ItemId == itemId.ToString()))
+            {
                 PriceHistoryViewModel objPriceHistoryModel = new PriceHistoryViewModel();
                 objPriceHistoryModel.ItemId = order.ItemId;
                 objPriceHistoryModel.CurrentPrice = order.PriceOfItem;
                 objPriceHistoryModel.DateOfPrice = order.DateOfPrice;
 
-                var findElementById = _context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
+                var findElementById = this.context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
                 objPriceHistoryModel.Image = findElementById.Image;
                 objPriceHistoryModel.ItemBrand = findElementById.ItemBrand;
                 objPriceHistoryModel.ItemName = findElementById.ItemName;
 
                 list.Add(objPriceHistoryModel);
-
             }
-            return View(list);
 
+            return this.View(list);
         }
     }
 }

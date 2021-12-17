@@ -1,49 +1,50 @@
-﻿using ShopCore.Models;
-using ShopCore.ViewModel;
-using System;
-using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using ShopCore.Data;
-using Microsoft.AspNetCore.Http;
-using ShopCore.Data.Context;
-
-namespace ShopCore.Controllers
+﻿namespace ShopCore.Controllers
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using ShopCore.Data;
+    using ShopCore.Data.Context;
+    using ShopCore.Models;
+    using ShopCore.ViewModel;
+
     public class ItemController : Controller
     {
-        private readonly ShopDBContext _context;
+        private readonly ShopDBContext context;
 
         public ItemController(ShopDBContext context)
         {
-            _context = context;
+            this.context = context;
         }
+
         public IActionResult Index()
         {
-            string userName = HttpContext.User.Identity.Name;
-            TempData["username"] = userName;
+            string userName = this.HttpContext.User.Identity.Name;
+            this.TempData["username"] = userName;
             ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = (from objCat in _context.Categories
-
-                                                       select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+            objItemViewModel.CategorySelectListItem = from objCat in this.context.Categories
+                select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
                                                        {
                                                            Text = objCat.CategoryName,
                                                            Value = objCat.CategoryId.ToString(),
-                                                           Selected = true
-                                                       });
-            return View(objItemViewModel);
+                                                           Selected = true,
+                                                       };
+
+            return this.View(objItemViewModel);
         }
+
         [HttpPost]
         public IActionResult Index(ItemViewModel objItemViewModel, IFormFile files)
         {
-            string userName = HttpContext.User.Identity.Name;
-            TempData["username"] = userName;
+            string userName = this.HttpContext.User.Identity.Name;
+            this.TempData["username"] = userName;
 
             var fileName = Path.GetFileName(files.FileName);
-  
             var fileExtension = Path.GetExtension(fileName);
-            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+            var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
             Item objItem = new Item();
             objItem.ImageName = newFileName;
@@ -60,10 +61,11 @@ namespace ShopCore.Controllers
                 files.CopyTo(target);
                 objItem.Image = target.ToArray();
             }
-            _context.Items.Add(objItem);
-            _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            this.context.Items.Add(objItem);
+            this.context.SaveChanges();
+
+            return this.RedirectToAction("Index");
         }
     }
 }
