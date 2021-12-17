@@ -8,6 +8,7 @@ namespace ShopCore.ViewModel
     public class PriceEditorViewModel
     {
         public decimal CurrentPrice { get; set; }
+
         public Guid ItemId { get; set; }
 
         public string ItemName { get; set; }

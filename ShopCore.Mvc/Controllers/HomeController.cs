@@ -10,25 +10,24 @@ namespace ShopCore.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
         [Authorize]
         public IActionResult Index()
-        { 
-            string userName = HttpContext.User.Identity.Name;
+        {
+            string userName = this.HttpContext.User.Identity.Name;
 
-            if (HttpContext.User.IsInRole("Administrator"))
+            if (this.HttpContext.User.IsInRole("Administrator"))
             {
-                TempData["adminMessage"] = "You are an Administrator!";
+                this.TempData["adminMessage"] = "You are an Administrator!";
             }
 
-            if (HttpContext.User.IsInRole("Manager"))
+            if (this.HttpContext.User.IsInRole("Manager"))
             {
-                TempData["managerMessage"] = "You are a Manager!";
+                this.TempData["managerMessage"] = "You are a Manager!";
             }
 
-            TempData["username"] = userName;
+            this.TempData["username"] = userName;
 
-            return View();
+            return this.View();
         }
     }
 }
