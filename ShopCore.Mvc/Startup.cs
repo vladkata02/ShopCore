@@ -36,9 +36,16 @@ namespace ShopCore
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
+<<<<<<< Updated upstream
 
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("Data Source=DESKTOP-MPTUQQD;Initial Catalog=ShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=true"));
+=======
+            services.AddDbContext<ShopDBContext>(
+        options =>
+        options.UseSqlServer(
+            this.Configuration.GetConnectionString("DefaultConnection")));
+>>>>>>> Stashed changes
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
