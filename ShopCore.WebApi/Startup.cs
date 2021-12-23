@@ -31,7 +31,7 @@ namespace ShopCore.WebApi
             services.AddControllers();
             services.RegisterDataServices(this.Configuration);
             services.AddDbContext<ShopDBContext>(options =>
-                     options.UseSqlServer("Data Source=DESKTOP-MPTUQQD;Initial Catalog=ShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=true"));
+                     options.UseSqlServer("DefaultConnectionString"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
