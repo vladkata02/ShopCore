@@ -4,19 +4,19 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using ShopCore.Data.Context;
 using ShopCore.Models;
+using ShopCore.Mvc.Interfaces;
 using ShopCore.ViewModel;
 
 namespace ShopCore.Controllers
 {
     public class AccountController : Controller
     {
-        private ShopDBContext db;
+        private IAccountRepository accountRepository;
 
-        public AccountController(ShopDBContext db)
+        public AccountController(IAccountRepository accountRepository)
         {
-            this.db = db;
+            this.accountRepository = accountRepository;
         }
 
         public IActionResult Register()
@@ -34,8 +34,8 @@ namespace ShopCore.Controllers
                 user.Password = model.Password;
                 user.Roles = "Manager,Admin";
 
-                this.db.Users.Add(user);
-                this.db.SaveChanges();
+                this.accountRepository.AddAccount(user);
+                this.accountRepository.Save();
 
                 this.TempData["message"] = "User created successfully!";
             }
@@ -53,7 +53,7 @@ namespace ShopCore.Controllers
         {
             bool isUservalid = false;
 
-            User user = this.db.Users.Where(usr => usr.Username == model.UserName && usr.Password == model.Password).SingleOrDefault();
+            User user = this.accountRepository.LoginCheck(model);
 
             if (user != null)
             {

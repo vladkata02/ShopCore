@@ -6,8 +6,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
     using ShopCore.Models;
     using ShopCore.Mvc.Interfaces;
     using ShopCore.Mvc.Repositories;
