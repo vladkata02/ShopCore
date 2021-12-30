@@ -9,15 +9,17 @@
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Models;
+    using ShopCore.Mvc.Interfaces;
+    using ShopCore.Mvc.Repositories;
     using ShopCore.ViewModel;
 
     public class ItemController : Controller
     {
-        private readonly ShopDBContext context;
+        private IItemRepository itemRepository;
 
-        public ItemController(ShopDBContext context)
+        public ItemController(IItemRepository itemRepository)
         {
-            this.context = context;
+            this.itemRepository = itemRepository;
         }
 
         public IActionResult Index()
@@ -25,7 +27,7 @@
             string userName = this.HttpContext.User.Identity.Name;
             this.TempData["username"] = userName;
             ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = from objCat in this.context.Categories
+            objItemViewModel.CategorySelectListItem = from objCat in this.itemRepository.GetCategories()
                 select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
                                                        {
                                                            Text = objCat.CategoryName,
@@ -62,8 +64,8 @@
                 objItem.Image = target.ToArray();
             }
 
-            this.context.Items.Add(objItem);
-            this.context.SaveChanges();
+            this.itemRepository.AddItem(objItem);
+            this.itemRepository.Save();
 
             return this.RedirectToAction("Index");
         }

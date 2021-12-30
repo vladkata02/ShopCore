@@ -15,6 +15,8 @@ namespace ShopCore
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Models;
+    using ShopCore.Mvc.Interfaces;
+    using ShopCore.Mvc.Repositories;
 
     public class Startup
     {
@@ -39,6 +41,7 @@ namespace ShopCore
 
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
+            services.AddTransient<IItemRepository, ItemRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

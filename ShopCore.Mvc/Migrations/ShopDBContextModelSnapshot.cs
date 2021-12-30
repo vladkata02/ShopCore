@@ -19,7 +19,7 @@ namespace ShopCore.Mvc.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ShopCore.Models.Cart", b =>
+            modelBuilder.Entity("ShopCore.Models.Cart", b => 
                 {
                     b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
