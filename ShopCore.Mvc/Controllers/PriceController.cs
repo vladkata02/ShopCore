@@ -8,15 +8,16 @@
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Models;
+    using ShopCore.Mvc.Interfaces;
     using ShopCore.ViewModel;
 
     public class PriceController : Controller
     {
-        private readonly ShopDBContext context;
+        private IPriceRepository priceRepository;
 
-        public PriceController(ShopDBContext context)
+        public PriceController(IPriceRepository priceRepository)
         {
-            this.context = context;
+            this.priceRepository = priceRepository;
         }
 
         [HttpPost]
@@ -25,7 +26,7 @@
             string userName = this.HttpContext.User.Identity.Name;
             this.TempData["username"] = userName;
             Guid itemId = button;
-            var itemCheckId = this.context.Items.SingleOrDefault(model => model.ItemId == itemId);
+            var itemCheckId = this.priceRepository.CheckId(itemId);
 
             PriceEditorViewModel objItem = new PriceEditorViewModel();
             objItem.ItemName = itemCheckId.ItemName;
@@ -41,32 +42,32 @@
         public IActionResult ChangePrice(PriceEditorViewModel objItem, Guid button)
         {
             Guid itemId = button;
-            var ifCheckId = this.context.Prices.Any(model => model.ItemId == itemId.ToString());
+            bool ifCheckId = this.priceRepository.IfAnyCheckId(itemId);
             if (ifCheckId == false)
             {
-                var entityForPrice = this.context.Items.FirstOrDefault(item => item.ItemId == itemId);
+                var originalPrice = this.priceRepository.CheckOriginalPrice(itemId);
                 Price objFirstPrice = new Price();
-                objFirstPrice.PriceId = this.context.Prices.Count() + 1;
+                objFirstPrice.PriceId = this.priceRepository.TableCount();
                 objFirstPrice.ItemId = itemId.ToString();
-                objFirstPrice.PriceOfItem = entityForPrice.ItemPrice;
+                objFirstPrice.PriceOfItem = originalPrice.ItemPrice;
                 objFirstPrice.DateOfPrice = DateTime.Now;
 
-                this.context.Prices.Add(objFirstPrice);
-                this.context.SaveChanges();
+                this.priceRepository.AddFirstPrice(objFirstPrice);
+                this.priceRepository.Save();
             }
 
             Price objPrice = new Price();
-            objPrice.PriceId = this.context.Prices.Count() + 1;
+            objPrice.PriceId = this.priceRepository.TableCount();
             objPrice.ItemId = itemId.ToString();
             objPrice.PriceOfItem = objItem.CurrentPrice;
             objPrice.DateOfPrice = DateTime.Now;
 
-            var entity = this.context.Items.FirstOrDefault(item => item.ItemId == itemId);
+            var entity = this.priceRepository.CheckOriginalPrice(itemId);
             entity.ItemPrice = objItem.CurrentPrice;
 
-            this.context.Items.Update(entity);
-            this.context.Prices.Add(objPrice);
-            this.context.SaveChanges();
+            this.priceRepository.UpdatePrice(entity);
+            this.priceRepository.AddChangedPrice(objPrice);
+            this.priceRepository.Save();
 
             return this.RedirectToAction("PriceHistory", new { button });
         }
@@ -78,14 +79,14 @@
             this.TempData["username"] = userName;
             List<PriceHistoryViewModel> list = new List<PriceHistoryViewModel>();
 
-            foreach (var order in this.context.Prices.Where(element => element.ItemId == itemId.ToString()))
+            foreach (var order in this.priceRepository.WhereId(itemId))
             {
                 PriceHistoryViewModel objPriceHistoryModel = new PriceHistoryViewModel();
                 objPriceHistoryModel.ItemId = order.ItemId;
                 objPriceHistoryModel.CurrentPrice = order.PriceOfItem;
                 objPriceHistoryModel.DateOfPrice = order.DateOfPrice;
 
-                var findElementById = this.context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
+                var findElementById = this.priceRepository.FindItemById(itemId, objPriceHistoryModel);
                 objPriceHistoryModel.Image = findElementById.Image;
                 objPriceHistoryModel.ItemBrand = findElementById.ItemBrand;
                 objPriceHistoryModel.ItemName = findElementById.ItemName;
