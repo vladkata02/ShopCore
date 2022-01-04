@@ -1,4 +1,4 @@
-namespace ShopCore.Models
+namespace ShopCore.Data.Models
 {
     using System;
     using System.Collections.Generic;

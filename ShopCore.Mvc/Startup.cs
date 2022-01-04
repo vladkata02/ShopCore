@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopCore.Data;
 using ShopCore.Data.Context;
-using ShopCore.Models;
+using ShopCore.Data.Models;
 using ShopCore.Mvc.Repositories;
 using ShopCore.Services.Interfaces;
 using ShopCore.Services.Repositories;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ShopCore.Data.Context;
-using ShopCore.Models;
+using ShopCore.Data.Models;
 using ShopCore.Services.Interfaces;
 using ShopCore.Services.ViewModel;
 

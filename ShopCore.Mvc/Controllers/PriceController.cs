@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using ShopCore.Data;
     using ShopCore.Data.Context;
-    using ShopCore.Models;
+    using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 

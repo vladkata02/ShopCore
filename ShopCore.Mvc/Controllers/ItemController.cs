@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-    using ShopCore.Models;
+    using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
     using ShopCore.Services.ViewModel;

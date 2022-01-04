@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ShopCore.Models;
+using ShopCore.Data.Models;
 
 namespace ShopCore.Services.Interfaces
 {

@@ -17,7 +17,6 @@ namespace ShopCore.Services.ViewModel
 
         [Required]
         [System.Web.Mvc.Compare("Password")]
-        [Obsolete]
         public string ConfirmPassword { get; set; }
     }
 }

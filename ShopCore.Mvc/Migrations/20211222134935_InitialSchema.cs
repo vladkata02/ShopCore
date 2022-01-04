@@ -19,7 +19,7 @@ namespace ShopCore.Mvc.Migrations
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CartAcc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace ShopCore.Mvc.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace ShopCore.Mvc.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    ItemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ItemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -70,7 +70,7 @@ namespace ShopCore.Mvc.Migrations
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderAccMail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    OrderAccMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace ShopCore.Mvc.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -99,7 +99,7 @@ namespace ShopCore.Mvc.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ItemId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PriceOfItem = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DateOfPrice = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateOfPrice = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -114,7 +114,7 @@ namespace ShopCore.Mvc.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {

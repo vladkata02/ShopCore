@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using ShopCore.Models;
+using ShopCore.Data.Models;
 using ShopCore.Services.Interfaces;
 using ShopCore.Services.ViewModel;
 
