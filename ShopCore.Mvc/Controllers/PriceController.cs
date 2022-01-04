@@ -8,8 +8,8 @@
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Models;
-    using ShopCore.Mvc.Interfaces;
-    using ShopCore.ViewModel;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
 
     public class PriceController : Controller
     {

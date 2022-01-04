@@ -7,9 +7,9 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using ShopCore.Models;
-    using ShopCore.Mvc.Interfaces;
-    using ShopCore.Mvc.Repositories;
-    using ShopCore.ViewModel;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.Repositories;
+    using ShopCore.Services.ViewModel;
 
     public class ItemController : Controller
     {
@@ -26,7 +26,7 @@
             this.TempData["username"] = userName;
             ItemViewModel objItemViewModel = new ItemViewModel();
             objItemViewModel.CategorySelectListItem = from objCat in this.itemRepository.GetCategories()
-                select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                select new System.Web.Mvc.SelectListItem()
                                                        {
                                                            Text = objCat.CategoryName,
                                                            Value = objCat.CategoryId.ToString(),

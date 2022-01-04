@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
-    public class OrderDetailModel
+    public class ShoppingCartModel
     {
-        public int OrderDetailId { get; set; }
-
-        public int OrderId { get; set; }
-
         public string ItemId { get; set; }
 
         public decimal Quantity { get; set; }
@@ -19,6 +15,12 @@ namespace ShopCore.ViewModel
 
         public decimal Total { get; set; }
 
-        public string OrderAccMail { get; set; }
+        public byte[] Image { get; set; }
+
+        public string ItemName { get; set; }
+
+        public string ItemBrand { get; set; }
+
+        public string CartAcc { get; set; }
     }
 }

@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ShopCore.Data.Context;
 using ShopCore.Models;
-using ShopCore.Mvc.Interfaces;
-using ShopCore.ViewModel;
+using ShopCore.Services.Interfaces;
+using ShopCore.Services.ViewModel;
 
-namespace ShopCore.Mvc.Repositories
+namespace ShopCore.Services.Repositories
 {
     public class AccountRepository : IAccountRepository
     {

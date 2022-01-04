@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
-    public class LoginViewModel
+    public class RegisterViewModel : Controller
     {
         [Required]
         public string UserName { get; set; }
@@ -15,6 +16,8 @@ namespace ShopCore.ViewModel
         public string Password { get; set; }
 
         [Required]
-        public bool RememberMe { get; set; }
+        [System.Web.Mvc.Compare("Password")]
+        [Obsolete]
+        public string ConfirmPassword { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ShopCore.Models;
 
-namespace ShopCore.Mvc.Interfaces
+namespace ShopCore.Services.Interfaces
 {
     public interface IItemRepository
     {

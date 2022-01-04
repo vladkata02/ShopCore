@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
     public class PriceEditorViewModel
     {

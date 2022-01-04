@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ShopCore.Models;
-using ShopCore.ViewModel;
+using ShopCore.Services.ViewModel;
 
-namespace ShopCore.Mvc.Interfaces
+namespace ShopCore.Services.Interfaces
 {
     public interface IShoppingRepository
     {

@@ -1,23 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using ShopCore.Data;
+using ShopCore.Data.Context;
+using ShopCore.Models;
+using ShopCore.Mvc.Repositories;
+using ShopCore.Services.Interfaces;
+using ShopCore.Services.Repositories;
+
 namespace ShopCore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication.Cookies;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.HttpsPolicy;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
-    using ShopCore.Models;
-    using ShopCore.Mvc.Interfaces;
-    using ShopCore.Mvc.Repositories;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)

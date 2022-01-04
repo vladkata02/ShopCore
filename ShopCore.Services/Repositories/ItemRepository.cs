@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ShopCore.Data.Context;
 using ShopCore.Models;
-using ShopCore.Mvc.Interfaces;
+using ShopCore.Services.Interfaces;
 
-namespace ShopCore.Mvc.Repositories
+namespace ShopCore.Services.Repositories
 {
     public class ItemRepository : IItemRepository
     {
