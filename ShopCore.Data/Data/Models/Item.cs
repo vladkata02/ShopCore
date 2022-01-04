@@ -6,22 +6,22 @@ namespace ShopCore.Data.Models
 
     public class Item
     {
-        public Guid ItemId { get; set; }
+        public Guid Id { get; set; }
 
         public int CategoryId { get; set; }
 
-        public string ItemCode { get; set; }
+        public string Code { get; set; }
 
-        public string ItemName { get; set; }
+        public string Name { get; set; }
 
-        public string ItemBrand { get; set; }
+        public string Brand { get; set; }
 
         public string Description { get; set; }
 
         public string ImageName { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] ImageContent { get; set; }
 
-        public decimal ItemPrice { get; set; }
+        public decimal Price { get; set; }
     }
 }

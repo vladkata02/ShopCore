@@ -28,8 +28,8 @@
             objItemViewModel.CategorySelectListItem = from objCat in this.itemRepository.GetCategories()
                 select new System.Web.Mvc.SelectListItem()
                                                        {
-                                                           Text = objCat.CategoryName,
-                                                           Value = objCat.CategoryId.ToString(),
+                                                           Text = objCat.Name,
+                                                           Value = objCat.Id.ToString(),
                                                            Selected = true,
                                                        };
 
@@ -50,16 +50,16 @@
             objItem.ImageName = newFileName;
             objItem.CategoryId = objItemViewModel.CategoryId;
             objItem.Description = objItemViewModel.Description;
-            objItem.ItemCode = objItemViewModel.ItemCode;
-            objItem.ItemId = Guid.NewGuid();
-            objItem.ItemName = objItemViewModel.ItemName;
-            objItem.ItemBrand = objItemViewModel.ItemBrand;
-            objItem.ItemPrice = objItemViewModel.ItemPrice;
+            objItem.Code = objItemViewModel.ItemCode;
+            objItem.Id = Guid.NewGuid();
+            objItem.Name = objItemViewModel.ItemName;
+            objItem.Brand = objItemViewModel.ItemBrand;
+            objItem.Price = objItemViewModel.ItemPrice;
 
             using (var target = new MemoryStream())
             {
                 files.CopyTo(target);
-                objItem.Image = target.ToArray();
+                objItem.ImageContent = target.ToArray();
             }
 
             this.itemRepository.AddItem(objItem);

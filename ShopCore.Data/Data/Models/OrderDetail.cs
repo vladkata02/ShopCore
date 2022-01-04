@@ -6,7 +6,7 @@ namespace ShopCore.Data.Models
 
     public class OrderDetail
     {
-        public int OrderDetailId { get; set; }
+        public int Id { get; set; }
 
         public int OrderId { get; set; }
 
@@ -18,6 +18,6 @@ namespace ShopCore.Data.Models
 
         public decimal Total { get; set; }
 
-        public string OrderAccMail { get; set; }
+        public string Account { get; set; }
     }
 }

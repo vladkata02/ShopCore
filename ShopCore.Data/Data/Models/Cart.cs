@@ -10,7 +10,7 @@
     [Table("Carts")]
     public class Cart
     {
-        public int CartId { get; set; }
+        public int Id { get; set; }
 
         public string ItemId { get; set; }
 
@@ -20,10 +20,10 @@
 
         public decimal Total { get; set; }
 
-        public string CartAcc { get; set; }
+        public string Account { get; set; }
 
         public string ItemName { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] ImageContent { get; set; }
     }
 }

@@ -32,12 +32,12 @@ namespace ShopCore.Mvc.Repositories
 
         public Item CheckId(string itemId)
         {
-            return this.context.Items.Single(model => model.ItemId.ToString() == itemId);
+            return this.context.Items.Single(model => model.Id.ToString() == itemId);
         }
 
         public Cart IfCheckId(string itemId, string userName)
         {
-            return this.context.Carts.SingleOrDefault(model => model.ItemId == itemId && model.CartAcc == userName);
+            return this.context.Carts.SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
         }
 
         public int TableCount()
@@ -52,17 +52,17 @@ namespace ShopCore.Mvc.Repositories
 
         public Cart CheckIdForQuantity(string itemId, string userName)
         {
-            return this.context.Carts.Single(model => model.ItemId == itemId && model.CartAcc == userName);
+            return this.context.Carts.Single(model => model.ItemId == itemId && model.Account == userName);
         }
 
         public IEnumerable<Cart> CheckWhichAccCartIs(string userName)
         {
-            return this.context.Carts.Where(element => element.CartAcc == userName);
+            return this.context.Carts.Where(element => element.Account == userName);
         }
 
         public Item FindElementById(Cart cart)
         {
-            return this.context.Items.Where(check => check.ItemId.ToString() == cart.ItemId).FirstOrDefault();
+            return this.context.Items.Where(check => check.Id.ToString() == cart.ItemId).FirstOrDefault();
         }
 
         public void UpdatePrice(Item entity)
@@ -77,7 +77,7 @@ namespace ShopCore.Mvc.Repositories
 
         public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
         {
-            return this.context.Items.Where(check => check.ItemId.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
+            return this.context.Items.Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
         }
 
         public void AddOrderTime(Order orderObj)
@@ -92,17 +92,17 @@ namespace ShopCore.Mvc.Repositories
 
         public IEnumerable<OrderDetail> FindAccOrders(string userName)
         {
-            return this.context.OrderDetails.Where(element => element.OrderAccMail == userName);
+            return this.context.OrderDetails.Where(element => element.Account == userName);
         }
 
         public Order FindDateById(OrderDetail order)
         {
-            return this.context.Orders.Where(check => check.OrderId == order.OrderId).FirstOrDefault();
+            return this.context.Orders.Where(check => check.Id == order.OrderId).FirstOrDefault();
         }
 
         public Item FindItemByIdForOrders(OrderDetail order)
         {
-            return this.context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
+            return this.context.Items.Where(check => check.Id.ToString() == order.ItemId).FirstOrDefault();
         }
 
         public void RemoveItem(Cart item)

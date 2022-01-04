@@ -34,12 +34,10 @@ namespace ShopCore
             services.AddSession();
             services.AddMemoryCache();
             services.AddMvc();
-            services.AddEntityFrameworkSqlServer();
             services.AddControllersWithViews();
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
-
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
             services.AddTransient<IItemRepository, ItemRepository>();

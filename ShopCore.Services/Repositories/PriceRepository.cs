@@ -22,7 +22,7 @@ namespace ShopCore.Services.Repositories
 
         public Item CheckId(Guid itemId)
         {
-            return this.context.Items.SingleOrDefault(model => model.ItemId == itemId);
+            return this.context.Items.SingleOrDefault(model => model.Id == itemId);
         }
 
         public bool IfAnyCheckId(Guid itemId)
@@ -32,7 +32,7 @@ namespace ShopCore.Services.Repositories
 
         public Item CheckOriginalPrice(Guid itemId)
         {
-            return this.context.Items.FirstOrDefault(item => item.ItemId == itemId);
+            return this.context.Items.FirstOrDefault(item => item.Id == itemId);
         }
 
         public int TableCount()
@@ -57,7 +57,7 @@ namespace ShopCore.Services.Repositories
 
         public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
         {
-            return this.context.Items.Where(check => check.ItemId.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
+            return this.context.Items.Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
         }
 
         public void AddChangedPrice(Price objPrice)

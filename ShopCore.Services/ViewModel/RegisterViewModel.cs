@@ -16,7 +16,7 @@ namespace ShopCore.Services.ViewModel
         public string Password { get; set; }
 
         [Required]
-        [System.Web.Mvc.Compare("Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Password")]
         public string ConfirmPassword { get; set; }
     }
 }

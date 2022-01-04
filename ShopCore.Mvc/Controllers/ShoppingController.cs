@@ -27,17 +27,17 @@
             IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objItem in this.shoppingRepository.GetItems()
                                                                        join
                                                                            objCate in this.shoppingRepository.GetCategories()
-                                                                           on objItem.CategoryId equals objCate.CategoryId
+                                                                           on objItem.CategoryId equals objCate.Id
                                                                        select new ShoppingViewModel()
                                                                        {
-                                                                           ItemName = objItem.ItemName,
-                                                                           Image = objItem.Image,
+                                                                           ItemName = objItem.Name,
+                                                                           Image = objItem.ImageContent,
                                                                            Description = objItem.Description,
-                                                                           ItemPrice = objItem.ItemPrice,
-                                                                           ItemBrand = objItem.ItemBrand,
-                                                                           ItemId = objItem.ItemId,
-                                                                           Category = objCate.CategoryName,
-                                                                           ItemCode = objItem.ItemCode,
+                                                                           ItemPrice = objItem.Price,
+                                                                           ItemBrand = objItem.Brand,
+                                                                           ItemId = objItem.Id,
+                                                                           Category = objCate.Name,
+                                                                           ItemCode = objItem.Code,
                                                                        })
                                                                         .ToList();
             return this.View(listOfShoppingViewModels);
@@ -54,14 +54,14 @@
             var ifCheckId = this.shoppingRepository.IfCheckId(itemId, userName);
             if (ifCheckId == null)
             {
-                objShoppingCartModel.CartId = this.shoppingRepository.TableCount();
+                objShoppingCartModel.Id = this.shoppingRepository.TableCount();
                 objShoppingCartModel.ItemId = itemId;
-                objShoppingCartModel.Image = objItem.Image;
-                objShoppingCartModel.ItemName = objItem.ItemName;
+                objShoppingCartModel.ImageContent = objItem.ImageContent;
+                objShoppingCartModel.ItemName = objItem.Name;
                 objShoppingCartModel.Quantity = 1;
-                objShoppingCartModel.Total = objItem.ItemPrice;
-                objShoppingCartModel.CartAcc = userName;
-                objShoppingCartModel.UnitPrice = objItem.ItemPrice;
+                objShoppingCartModel.Total = objItem.Price;
+                objShoppingCartModel.Account = userName;
+                objShoppingCartModel.UnitPrice = objItem.Price;
                 this.shoppingRepository.AddCartItem(objShoppingCartModel);
             }
             else
@@ -88,9 +88,9 @@
                 objCart.Total = cart.Total;
 
                 var findElementById = this.shoppingRepository.FindElementById(cart);
-                objCart.Image = findElementById.Image;
-                objCart.ItemBrand = findElementById.ItemBrand;
-                objCart.ItemName = findElementById.ItemName;
+                objCart.Image = findElementById.ImageContent;
+                objCart.ItemBrand = findElementById.Brand;
+                objCart.ItemName = findElementById.Name;
                 objCart.Quantity = cart.Quantity;
                 objCart.CartAcc = userName;
 
@@ -108,12 +108,12 @@
             int orderId = 0;
             Order orderObj = new Order()
             {
-                OrderDate = DateTime.Now,
-                OrderNumber = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
+                Date = DateTime.Now,
+                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
             };
             this.shoppingRepository.AddOrderTime(orderObj);
             this.shoppingRepository.Save();
-            orderId = orderObj.OrderId;
+            orderId = orderObj.Id;
 
             foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
@@ -123,7 +123,7 @@
                 objOrderDetail.OrderId = orderId;
                 objOrderDetail.Quantity = item.Quantity;
                 objOrderDetail.UnitPrice = item.UnitPrice;
-                objOrderDetail.OrderAccMail = userName;
+                objOrderDetail.Account = userName;
                 this.shoppingRepository.AddOrderDetails(objOrderDetail);
             }
 
@@ -144,19 +144,19 @@
             foreach (var order in this.shoppingRepository.FindAccOrders(userName))
             {
                 ShoppingHistoryModel objShoppingHistoryModel = new ShoppingHistoryModel();
-                objShoppingHistoryModel.OrderDetailId = order.OrderDetailId;
+                objShoppingHistoryModel.OrderDetailId = order.Id;
                 objShoppingHistoryModel.OrderNumber = order.OrderId;
                 objShoppingHistoryModel.ItemId = order.ItemId;
                 objShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objShoppingHistoryModel.Total = order.Total;
 
                 var findDate = this.shoppingRepository.FindDateById(order);
-                objShoppingHistoryModel.OrderDate = findDate.OrderDate;
+                objShoppingHistoryModel.OrderDate = findDate.Date;
 
                 var findElementById = this.shoppingRepository.FindItemByIdForOrders(order);
-                objShoppingHistoryModel.Image = findElementById.Image;
-                objShoppingHistoryModel.ItemBrand = findElementById.ItemBrand;
-                objShoppingHistoryModel.ItemName = findElementById.ItemName;
+                objShoppingHistoryModel.Image = findElementById.ImageContent;
+                objShoppingHistoryModel.ItemBrand = findElementById.Brand;
+                objShoppingHistoryModel.ItemName = findElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
                 objShoppingHistoryModel.User = userName;
 

@@ -29,10 +29,10 @@
             var itemCheckId = this.priceRepository.CheckId(itemId);
 
             PriceEditorViewModel objItem = new PriceEditorViewModel();
-            objItem.ItemName = itemCheckId.ItemName;
-            objItem.Image = itemCheckId.Image;
-            objItem.ItemPrice = itemCheckId.ItemPrice;
-            objItem.ItemBrand = itemCheckId.ItemBrand;
+            objItem.ItemName = itemCheckId.Name;
+            objItem.Image = itemCheckId.ImageContent;
+            objItem.ItemPrice = itemCheckId.Price;
+            objItem.ItemBrand = itemCheckId.Brand;
             objItem.ItemId = itemId;
 
             return this.View(objItem);
@@ -47,23 +47,23 @@
             {
                 var originalPrice = this.priceRepository.CheckOriginalPrice(itemId);
                 Price objFirstPrice = new Price();
-                objFirstPrice.PriceId = this.priceRepository.TableCount();
+                objFirstPrice.Id = this.priceRepository.TableCount();
                 objFirstPrice.ItemId = itemId.ToString();
-                objFirstPrice.PriceOfItem = originalPrice.ItemPrice;
-                objFirstPrice.DateOfPrice = DateTime.Now;
+                objFirstPrice.PriceValue = originalPrice.Price;
+                objFirstPrice.Date = DateTime.Now;
 
                 this.priceRepository.AddFirstPrice(objFirstPrice);
                 this.priceRepository.Save();
             }
 
             Price objPrice = new Price();
-            objPrice.PriceId = this.priceRepository.TableCount();
+            objPrice.Id = this.priceRepository.TableCount();
             objPrice.ItemId = itemId.ToString();
-            objPrice.PriceOfItem = objItem.CurrentPrice;
-            objPrice.DateOfPrice = DateTime.Now;
+            objPrice.PriceValue = objItem.CurrentPrice;
+            objPrice.Date = DateTime.Now;
 
             var entity = this.priceRepository.CheckOriginalPrice(itemId);
-            entity.ItemPrice = objItem.CurrentPrice;
+            entity.Price = objItem.CurrentPrice;
 
             this.priceRepository.UpdatePrice(entity);
             this.priceRepository.AddChangedPrice(objPrice);
@@ -83,13 +83,13 @@
             {
                 PriceHistoryViewModel objPriceHistoryModel = new PriceHistoryViewModel();
                 objPriceHistoryModel.ItemId = order.ItemId;
-                objPriceHistoryModel.CurrentPrice = order.PriceOfItem;
-                objPriceHistoryModel.DateOfPrice = order.DateOfPrice;
+                objPriceHistoryModel.CurrentPrice = order.PriceValue;
+                objPriceHistoryModel.DateOfPrice = order.Date;
 
                 var findElementById = this.priceRepository.FindItemById(itemId, objPriceHistoryModel);
-                objPriceHistoryModel.Image = findElementById.Image;
-                objPriceHistoryModel.ItemBrand = findElementById.ItemBrand;
-                objPriceHistoryModel.ItemName = findElementById.ItemName;
+                objPriceHistoryModel.Image = findElementById.ImageContent;
+                objPriceHistoryModel.ItemBrand = findElementById.Brand;
+                objPriceHistoryModel.ItemName = findElementById.Name;
 
                 list.Add(objPriceHistoryModel);
             }

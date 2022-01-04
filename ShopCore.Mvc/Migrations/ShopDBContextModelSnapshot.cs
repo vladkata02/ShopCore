@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopCore.Data.Context;
+using ShopCore.Data;
 
 namespace ShopCore.Mvc.Migrations
 {
