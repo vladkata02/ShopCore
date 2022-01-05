@@ -23,8 +23,6 @@
         [HttpPost]
         public IActionResult Index(Guid button)
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             Guid itemId = button;
             var itemCheckId = this.priceRepository.CheckId(itemId);
 
@@ -75,8 +73,6 @@
         public IActionResult PriceHistory(Guid button)
         {
             Guid itemId = button;
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             List<PriceHistoryViewModel> list = new List<PriceHistoryViewModel>();
 
             foreach (var order in this.priceRepository.WhereId(itemId))

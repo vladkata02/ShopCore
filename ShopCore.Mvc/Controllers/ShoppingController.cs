@@ -22,8 +22,6 @@
 
         public IActionResult Index()
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objItem in this.shoppingRepository.GetItems()
                                                                        join
                                                                            objCate in this.shoppingRepository.GetCategories()
@@ -47,7 +45,6 @@
         public JsonResult Index(string itemId)
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             Cart objShoppingCartModel = new Cart();
             Item objItem = this.shoppingRepository.CheckId(itemId);
 
@@ -78,7 +75,6 @@
         public IActionResult ShoppingCart()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             List<ShoppingCartModel> list = new List<ShoppingCartModel>();
             foreach (var cart in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
@@ -104,7 +100,6 @@
         public IActionResult AddOrder()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             int orderId = 0;
             Order orderObj = new Order()
             {
@@ -139,7 +134,6 @@
         public IActionResult ShoppingHistory()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             List<ShoppingHistoryModel> list = new List<ShoppingHistoryModel>();
             foreach (var order in this.shoppingRepository.FindAccOrders(userName))
             {

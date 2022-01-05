@@ -25,7 +25,5 @@ namespace ShopCore.Services.ViewModel
         public byte[] Image { get; set; }
 
         public string ImageName { get; set; }
-
-        public List<Category> CategorySelectListItem { get; set; }
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -23,19 +24,14 @@
 
         public IActionResult Index()
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
-            ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = this.itemRepository.GetCategories();
-            return this.View(objItemViewModel);
+            List<Category> categoryList = this.itemRepository.GetCategories();
+            this.ViewBag.CategoriesList = categoryList;
+            return this.View();
         }
 
         [HttpPost]
         public IActionResult Index(ItemViewModel objItemViewModel, IFormFile files)
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
-
             var fileName = Path.GetFileName(files.FileName);
             var fileExtension = Path.GetExtension(fileName);
             var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);

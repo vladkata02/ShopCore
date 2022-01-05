@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ShopCore.Services.ViewModel.ShoppingViewModel>
 @{
     TempData["Title"] = "Index";
+    var username = Context.User.Identity.Name;
 }
 @section scripts{
     <script type="text/javascript">
@@ -87,7 +88,7 @@
                 </div>
 
                 <div class="col-md-12" style="text-align: right; margin-bottom: 10px; border-top: 2px solid blue; padding: 2px">
-                    @if ((string)TempData["username"] == "admin")
+                    @if (username == "admin")
                     {
                     <form method="post" asp-controller="Price" asp-action="Index">
                                 <button name="button" class="btn btn-info" value="@item.ItemId" asp-controller="Price" asp-action="Index">Edit Price</button>

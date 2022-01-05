@@ -1,7 +1,7 @@
 ﻿@model ShopCore.Services.ViewModel.ItemViewModel
 @{
     ViewBag.Title = "Index";
-
+    var username = Context.User.Identity.Name;
 }
 
 <h2>Add an item</h2>
@@ -24,7 +24,7 @@
                 Category
                 <select asp-for="CategoryId" 
                         class="form-control"
-                        asp-items="@(new SelectList(Model.CategorySelectListItem, "Id","Name"))">
+                        asp-items="@(new SelectList(ViewBag.CategoriesList, "Id","Name"))">
                     <option value="">--Select--</option>
                 </select>
                 
