@@ -1,6 +1,7 @@
 ﻿namespace ShopCore.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using Microsoft.AspNetCore.Http;
@@ -25,14 +26,7 @@
             string userName = this.HttpContext.User.Identity.Name;
             this.TempData["username"] = userName;
             ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = from objCat in this.itemRepository.GetCategories()
-                select new System.Web.Mvc.SelectListItem()
-                                                       {
-                                                           Text = objCat.Name,
-                                                           Value = objCat.Id.ToString(),
-                                                           Selected = true,
-                                                       };
-
+            objItemViewModel.CategorySelectListItem = this.itemRepository.GetCategories();
             return this.View(objItemViewModel);
         }
 

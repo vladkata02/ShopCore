@@ -8,7 +8,7 @@ namespace ShopCore.Services.Interfaces
 {
     public interface IItemRepository
     {
-        IEnumerable<Category> GetCategories();
+        List<Category> GetCategories();
 
         void AddItem(Item objItem);
 

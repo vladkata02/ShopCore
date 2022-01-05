@@ -20,10 +20,14 @@
 <div class="container">
     <form method="post" enctype="multipart/form-data" asp-controller="Item" asp-action="Index">
         <div class="col-md-4">
-            <div class="form-group">
-                Category :
-                @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.CategorySelectListItem, "Value", "Text"),
-       new { @class = "form-control" })
+            <div class="drop-menu btm right open">
+                Category
+                <select asp-for="CategoryId" 
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.CategorySelectListItem, "Id","Name"))">
+                    <option value="">--Select--</option>
+                </select>
+                
             </div>
         </div>
 
