@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using ShopCore.Data.Context;
-using ShopCore.Data.Models;
-using ShopCore.Services.Interfaces;
-
-namespace ShopCore.Services.Repositories
+﻿namespace ShopCore.Services.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using ShopCore.Data.Context;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Interfaces;
+
     public class ItemRepository : IItemRepository
     {
         private ShopDBContext context;

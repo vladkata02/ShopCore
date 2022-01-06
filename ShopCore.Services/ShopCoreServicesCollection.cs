@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using ShopCore.Services.Interfaces;
-using ShopCore.Services.Repositories;
-
-namespace ShopCore.Services
+﻿namespace ShopCore.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.Repositories;
+
     public static class ShopCoreServicesCollection
     {
     public static IServiceCollection AddShopCoreServices(this IServiceCollection services)

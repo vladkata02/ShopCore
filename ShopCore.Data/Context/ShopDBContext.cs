@@ -1,10 +1,10 @@
 ﻿namespace ShopCore.Data.Context
     {
+    using System.IO;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.Extensions.Configuration;
     using ShopCore.Data.Models;
-    using System.IO;
 
     public class ShopDBContext : DbContext
         {
