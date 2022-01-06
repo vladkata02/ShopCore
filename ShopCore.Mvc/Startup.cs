@@ -1,21 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using ShopCore.Data;
+using ShopCore.Data.Context;
+using ShopCore.Data.Models;
+using ShopCore.Services;
+using ShopCore.Services.Interfaces;
+using ShopCore.Services.Repositories;
+
 namespace ShopCore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication.Cookies;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.HttpsPolicy;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
-    using ShopCore.Models;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -31,14 +34,13 @@ namespace ShopCore
             services.AddSession();
             services.AddMemoryCache();
             services.AddMvc();
-            services.AddEntityFrameworkSqlServer();
             services.AddControllersWithViews();
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
-
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
+            services.AddShopCoreServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

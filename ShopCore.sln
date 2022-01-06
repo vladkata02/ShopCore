@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Mvc", "ShopCore.Mv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Data", "ShopCore.Data\ShopCore.Data.csproj", "{DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopCore.WebApi", "ShopCore.WebApi\ShopCore.WebApi.csproj", "{A3FFA70B-B68D-4404-98BC-5901203AB636}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.WebApi", "ShopCore.WebApi\ShopCore.WebApi.csproj", "{A3FFA70B-B68D-4404-98BC-5901203AB636}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D} = {DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D}
 	EndProjectSection
@@ -15,6 +15,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1113934-C321-437A-A491-8E83600A04E1}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopCore.Services", "ShopCore.Services\ShopCore.Services.csproj", "{CDB96B15-B4C7-41F4-A2D1-1DB4AA1A38D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D} = {DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D}
 	EndProjectSection
 EndProject
 Global
@@ -35,6 +40,10 @@ Global
 		{A3FFA70B-B68D-4404-98BC-5901203AB636}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3FFA70B-B68D-4404-98BC-5901203AB636}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3FFA70B-B68D-4404-98BC-5901203AB636}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB96B15-B4C7-41F4-A2D1-1DB4AA1A38D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB96B15-B4C7-41F4-A2D1-1DB4AA1A38D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB96B15-B4C7-41F4-A2D1-1DB4AA1A38D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB96B15-B4C7-41F4-A2D1-1DB4AA1A38D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

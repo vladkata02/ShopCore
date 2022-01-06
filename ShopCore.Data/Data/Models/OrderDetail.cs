@@ -1,4 +1,4 @@
-namespace ShopCore.Models
+namespace ShopCore.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@ namespace ShopCore.Models
 
     public class OrderDetail
     {
-        public int OrderDetailId { get; set; }
+        public int Id { get; set; }
 
         public int OrderId { get; set; }
 
@@ -18,6 +18,6 @@ namespace ShopCore.Models
 
         public decimal Total { get; set; }
 
-        public string OrderAccMail { get; set; }
+        public string Account { get; set; }
     }
 }

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
-    public class LoginViewModel
+    public class RegisterViewModel
     {
         [Required]
         public string UserName { get; set; }
@@ -15,6 +15,7 @@ namespace ShopCore.ViewModel
         public string Password { get; set; }
 
         [Required]
-        public bool RememberMe { get; set; }
+        [System.ComponentModel.DataAnnotations.Compare("Password")]
+        public string ConfirmPassword { get; set; }
     }
 }

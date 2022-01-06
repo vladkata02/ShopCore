@@ -1,47 +1,37 @@
 ﻿namespace ShopCore.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
-    using ShopCore.Models;
-    using ShopCore.ViewModel;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.Repositories;
+    using ShopCore.Services.ViewModel;
 
     public class ItemController : Controller
     {
-        private readonly ShopDBContext context;
+        private IItemRepository itemRepository;
 
-        public ItemController(ShopDBContext context)
+        public ItemController(IItemRepository itemRepository)
         {
-            this.context = context;
+            this.itemRepository = itemRepository;
         }
 
         public IActionResult Index()
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
-            ItemViewModel objItemViewModel = new ItemViewModel();
-            objItemViewModel.CategorySelectListItem = from objCat in this.context.Categories
-                select new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
-                                                       {
-                                                           Text = objCat.CategoryName,
-                                                           Value = objCat.CategoryId.ToString(),
-                                                           Selected = true,
-                                                       };
-
-            return this.View(objItemViewModel);
+            List<Category> categoryList = this.itemRepository.GetCategories();
+            this.ViewBag.CategoriesList = categoryList;
+            return this.View();
         }
 
         [HttpPost]
         public IActionResult Index(ItemViewModel objItemViewModel, IFormFile files)
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
-
             var fileName = Path.GetFileName(files.FileName);
             var fileExtension = Path.GetExtension(fileName);
             var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
@@ -50,20 +40,20 @@
             objItem.ImageName = newFileName;
             objItem.CategoryId = objItemViewModel.CategoryId;
             objItem.Description = objItemViewModel.Description;
-            objItem.ItemCode = objItemViewModel.ItemCode;
-            objItem.ItemId = Guid.NewGuid();
-            objItem.ItemName = objItemViewModel.ItemName;
-            objItem.ItemBrand = objItemViewModel.ItemBrand;
-            objItem.ItemPrice = objItemViewModel.ItemPrice;
+            objItem.Code = objItemViewModel.ItemCode;
+            objItem.Id = Guid.NewGuid();
+            objItem.Name = objItemViewModel.ItemName;
+            objItem.Brand = objItemViewModel.ItemBrand;
+            objItem.Price = objItemViewModel.ItemPrice;
 
             using (var target = new MemoryStream())
             {
                 files.CopyTo(target);
-                objItem.Image = target.ToArray();
+                objItem.ImageContent = target.ToArray();
             }
 
-            this.context.Items.Add(objItem);
-            this.context.SaveChanges();
+            this.itemRepository.AddItem(objItem);
+            this.itemRepository.Save();
 
             return this.RedirectToAction("Index");
         }

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
+    <ProjectReference Include="..\ShopCore.Services\ShopCore.Services.csproj" />
   </ItemGroup>
 
 </Project>

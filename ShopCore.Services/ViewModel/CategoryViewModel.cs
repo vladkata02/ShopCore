@@ -1,4 +1,4 @@
-﻿namespace ShopCore.ViewModel
+﻿namespace ShopCore.Services.ViewModel
 {
     using System;
     using System.Collections.Generic;

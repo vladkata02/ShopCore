@@ -7,36 +7,35 @@
     using Microsoft.Extensions.Configuration;
     using ShopCore.Data;
     using ShopCore.Data.Context;
-    using ShopCore.Models;
-    using ShopCore.ViewModel;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
 
     public class ShoppingController : Controller
     {
-        private readonly ShopDBContext context;
+        private IShoppingRepository shoppingRepository;
 
-        public ShoppingController(ShopDBContext context)
+        public ShoppingController(IShoppingRepository shoppingRepository)
         {
-            this.context = context;
+            this.shoppingRepository = shoppingRepository;
         }
 
         public IActionResult Index()
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
-            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objItem in this.context.Items
+            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objItem in this.shoppingRepository.GetItems()
                                                                        join
-                                                                           objCate in this.context.Categories
-                                                                           on objItem.CategoryId equals objCate.CategoryId
+                                                                           objCate in this.shoppingRepository.GetCategories()
+                                                                           on objItem.CategoryId equals objCate.Id
                                                                        select new ShoppingViewModel()
                                                                        {
-                                                                           ItemName = objItem.ItemName,
-                                                                           Image = objItem.Image,
+                                                                           ItemName = objItem.Name,
+                                                                           Image = objItem.ImageContent,
                                                                            Description = objItem.Description,
-                                                                           ItemPrice = objItem.ItemPrice,
-                                                                           ItemBrand = objItem.ItemBrand,
-                                                                           ItemId = objItem.ItemId,
-                                                                           Category = objCate.CategoryName,
-                                                                           ItemCode = objItem.ItemCode,
+                                                                           ItemPrice = objItem.Price,
+                                                                           ItemBrand = objItem.Brand,
+                                                                           ItemId = objItem.Id,
+                                                                           Category = objCate.Name,
+                                                                           ItemCode = objItem.Code,
                                                                        })
                                                                         .ToList();
             return this.View(listOfShoppingViewModels);
@@ -46,50 +45,48 @@
         public JsonResult Index(string itemId)
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             Cart objShoppingCartModel = new Cart();
-            Item objItem = this.context.Items.Single(model => model.ItemId.ToString() == itemId);
+            Item objItem = this.shoppingRepository.CheckId(itemId);
 
-            var ifCheckId = this.context.Carts.SingleOrDefault(model => model.ItemId == itemId && model.CartAcc == userName);
+            var ifCheckId = this.shoppingRepository.IfCheckId(itemId, userName);
             if (ifCheckId == null)
             {
-                objShoppingCartModel.CartId = this.context.Carts.Count() + 1;
+                objShoppingCartModel.Id = this.shoppingRepository.TableCount();
                 objShoppingCartModel.ItemId = itemId;
-                objShoppingCartModel.Image = objItem.Image;
-                objShoppingCartModel.ItemName = objItem.ItemName;
+                objShoppingCartModel.ImageContent = objItem.ImageContent;
+                objShoppingCartModel.ItemName = objItem.Name;
                 objShoppingCartModel.Quantity = 1;
-                objShoppingCartModel.Total = objItem.ItemPrice;
-                objShoppingCartModel.CartAcc = userName;
-                objShoppingCartModel.UnitPrice = objItem.ItemPrice;
-                this.context.Carts.Add(objShoppingCartModel);
+                objShoppingCartModel.Total = objItem.Price;
+                objShoppingCartModel.Account = userName;
+                objShoppingCartModel.UnitPrice = objItem.Price;
+                this.shoppingRepository.AddCartItem(objShoppingCartModel);
             }
             else
             {
-                var checkId = this.context.Carts.Single(model => model.ItemId == itemId && model.CartAcc == userName);
+                var checkId = this.shoppingRepository.CheckIdForQuantity(itemId, userName);
                 checkId.Quantity++;
                 checkId.Total = checkId.Quantity * checkId.UnitPrice;
             }
 
-            this.context.SaveChanges();
+            this.shoppingRepository.Save();
             return this.Json(new { Success = true });
         }
 
         public IActionResult ShoppingCart()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             List<ShoppingCartModel> list = new List<ShoppingCartModel>();
-            foreach (var cart in this.context.Carts.Where(element => element.CartAcc == userName))
+            foreach (var cart in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
                 ShoppingCartModel objCart = new ShoppingCartModel();
                 objCart.ItemId = cart.ItemId;
                 objCart.UnitPrice = cart.UnitPrice;
                 objCart.Total = cart.Total;
 
-                var findElementById = this.context.Items.Where(check => check.ItemId.ToString() == cart.ItemId).FirstOrDefault();
-                objCart.Image = findElementById.Image;
-                objCart.ItemBrand = findElementById.ItemBrand;
-                objCart.ItemName = findElementById.ItemName;
+                var findElementById = this.shoppingRepository.FindElementById(cart);
+                objCart.Image = findElementById.ImageContent;
+                objCart.ItemBrand = findElementById.Brand;
+                objCart.ItemName = findElementById.Name;
                 objCart.Quantity = cart.Quantity;
                 objCart.CartAcc = userName;
 
@@ -103,18 +100,17 @@
         public IActionResult AddOrder()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             int orderId = 0;
             Order orderObj = new Order()
             {
-                OrderDate = DateTime.Now,
-                OrderNumber = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
+                Date = DateTime.Now,
+                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
             };
-            this.context.Orders.Add(orderObj);
-            this.context.SaveChanges();
-            orderId = orderObj.OrderId;
+            this.shoppingRepository.AddOrderTime(orderObj);
+            this.shoppingRepository.Save();
+            orderId = orderObj.Id;
 
-            foreach (var item in this.context.Carts.Where(checkAcc => checkAcc.CartAcc == userName))
+            foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
                 OrderDetail objOrderDetail = new OrderDetail();
                 objOrderDetail.Total = item.Total;
@@ -122,40 +118,39 @@
                 objOrderDetail.OrderId = orderId;
                 objOrderDetail.Quantity = item.Quantity;
                 objOrderDetail.UnitPrice = item.UnitPrice;
-                objOrderDetail.OrderAccMail = userName;
-                this.context.OrderDetails.Add(objOrderDetail);
+                objOrderDetail.Account = userName;
+                this.shoppingRepository.AddOrderDetails(objOrderDetail);
             }
 
-            foreach (var item in this.context.Carts.Where(checkAcc => checkAcc.CartAcc == userName))
+            foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
-                this.context.Carts.Remove(item);
+                this.shoppingRepository.RemoveItem(item);
             }
 
-            this.context.SaveChanges();
+            this.shoppingRepository.Save();
             return this.RedirectToAction("Index");
         }
 
         public IActionResult ShoppingHistory()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            this.TempData["username"] = userName;
             List<ShoppingHistoryModel> list = new List<ShoppingHistoryModel>();
-            foreach (var order in this.context.OrderDetails.Where(element => element.OrderAccMail == userName))
+            foreach (var order in this.shoppingRepository.FindAccOrders(userName))
             {
                 ShoppingHistoryModel objShoppingHistoryModel = new ShoppingHistoryModel();
-                objShoppingHistoryModel.OrderDetailId = order.OrderDetailId;
+                objShoppingHistoryModel.OrderDetailId = order.Id;
                 objShoppingHistoryModel.OrderNumber = order.OrderId;
                 objShoppingHistoryModel.ItemId = order.ItemId;
                 objShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objShoppingHistoryModel.Total = order.Total;
 
-                var findDate = this.context.Orders.Where(check => check.OrderId == order.OrderId).FirstOrDefault();
-                objShoppingHistoryModel.OrderDate = findDate.OrderDate;
+                var findDate = this.shoppingRepository.FindDateById(order);
+                objShoppingHistoryModel.OrderDate = findDate.Date;
 
-                var findElementById = this.context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
-                objShoppingHistoryModel.Image = findElementById.Image;
-                objShoppingHistoryModel.ItemBrand = findElementById.ItemBrand;
-                objShoppingHistoryModel.ItemName = findElementById.ItemName;
+                var findElementById = this.shoppingRepository.FindItemByIdForOrders(order);
+                objShoppingHistoryModel.Image = findElementById.ImageContent;
+                objShoppingHistoryModel.ItemBrand = findElementById.Brand;
+                objShoppingHistoryModel.ItemName = findElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
                 objShoppingHistoryModel.User = userName;
 

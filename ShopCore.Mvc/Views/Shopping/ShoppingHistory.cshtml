@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ShopCore.ViewModel.ShoppingHistoryModel>
+﻿@model IEnumerable<ShopCore.Services.ViewModel.ShoppingHistoryModel>
 
 @{
 
@@ -7,11 +7,12 @@
     List<int> listofordersIds = new List<int>();
     listofordersIds.Add(0);
     decimal TotalAmount = 0.00M;
+    var username = Context.User.Identity.Name;
 
 }
 @using (Html.BeginForm("ShoppingHistory", "Shopping", FormMethod.Post))
 {
-    <h2>Shopping history of @TempData["userName"].ToString()</h2>
+    <h2>Shopping history of @username</h2>
     <table class="table-condensed" style="width:100%;border:2px solid grey;background-color:white">
         @foreach (var item in Model)
         {
@@ -84,7 +85,7 @@
         }
         <tr style="border-top:2px solid blue">
             <td colspan="5" style="text-align: right">
-                <h3>Total Amount Of All @TempData["username"].ToString()'s Orders:</h3>
+                <h3>Total Amount Of All @username's Orders:</h3>
             </td>
             <td style="text-align: right">
                 <h3>@TotalAmount.ToString("#,##,00лв.")</h3>

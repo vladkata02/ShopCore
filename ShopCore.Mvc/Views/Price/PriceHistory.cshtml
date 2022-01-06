@@ -1,7 +1,8 @@
-﻿@model IEnumerable<ShopCore.ViewModel.PriceHistoryViewModel>
+﻿@model IEnumerable<ShopCore.Services.ViewModel.PriceHistoryViewModel>
 
 @{
     ViewBag.Title = "PriceHistory";
+    var username = Context.User.Identity.Name;
 }
 @using (Html.BeginForm("PriceHistory", "Price", FormMethod.Post))
 {

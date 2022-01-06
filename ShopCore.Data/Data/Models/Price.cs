@@ -1,4 +1,4 @@
-﻿namespace ShopCore.Models
+﻿namespace ShopCore.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -7,12 +7,12 @@
 
     public class Price
     {
-        public int PriceId { get; set; }
+        public int Id { get; set; }
 
         public string ItemId { get; set; }
 
-        public decimal PriceOfItem { get; set; }
+        public decimal PriceValue { get; set; }
 
-        public DateTime DateOfPrice { get; set; }
+        public DateTime Date { get; set; }
     }
 }

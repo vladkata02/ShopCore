@@ -1,4 +1,4 @@
-namespace ShopCore.Models
+namespace ShopCore.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -6,10 +6,10 @@ namespace ShopCore.Models
 
     public class Order
     {
-        public int OrderId { get; set; }
+        public int Id { get; set; }
 
-        public System.DateTime OrderDate { get; set; }
+        public System.DateTime Date { get; set; }
 
-        public string OrderNumber { get; set; }
+        public string Number { get; set; }
     }
 }

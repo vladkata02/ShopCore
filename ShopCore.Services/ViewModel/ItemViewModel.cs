@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using ShopCore.Data.Models;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
     public class ItemViewModel
     {
@@ -27,7 +25,5 @@ namespace ShopCore.ViewModel
         public byte[] Image { get; set; }
 
         public string ImageName { get; set; }
-
-        public IEnumerable<SelectListItem> CategorySelectListItem { get; set; }
     }
 }

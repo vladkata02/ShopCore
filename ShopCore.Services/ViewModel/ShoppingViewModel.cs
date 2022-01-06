@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web;
 
-namespace ShopCore.ViewModel
+namespace ShopCore.Services.ViewModel
 {
     public class ShoppingViewModel
     {
