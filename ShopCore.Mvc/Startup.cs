@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using ShopCore.Data;
 using ShopCore.Data.Context;
 using ShopCore.Data.Models;
-using ShopCore.Mvc.Repositories;
+using ShopCore.Services;
 using ShopCore.Services.Interfaces;
 using ShopCore.Services.Repositories;
 
@@ -40,10 +40,7 @@ namespace ShopCore
                     .AddCookie();
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
-            services.AddTransient<IItemRepository, ItemRepository>();
-            services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<IPriceRepository, PriceRepository>();
-            services.AddTransient<IShoppingRepository, ShoppingRepository>();
+            services.AddShopCoreServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
