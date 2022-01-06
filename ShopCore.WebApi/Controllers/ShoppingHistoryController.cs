@@ -5,18 +5,18 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using ShopCore.Data.Context;
+    using ShopCore.Services.Interfaces;
     using ShopCore.WebApi.ViewModel;
 
     [Route("api/ShoppingHistoryController")]
     [ApiController]
     public class ShoppingHistoryController : ControllerBase
     {
-        private readonly ShopDBContext context;
+        private IShoppingHistoryRepository shoppingHistoryRepository;
 
-        public ShoppingHistoryController(ShopDBContext context)
+        public ShoppingHistoryController(IShoppingHistoryRepository shoppingHistoryRepository)
         {
-            this.context = context;
+            this.shoppingHistoryRepository = shoppingHistoryRepository;
         }
 
         [HttpGet("{id}")]
@@ -25,21 +25,21 @@
             string userName = id.ToString();
             List<ShoppingHistoryModel> list = new List<ShoppingHistoryModel>();
 
-            foreach (var order in this.context.OrderDetails.Where(element => element.OrderAccMail == userName))
+            foreach (var order in this.shoppingHistoryRepository.FindAccOrders(userName))
             {
                 ShoppingHistoryModel objShoppingHistoryModel = new ShoppingHistoryModel();
-                objShoppingHistoryModel.OrderDetailId = order.OrderDetailId;
+                objShoppingHistoryModel.OrderDetailId = order.Id;
                 objShoppingHistoryModel.OrderNumber = order.OrderId;
                 objShoppingHistoryModel.ItemId = order.ItemId;
                 objShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objShoppingHistoryModel.Total = order.Total;
 
-                var findDate = this.context.Orders.Where(check => check.OrderId == order.OrderId).FirstOrDefault();
-                objShoppingHistoryModel.OrderDate = findDate.OrderDate;
+                var findDate = this.shoppingHistoryRepository.FindDateById(order);
+                objShoppingHistoryModel.OrderDate = findDate.Date;
 
-                var findElementById = this.context.Items.Where(check => check.ItemId.ToString() == order.ItemId).FirstOrDefault();
-                objShoppingHistoryModel.ItemBrand = findElementById.ItemBrand;
-                objShoppingHistoryModel.ItemName = findElementById.ItemName;
+                var findElementById = this.shoppingHistoryRepository.FindItemByIdForOrders(order);
+                objShoppingHistoryModel.ItemBrand = findElementById.Brand;
+                objShoppingHistoryModel.ItemName = findElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
                 objShoppingHistoryModel.User = userName;
 

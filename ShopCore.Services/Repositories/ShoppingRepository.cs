@@ -9,7 +9,7 @@ using ShopCore.Data.Models;
 using ShopCore.Services.Interfaces;
 using ShopCore.Services.ViewModel;
 
-namespace ShopCore.Mvc.Repositories
+namespace ShopCore.Services.Repositories
 {
     public class ShoppingRepository : IShoppingRepository
     {
