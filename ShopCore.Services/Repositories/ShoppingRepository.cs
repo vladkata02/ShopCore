@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ShopCore.Data.Context;
-using ShopCore.Data.Models;
-using ShopCore.Services.Interfaces;
-using ShopCore.Services.ViewModel;
-
-namespace ShopCore.Services.Repositories
+﻿namespace ShopCore.Services.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using ShopCore.Data.Context;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
+
     public class ShoppingRepository : IShoppingRepository
     {
         private ShopDBContext context;
