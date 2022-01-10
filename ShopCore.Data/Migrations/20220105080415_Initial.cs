@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace ShopCore.Data.Migrations
+﻿namespace ShopCore.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace ShopCore.Data.Migrations
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Account = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageContent = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    ImageContent = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace ShopCore.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace ShopCore.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageContent = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -70,7 +70,7 @@ namespace ShopCore.Data.Migrations
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Account = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Account = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace ShopCore.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -99,7 +99,7 @@ namespace ShopCore.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ItemId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PriceValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -114,7 +114,7 @@ namespace ShopCore.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {

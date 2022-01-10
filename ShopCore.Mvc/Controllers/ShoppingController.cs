@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using MailKit.Net.Smtp;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using MimeKit;
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Data.Models;
@@ -97,7 +99,7 @@
         }
 
         [HttpPost]
-        public IActionResult AddOrder()
+        public IActionResult AddOrder(string email)
         {
             string userName = this.HttpContext.User.Identity.Name;
             int orderId = 0;
@@ -122,12 +124,36 @@
                 this.shoppingRepository.AddOrderDetails(objOrderDetail);
             }
 
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            decimal totalPrice = 0;
+            foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
+            {
+                bodyBuilder.TextBody += "Item's id - " + item.ItemId.ToString()
+                                     + "| Unit Price - " + item.UnitPrice.ToString() + "лв"
+                                     + "| Quantity - " + item.Quantity.ToString()
+                                     + "| Total - " + item.Total.ToString() + "лв" + Environment.NewLine;
+                totalPrice += item.Total;
+            }
+
+            bodyBuilder.TextBody += "Final price - " + totalPrice.ToString();
+
+            var mail = new MimeMessage();
+            mail.From.Add(MailboxAddress.Parse("ShopCore@papercut.com"));
+            mail.To.Add(MailboxAddress.Parse(email));
+            mail.Subject = "Order " + orderId + " Receipt";
+            mail.Body = bodyBuilder.ToMessageBody();
+
+            using (var emailClient = new SmtpClient())
+            {
+                emailClient.Connect("127.0.0.1", 25);
+                emailClient.Send(mail);
+            }
+
             foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
                 this.shoppingRepository.RemoveItem(item);
             }
 
-            this.shoppingRepository.Save();
             return this.RedirectToAction("Index");
         }
 
