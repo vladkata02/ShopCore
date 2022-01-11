@@ -9,9 +9,9 @@
 
     public interface IPriceRepository
     {
-        Item CheckId(Guid itemId);
+        Item FindElementById(Guid itemId);
 
-        bool IfAnyCheckId(Guid itemId);
+        bool IfAnyPricesInDatabase(Guid itemId);
 
         Item CheckOriginalPrice(Guid itemId);
 
@@ -25,7 +25,7 @@
 
         void UpdatePrice(Item entity);
 
-        IEnumerable<Price> WhereId(Guid itemId);
+        IEnumerable<Price> FindPriceHistoryById(Guid itemId);
 
         Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
     }

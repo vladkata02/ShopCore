@@ -15,12 +15,12 @@
 
         public decimal Total { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] ImageContent { get; set; }
 
         public string ItemName { get; set; }
 
         public string ItemBrand { get; set; }
 
-        public string CartAcc { get; set; }
+        public string Account { get; set; }
     }
 }

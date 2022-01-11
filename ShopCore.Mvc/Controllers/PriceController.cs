@@ -24,23 +24,23 @@
         public IActionResult Index(Guid button)
         {
             Guid itemId = button;
-            var itemCheckId = this.priceRepository.CheckId(itemId);
+            var itemCheckId = this.priceRepository.FindElementById(itemId);
 
-            PriceEditorViewModel objItem = new PriceEditorViewModel();
-            objItem.ItemName = itemCheckId.Name;
-            objItem.Image = itemCheckId.ImageContent;
-            objItem.ItemPrice = itemCheckId.Price;
-            objItem.ItemBrand = itemCheckId.Brand;
-            objItem.ItemId = itemId;
+            PriceEditorViewModel objectItem = new PriceEditorViewModel();
+            objectItem.ItemName = itemCheckId.Name;
+            objectItem.ImageContent = itemCheckId.ImageContent;
+            objectItem.ItemPrice = itemCheckId.Price;
+            objectItem.ItemBrand = itemCheckId.Brand;
+            objectItem.ItemId = itemId;
 
-            return this.View(objItem);
+            return this.View(objectItem);
         }
 
         [HttpPost]
         public IActionResult ChangePrice(PriceEditorViewModel objItem, Guid button)
         {
             Guid itemId = button;
-            bool ifCheckId = this.priceRepository.IfAnyCheckId(itemId);
+            bool ifCheckId = this.priceRepository.IfAnyPricesInDatabase(itemId);
             if (ifCheckId == false)
             {
                 var originalPrice = this.priceRepository.CheckOriginalPrice(itemId);
@@ -75,15 +75,15 @@
             Guid itemId = button;
             List<PriceHistoryViewModel> list = new List<PriceHistoryViewModel>();
 
-            foreach (var order in this.priceRepository.WhereId(itemId))
+            foreach (var order in this.priceRepository.FindPriceHistoryById(itemId))
             {
                 PriceHistoryViewModel objPriceHistoryModel = new PriceHistoryViewModel();
                 objPriceHistoryModel.ItemId = order.ItemId;
                 objPriceHistoryModel.CurrentPrice = order.PriceValue;
-                objPriceHistoryModel.DateOfPrice = order.Date;
+                objPriceHistoryModel.Date = order.Date;
 
                 var findElementById = this.priceRepository.FindItemById(itemId, objPriceHistoryModel);
-                objPriceHistoryModel.Image = findElementById.ImageContent;
+                objPriceHistoryModel.ImageContent = findElementById.ImageContent;
                 objPriceHistoryModel.ItemBrand = findElementById.Brand;
                 objPriceHistoryModel.ItemName = findElementById.Name;
 

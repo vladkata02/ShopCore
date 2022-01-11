@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using ShopCore.Services.Interfaces;
-    using ShopCore.WebApi.ViewModel;
+    using ShopCore.Services.ViewModel;
 
     [Route("api/ShoppingHistoryController")]
     [ApiController]
@@ -41,7 +41,7 @@
                 objShoppingHistoryModel.ItemBrand = findElementById.Brand;
                 objShoppingHistoryModel.ItemName = findElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
-                objShoppingHistoryModel.User = userName;
+                objShoppingHistoryModel.Account = userName;
 
                 list.Add(objShoppingHistoryModel);
             }

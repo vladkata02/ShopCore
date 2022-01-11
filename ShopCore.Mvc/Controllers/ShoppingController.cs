@@ -8,14 +8,14 @@
     using MailKit.Net.Smtp;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using RazorEngine;
+    using RazorEngine.Templating;
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
     using SmtpClient = System.Net.Mail.SmtpClient;
-    using RazorEngine;
-    using RazorEngine.Templating;
 
     public class ShoppingController : Controller
     {
@@ -35,7 +35,7 @@
                                                                        select new ShoppingViewModel()
                                                                        {
                                                                            ItemName = objItem.Name,
-                                                                           Image = objItem.ImageContent,
+                                                                           ImageContent = objItem.ImageContent,
                                                                            Description = objItem.Description,
                                                                            ItemPrice = objItem.Price,
                                                                            ItemBrand = objItem.Brand,
@@ -90,11 +90,11 @@
                 objCart.Total = cart.Total;
 
                 var findElementById = this.shoppingRepository.FindElementById(cart);
-                objCart.Image = findElementById.ImageContent;
+                objCart.ImageContent = findElementById.ImageContent;
                 objCart.ItemBrand = findElementById.Brand;
                 objCart.ItemName = findElementById.Name;
                 objCart.Quantity = cart.Quantity;
-                objCart.CartAcc = userName;
+                objCart.Account = userName;
 
                 list.Add(objCart);
             }
@@ -107,41 +107,41 @@
         {
             string userName = this.HttpContext.User.Identity.Name;
             int orderId = 0;
-            Order orderObj = new Order()
+            Order orderObject = new Order()
             {
                 Date = DateTime.Now,
                 Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
             };
-            this.shoppingRepository.AddOrderTime(orderObj);
+            this.shoppingRepository.AddOrderTime(orderObject);
             this.shoppingRepository.Save();
-            orderId = orderObj.Id;
+            orderId = orderObject.Id;
 
             List<ShoppingCartModel> list = new List<ShoppingCartModel>();
 
             foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
-                OrderDetail objOrderDetail = new OrderDetail();
-                objOrderDetail.Total = item.Total;
-                objOrderDetail.ItemId = item.ItemId;
-                objOrderDetail.OrderId = orderId;
-                objOrderDetail.Quantity = item.Quantity;
-                objOrderDetail.UnitPrice = item.UnitPrice;
-                objOrderDetail.Account = userName;
+                OrderDetail objectOrderDetails = new OrderDetail();
+                objectOrderDetails.Total = item.Total;
+                objectOrderDetails.ItemId = item.ItemId;
+                objectOrderDetails.OrderId = orderId;
+                objectOrderDetails.Quantity = item.Quantity;
+                objectOrderDetails.UnitPrice = item.UnitPrice;
+                objectOrderDetails.Account = userName;
 
-                ShoppingCartModel objCart = new ShoppingCartModel();
-                objCart.ItemId = item.ItemId;
-                objCart.UnitPrice = item.UnitPrice;
-                objCart.Total = item.Total;
+                ShoppingCartModel objectCart = new ShoppingCartModel();
+                objectCart.ItemId = item.ItemId;
+                objectCart.UnitPrice = item.UnitPrice;
+                objectCart.Total = item.Total;
 
-                var findElementById = this.shoppingRepository.FindElementById(item);
-                objCart.Image = findElementById.ImageContent;
-                objCart.ItemBrand = findElementById.Brand;
-                objCart.ItemName = findElementById.Name;
-                objCart.Quantity = item.Quantity;
-                objCart.CartAcc = userName;
+                var currentElement = this.shoppingRepository.FindElementById(item);
+                objectCart.ImageContent = currentElement.ImageContent;
+                objectCart.ItemBrand = currentElement.Brand;
+                objectCart.ItemName = currentElement.Name;
+                objectCart.Quantity = item.Quantity;
+                objectCart.Account = userName;
 
-                list.Add(objCart);
-                this.shoppingRepository.AddOrderDetails(objOrderDetail);
+                list.Add(objectCart);
+                this.shoppingRepository.AddOrderDetails(objectOrderDetails);
             }
 
             string template = System.IO.File.ReadAllText("Views/EmailTemplates/Receipt.cshtml");
@@ -181,11 +181,11 @@
                 objShoppingHistoryModel.OrderDate = findDate.Date;
 
                 var findElementById = this.shoppingRepository.FindItemByIdForOrders(order);
-                objShoppingHistoryModel.Image = findElementById.ImageContent;
+                objShoppingHistoryModel.ImageContent = findElementById.ImageContent;
                 objShoppingHistoryModel.ItemBrand = findElementById.Brand;
                 objShoppingHistoryModel.ItemName = findElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
-                objShoppingHistoryModel.User = userName;
+                objShoppingHistoryModel.Account = userName;
 
                 list.Add(objShoppingHistoryModel);
             }
