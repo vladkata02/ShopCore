@@ -2,16 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Net.Mail;
     using MailKit.Net.Smtp;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-    using MimeKit;
     using ShopCore.Data;
     using ShopCore.Data.Context;
     using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
+    using SmtpClient = System.Net.Mail.SmtpClient;
+    using RazorEngine;
+    using RazorEngine.Templating;
 
     public class ShoppingController : Controller
     {
@@ -112,6 +116,8 @@
             this.shoppingRepository.Save();
             orderId = orderObj.Id;
 
+            List<ShoppingCartModel> list = new List<ShoppingCartModel>();
+
             foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
                 OrderDetail objOrderDetail = new OrderDetail();
@@ -121,39 +127,40 @@
                 objOrderDetail.Quantity = item.Quantity;
                 objOrderDetail.UnitPrice = item.UnitPrice;
                 objOrderDetail.Account = userName;
+
+                ShoppingCartModel objCart = new ShoppingCartModel();
+                objCart.ItemId = item.ItemId;
+                objCart.UnitPrice = item.UnitPrice;
+                objCart.Total = item.Total;
+
+                var findElementById = this.shoppingRepository.FindElementById(item);
+                objCart.Image = findElementById.ImageContent;
+                objCart.ItemBrand = findElementById.Brand;
+                objCart.ItemName = findElementById.Name;
+                objCart.Quantity = item.Quantity;
+                objCart.CartAcc = userName;
+
+                list.Add(objCart);
                 this.shoppingRepository.AddOrderDetails(objOrderDetail);
             }
 
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            decimal totalPrice = 0;
-            foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
-            {
-                bodyBuilder.TextBody += "Item's id - " + item.ItemId.ToString()
-                                     + "| Unit Price - " + item.UnitPrice.ToString() + "лв"
-                                     + "| Quantity - " + item.Quantity.ToString()
-                                     + "| Total - " + item.Total.ToString() + "лв" + Environment.NewLine;
-                totalPrice += item.Total;
-            }
+            string template = System.IO.File.ReadAllText("Views/EmailTemplates/Receipt.cshtml");
+            var result = Engine.Razor.RunCompile(template, DateTime.Now.TimeOfDay.ToString(), null, list);
 
-            bodyBuilder.TextBody += "Final price - " + totalPrice.ToString();
+            MailMessage mail = new MailMessage { Subject = "Order " + orderId + " Receipt", IsBodyHtml = true };
+            mail.Body = result;
+            mail.From = new MailAddress("ShopCore@papercut.com", "Admin");
+            mail.To.Add("ShopCore@papercut.com");
 
-            var mail = new MimeMessage();
-            mail.From.Add(MailboxAddress.Parse("ShopCore@papercut.com"));
-            mail.To.Add(MailboxAddress.Parse(email));
-            mail.Subject = "Order " + orderId + " Receipt";
-            mail.Body = bodyBuilder.ToMessageBody();
-
-            using (var emailClient = new SmtpClient())
-            {
-                emailClient.Connect("127.0.0.1", 25);
-                emailClient.Send(mail);
-            }
+            var smtpClient = new SmtpClient("127.0.0.1", 25);
+            smtpClient.Send(mail);
 
             foreach (var item in this.shoppingRepository.CheckWhichAccCartIs(userName))
             {
                 this.shoppingRepository.RemoveItem(item);
             }
 
+            this.shoppingRepository.Save();
             return this.RedirectToAction("Index");
         }
 

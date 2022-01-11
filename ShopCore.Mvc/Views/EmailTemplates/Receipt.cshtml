@@ -1,0 +1,40 @@
+﻿@{
+    decimal TotalAmount = 0.00M;
+}
+<table class="table-condensed" style="width:100%">
+    <h2>Receipt about your last order from our site ShopCore</h2>
+    @foreach (var item in Model)
+    {
+        TotalAmount += item.Total;
+        <tr>
+            <td>
+                @{
+                    string imageBase64 = Convert.ToBase64String(item.Image);
+                    string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                    <img src="@imageSrc" width="50" height="50" />
+                }
+            </td>
+            <td style="text-align: right">
+                @item.ItemName
+            </td>
+            <td style="text-align: right">
+                @item.Quantity.ToString("x#,##0")
+            </td>
+            <td style="text-align: right">
+                @item.UnitPrice.ToString("#,##,00лв.")
+            </td>
+            <td style="text-align: right">
+                @item.Total.ToString("#,##,00лв.")
+            </td>
+        </tr>
+    }
+    <tr style="border-top:2px solid blue">
+        <td colspan="4" style="text-align: right">
+            <h3>Total Amount:</h3>
+        </td>
+        <td style="text-align: right">
+            <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
+        </td>
+    </tr>
+   
+</table>

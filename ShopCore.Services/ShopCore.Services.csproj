@@ -22,8 +22,4 @@
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HtmlTemplates\" />
-  </ItemGroup>
-
 </Project>
