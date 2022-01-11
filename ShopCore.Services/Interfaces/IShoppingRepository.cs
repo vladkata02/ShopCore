@@ -13,11 +13,11 @@
 
         IEnumerable<Item> GetItems();
 
-        Item CheckId(string itemId);
+        Item FindItemById(string itemId);
 
-        Cart IfCheckId(string itemId, string userName);
+        Cart IfItemExistInCartById(string itemId, string userName);
 
-        void AddCartItem(Cart objShoppingCartModel);
+        void AddToCartItem(Cart objShoppingCartModel);
 
         Cart CheckIdForQuantity(string itemId, string userName);
 

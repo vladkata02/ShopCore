@@ -52,9 +52,9 @@
         {
             string userName = this.HttpContext.User.Identity.Name;
             Cart objShoppingCartModel = new Cart();
-            Item objItem = this.shoppingRepository.CheckId(itemId);
+            Item objItem = this.shoppingRepository.FindItemById(itemId);
 
-            var ifCheckId = this.shoppingRepository.IfCheckId(itemId, userName);
+            var ifCheckId = this.shoppingRepository.IfItemExistInCartById(itemId, userName);
             if (ifCheckId == null)
             {
                 objShoppingCartModel.Id = this.shoppingRepository.TableCount();
@@ -65,7 +65,7 @@
                 objShoppingCartModel.Total = objItem.Price;
                 objShoppingCartModel.Account = userName;
                 objShoppingCartModel.UnitPrice = objItem.Price;
-                this.shoppingRepository.AddCartItem(objShoppingCartModel);
+                this.shoppingRepository.AddToCartItem(objShoppingCartModel);
             }
             else
             {

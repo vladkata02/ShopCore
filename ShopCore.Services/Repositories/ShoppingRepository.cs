@@ -30,12 +30,12 @@
             return this.context.Items.ToList();
         }
 
-        public Item CheckId(string itemId)
+        public Item FindItemById(string itemId)
         {
             return this.context.Items.Single(model => model.Id.ToString() == itemId);
         }
 
-        public Cart IfCheckId(string itemId, string userName)
+        public Cart IfItemExistInCartById(string itemId, string userName)
         {
             return this.context.Carts.SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
         }
@@ -45,7 +45,7 @@
             return this.context.Carts.Count() + 1;
         }
 
-        public void AddCartItem(Cart objShoppingCartModel)
+        public void AddToCartItem(Cart objShoppingCartModel)
         {
             this.context.Carts.Add(objShoppingCartModel);
         }
