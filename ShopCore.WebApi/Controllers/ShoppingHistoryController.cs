@@ -23,7 +23,7 @@
         public List<ShoppingHistoryModel> Get(string id)
         {
             string userName = id.ToString();
-            List<ShoppingHistoryModel> list = new List<ShoppingHistoryModel>();
+            List<ShoppingHistoryModel> listOfShoppingHistory = new List<ShoppingHistoryModel>();
 
             foreach (var order in this.shoppingHistoryRepository.FindAccOrders(userName))
             {
@@ -34,19 +34,19 @@
                 objShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objShoppingHistoryModel.Total = order.Total;
 
-                var findDate = this.shoppingHistoryRepository.FindDateById(order);
-                objShoppingHistoryModel.OrderDate = findDate.Date;
+                var foundDate = this.shoppingHistoryRepository.FindDateById(order);
+                objShoppingHistoryModel.OrderDate = foundDate.Date;
 
-                var findElementById = this.shoppingHistoryRepository.FindItemByIdForOrders(order);
-                objShoppingHistoryModel.ItemBrand = findElementById.Brand;
-                objShoppingHistoryModel.ItemName = findElementById.Name;
+                var foundElementById = this.shoppingHistoryRepository.FindItemByIdForOrders(order);
+                objShoppingHistoryModel.ItemBrand = foundElementById.Brand;
+                objShoppingHistoryModel.ItemName = foundElementById.Name;
                 objShoppingHistoryModel.Quantity = order.Quantity;
                 objShoppingHistoryModel.Account = userName;
 
-                list.Add(objShoppingHistoryModel);
+                listOfShoppingHistory.Add(objShoppingHistoryModel);
             }
 
-            return list;
+            return listOfShoppingHistory;
         }
     }
 }

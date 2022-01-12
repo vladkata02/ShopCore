@@ -15,56 +15,59 @@
     }
     else
     {
-<h2>@username's Shopping Cart</h2>
-<table class="table-condensed" style="width:100%">
+        <h2>@username's Shopping Cart</h2>
+        <table class="table-condensed" style="width:100%">
 
-    @foreach (var item in Model)
-    {
-        TotalAmount += item.Total;
-        <tr>
-            <td>
-                @{
-                    string imageBase64 = Convert.ToBase64String(item.ImageContent);
-                    string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
-                    <img src="@imageSrc" width="50" height="50" />
-                }
-            </td>
-            <td style="text-align: right">
-                @item.ItemName
-            </td>
-            <td style="text-align: right">
-                @item.Quantity.ToString("x#,##0")
-            </td>
-            <td style="text-align: right">
-                @item.UnitPrice.ToString("#,##,00лв.")
-            </td>
-            <td style="text-align: right">
-                @item.Total.ToString("#,##,00лв.")
-            </td>
-        </tr>
-    }
-    <tr style="border-top:2px solid blue">
-        <td colspan="4" style="text-align: right">
-            <h3>Total Amount:</h3>
-        </td>
-        <td style="text-align: right">
-            <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
-        </td>
-    </tr>
-    <tr style=" text-align: right">
-        <td colspan="5">
-            <input type="submit" value="Send request" name="Save" class="btn btn-primary" />
-        </td>
-    </tr>
-    <tr style=" text-align: center">
-        <td colspan="5">
-            @Html.ActionLink("Back to Catalog", "Index", "Shopping")
-        </td>
-        <td colspan="5">
-            @Html.ActionLink("History", "ShoppingHistory", "Shopping")
-        </td>
+            @foreach (var item in Model)
+            {
+                TotalAmount += item.Total;
+                <tr>
+                    <td>
+                        @{
+                            string imageBase64 = Convert.ToBase64String(item.ImageContent);
+                            string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                            <img src="@imageSrc" width="50" height="50" />
+                        }
+                    </td>
+                    <td style="text-align: right">
+                        @item.ItemName
+                    </td>
+                    <td style="text-align: right">
+                        @item.Quantity.ToString("x#,##0")
+                    </td>
+                    <td style="text-align: right">
+                        @item.UnitPrice.ToString("#,##,00лв.")
+                    </td>
+                    <td style="text-align: right">
+                        @item.Total.ToString("#,##,00лв.")
+                    </td>
+                </tr>
+            }
+            <tr style="border-top:2px solid blue">
+                <td colspan="4" style="text-align: right">
+                    <h3>Total Amount:</h3>
+                </td>
+                <td style="text-align: right">
+                    <h3>@TotalAmount.ToString("#,##,00лв.")</h3>
+                </td>
+            </tr>
+            <tr style=" text-align: right">
+                <td colspan="5">
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                </td>
+                <td colspan="5">
+                    <input type="submit" value="Send request" name="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+            <tr style=" text-align: center">
+                <td colspan="5">
+                    @Html.ActionLink("Back to Catalog", "Index", "Shopping")
+                </td>
+                <td colspan="5">
+                    @Html.ActionLink("History", "ShoppingHistory", "Shopping")
+                </td>
 
-    </tr>
-</table>
+            </tr>
+        </table>
     }
 }

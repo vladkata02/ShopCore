@@ -18,6 +18,7 @@ namespace ShopCore
     using ShopCore.Services;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
+    using ShopCore.Services.Settings;
 
     public class Startup
     {
@@ -41,6 +42,8 @@ namespace ShopCore
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
             services.AddShopCoreServices();
+            services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

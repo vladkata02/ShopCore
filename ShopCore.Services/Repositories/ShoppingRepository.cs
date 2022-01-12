@@ -50,12 +50,12 @@
             this.context.Carts.Add(objShoppingCartModel);
         }
 
-        public Cart CheckIdForQuantity(string itemId, string userName)
+        public Cart FindItemQuantityById(string itemId, string userName)
         {
             return this.context.Carts.Single(model => model.ItemId == itemId && model.Account == userName);
         }
 
-        public IEnumerable<Cart> CheckWhichAccCartIs(string userName)
+        public IEnumerable<Cart> FindWhichAccoutCartIs(string userName)
         {
             return this.context.Carts.Where(element => element.Account == userName);
         }

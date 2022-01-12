@@ -19,9 +19,9 @@
 
         void AddToCartItem(Cart objShoppingCartModel);
 
-        Cart CheckIdForQuantity(string itemId, string userName);
+        Cart FindItemQuantityById(string itemId, string userName);
 
-        IEnumerable<Cart> CheckWhichAccCartIs(string userName);
+        IEnumerable<Cart> FindWhichAccoutCartIs(string userName);
 
         Item FindElementById(Cart cart);
 
