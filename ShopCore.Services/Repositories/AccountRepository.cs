@@ -21,6 +21,12 @@
 
         public User LoginCheck(LoginViewModel model)
         {
+            // TODO Форматирай си заявките, за да бъдат лесни за четене:
+            /*
+             *this.context.Users
+             *  .Where(usr => usr.Username == model.UserName && usr.Password == model.Password)
+             *  .SingleOrDefault();
+             */
             return this.context.Users.Where(usr => usr.Username == model.UserName && usr.Password == model.Password).SingleOrDefault();
         }
 

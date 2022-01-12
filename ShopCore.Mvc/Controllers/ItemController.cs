@@ -32,10 +32,14 @@
         [HttpPost]
         public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
+            // TODO подобна функционалност е удобно да бъде изнесена в отделни статични методи,
+            // Това можеш да направиш в нов проект ShopCore.Utilities и да си го ползваш директно
+            // var newFileName = ShopCore.Utilities.File.GetFileName(files.FileName)
             var fileName = Path.GetFileName(files.FileName);
             var fileExtension = Path.GetExtension(fileName);
             var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
+            // EF класовете нямат място в контролера
             Item objectItem = new Item();
             objectItem.ImageName = newFileName;
             objectItem.CategoryId = objectItemViewModel.CategoryId;

@@ -19,6 +19,8 @@
     using ShopCore.Services.ViewModel;
     using SmtpClient = System.Net.Mail.SmtpClient;
 
+    // TODO Всички методи трябва да се оправят, прекалено са дълги прекалено сложни,
+    // именоването трябва да се оправи както на променливите така и на методите в репото, заради което кода трудно се чете
     public class ShoppingController : Controller
     {
         private readonly MailSettings mailSettings;
@@ -32,6 +34,7 @@
 
         public IActionResult Index()
         {
+            // TODO Тази заявка не трявба да бъде тук
             IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objectItem in this.shoppingRepository.GetItems()
                                                                        join
                                                                            objectCategory in this.shoppingRepository.GetCategories()
@@ -51,6 +54,7 @@
             return this.View(listOfShoppingViewModels);
         }
 
+        // TODO този метод ипозлва ли се? нали има ShopCore.WebApi?
         [HttpPost]
         public JsonResult Index(string itemId)
         {
