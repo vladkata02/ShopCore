@@ -30,29 +30,33 @@
         }
 
         [HttpPost]
-        public IActionResult Index(ItemViewModel objItemViewModel, IFormFile files)
+        public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
+            // TODO подобна функционалност е удобно да бъде изнесена в отделни статични методи,
+            // Това можеш да направиш в нов проект ShopCore.Utilities и да си го ползваш директно
+            // var newFileName = ShopCore.Utilities.File.GetFileName(files.FileName)
             var fileName = Path.GetFileName(files.FileName);
             var fileExtension = Path.GetExtension(fileName);
             var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
-            Item objItem = new Item();
-            objItem.ImageName = newFileName;
-            objItem.CategoryId = objItemViewModel.CategoryId;
-            objItem.Description = objItemViewModel.Description;
-            objItem.Code = objItemViewModel.ItemCode;
-            objItem.Id = Guid.NewGuid();
-            objItem.Name = objItemViewModel.ItemName;
-            objItem.Brand = objItemViewModel.ItemBrand;
-            objItem.Price = objItemViewModel.ItemPrice;
+            // EF класовете нямат място в контролера
+            Item objectItem = new Item();
+            objectItem.ImageName = newFileName;
+            objectItem.CategoryId = objectItemViewModel.CategoryId;
+            objectItem.Description = objectItemViewModel.Description;
+            objectItem.Code = objectItemViewModel.Code;
+            objectItem.Id = Guid.NewGuid();
+            objectItem.Name = objectItemViewModel.Name;
+            objectItem.Brand = objectItemViewModel.Brand;
+            objectItem.Price = objectItemViewModel.Price;
 
             using (var target = new MemoryStream())
             {
                 files.CopyTo(target);
-                objItem.ImageContent = target.ToArray();
+                objectItem.ImageContent = target.ToArray();
             }
 
-            this.itemRepository.AddItem(objItem);
+            this.itemRepository.AddItem(objectItem);
             this.itemRepository.Save();
 
             return this.RedirectToAction("Index");

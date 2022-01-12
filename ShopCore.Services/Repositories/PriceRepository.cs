@@ -20,12 +20,12 @@
             this.context = context;
         }
 
-        public Item CheckId(Guid itemId)
+        public Item FindElementById(Guid itemId)
         {
             return this.context.Items.SingleOrDefault(model => model.Id == itemId);
         }
 
-        public bool IfAnyCheckId(Guid itemId)
+        public bool IfAnyPricesInDatabase(Guid itemId)
         {
             return this.context.Prices.Any(model => model.ItemId == itemId.ToString());
         }
@@ -50,7 +50,7 @@
             this.context.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<Price> WhereId(Guid itemId)
+        public IEnumerable<Price> FindPriceHistoryById(Guid itemId)
         {
             return this.context.Prices.Where(element => element.ItemId == itemId.ToString());
         }

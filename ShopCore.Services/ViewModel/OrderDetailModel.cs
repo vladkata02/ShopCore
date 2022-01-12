@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ShopCore.Services.ViewModel
+﻿namespace ShopCore.Services.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
     public class OrderDetailModel
     {
-        public int OrderDetailId { get; set; }
+        public int Id { get; set; }
 
         public int OrderId { get; set; }
 
@@ -19,6 +19,6 @@ namespace ShopCore.Services.ViewModel
 
         public decimal Total { get; set; }
 
-        public string OrderAccMail { get; set; }
+        public string Account { get; set; }
     }
 }

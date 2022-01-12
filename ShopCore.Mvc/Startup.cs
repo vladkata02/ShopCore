@@ -1,24 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using ShopCore.Data;
-using ShopCore.Data.Context;
-using ShopCore.Data.Models;
-using ShopCore.Services;
-using ShopCore.Services.Interfaces;
-using ShopCore.Services.Repositories;
-
 namespace ShopCore
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.HttpsPolicy;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using ShopCore.Data;
+    using ShopCore.Data.Context;
+    using ShopCore.Data.Models;
+    using ShopCore.Services;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.Repositories;
+    using ShopCore.Services.Settings;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -41,6 +42,8 @@ namespace ShopCore
             services.AddDbContext<ShopDBContext>(options =>
             options.UseSqlServer("DefaultConnectionString"));
             services.AddShopCoreServices();
+            services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

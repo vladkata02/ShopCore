@@ -9,6 +9,7 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
 
+    // TODO Прието е имената на такива класове да бъдат ShopCoreServicesHelper или ShopCoreServicesExtensions
     public static class ShopCoreServicesCollection
     {
     public static IServiceCollection AddShopCoreServices(this IServiceCollection services)
