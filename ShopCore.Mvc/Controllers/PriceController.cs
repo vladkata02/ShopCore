@@ -40,8 +40,8 @@
         public IActionResult ChangePrice(PriceEditorViewModel objectItem, Guid button)
         {
             Guid itemId = button;
-            bool ifAnyPricesExist = this.priceRepository.IfAnyPricesInDatabase(itemId);
-            if (ifAnyPricesExist == false)
+            bool hasAnyPrice = this.priceRepository.IfAnyPricesInDatabase(itemId);
+            if (!hasAnyPrice)
             {
                 var originalPrice = this.priceRepository.CheckOriginalPrice(itemId);
                 Price objectFirstPrice = new Price();
@@ -75,7 +75,7 @@
             Guid itemId = button;
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
 
-            foreach (var order in this.priceRepository.FindPriceHistoryById(itemId))
+            foreach (var order in this.priceRepository.GetPriceHistoryById(itemId))
             {
                 PriceHistoryViewModel objectPriceHistoryModel = new PriceHistoryViewModel();
                 objectPriceHistoryModel.ItemId = order.ItemId;

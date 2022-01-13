@@ -25,7 +25,7 @@
 
         void UpdatePrice(Item entity);
 
-        IEnumerable<Price> FindPriceHistoryById(Guid itemId);
+        IEnumerable<Price> GetPriceHistoryById(Guid itemId);
 
         Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
     }

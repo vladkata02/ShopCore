@@ -55,7 +55,7 @@
                 .Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<Price> FindPriceHistoryById(Guid itemId)
+        public IEnumerable<Price> GetPriceHistoryById(Guid itemId)
         {
             return this.context.Prices
                 .Where(element => element.ItemId == itemId

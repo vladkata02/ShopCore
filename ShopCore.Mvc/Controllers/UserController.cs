@@ -12,11 +12,11 @@
 
     public class UserController : Controller
     {
-        private IUserRepository accountRepository;
+        private IUserRepository userRepository;
 
-        public UserController(IUserRepository accountRepository)
+        public UserController(IUserRepository userRepository)
         {
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
         }
 
         public IActionResult Register()
@@ -34,8 +34,8 @@
                 user.Password = model.Password;
                 user.Roles = "Manager,Admin";
 
-                this.accountRepository.AddAccount(user);
-                this.accountRepository.Save();
+                this.userRepository.Add(user);
+                this.userRepository.Save();
 
                 this.TempData["message"] = "User created successfully!";
             }
@@ -53,7 +53,7 @@
         {
             bool isUservalid = false;
 
-            User user = this.accountRepository.LoginCheck(model);
+            User user = this.userRepository.LoginCheck(model);
 
             if (user != null)
             {

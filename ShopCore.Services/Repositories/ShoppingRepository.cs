@@ -58,7 +58,7 @@
                 .Single(model => model.ItemId == itemId && model.Account == userName);
         }
 
-        public IEnumerable<Cart> FindWhichAccoutCartIs(string userName)
+        public IEnumerable<Cart> GetWhichAccoutCartIs(string userName)
         {
             return this.context.Carts
                 .Where(element => element.Account == userName);

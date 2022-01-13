@@ -86,7 +86,7 @@
         {
             string userName = this.HttpContext.User.Identity.Name;
             List<ShoppingCartModel> list = new List<ShoppingCartModel>();
-            foreach (var cart in this.shoppingRepository.FindWhichAccoutCartIs(userName))
+            foreach (var cart in this.shoppingRepository.GetWhichAccoutCartIs(userName))
             {
                 ShoppingCartModel objCart = new ShoppingCartModel();
                 objCart.ItemId = cart.ItemId;
@@ -121,7 +121,7 @@
 
             List<ShoppingCartModel> receiptForMail = new List<ShoppingCartModel>();
 
-            foreach (var item in this.shoppingRepository.FindWhichAccoutCartIs(userName))
+            foreach (var item in this.shoppingRepository.GetWhichAccoutCartIs(userName))
             {
                 OrderDetail objectOrderDetails = new OrderDetail();
                 objectOrderDetails.Total = item.Total;
@@ -158,7 +158,7 @@
             var smtpClient = new SmtpClient(this.mailSettings.SmtpServer, this.mailSettings.Port);
             smtpClient.Send(mail);
 
-            foreach (var item in this.shoppingRepository.FindWhichAccoutCartIs(userName))
+            foreach (var item in this.shoppingRepository.GetWhichAccoutCartIs(userName))
             {
                 this.shoppingRepository.RemoveItem(item);
             }
