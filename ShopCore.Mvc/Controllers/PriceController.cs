@@ -21,9 +21,9 @@
         }
 
         [HttpPost]
-        public IActionResult Index(Guid button)
+        public IActionResult Index(Guid buttonPassingId)
         {
-            Guid itemId = button;
+            Guid itemId = buttonPassingId;
             var elementWithData = this.priceRepository.FindElementById(itemId);
 
             PriceEditorViewModel objectItem = new PriceEditorViewModel();
@@ -37,9 +37,9 @@
         }
 
         [HttpPost]
-        public IActionResult ChangePrice(PriceEditorViewModel objectItem, Guid button)
+        public IActionResult ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId)
         {
-            Guid itemId = button;
+            Guid itemId = buttonPassingId;
             bool hasAnyPrice = this.priceRepository.IfAnyPricesInDatabase(itemId);
             if (!hasAnyPrice)
             {
@@ -67,12 +67,12 @@
             this.priceRepository.AddChangedPrice(objectPrice);
             this.priceRepository.Save();
 
-            return this.RedirectToAction("PriceHistory", new { button });
+            return this.RedirectToAction("PriceHistory", new { buttonPassingId });
         }
 
-        public IActionResult PriceHistory(Guid button)
+        public IActionResult PriceHistory(Guid buttonPassingId)
         {
-            Guid itemId = button;
+            Guid itemId = buttonPassingId;
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
 
             foreach (var order in this.priceRepository.GetPriceHistoryById(itemId))

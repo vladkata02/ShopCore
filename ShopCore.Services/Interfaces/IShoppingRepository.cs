@@ -9,9 +9,7 @@
 
     public interface IShoppingRepository
     {
-        IEnumerable<Category> GetCategories();
-
-        IEnumerable<Item> GetItems();
+        IEnumerable<ShoppingViewModel> GetItems();
 
         Item FindItemById(string itemId);
 

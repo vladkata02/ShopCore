@@ -32,22 +32,7 @@
 
         public IActionResult Index()
         {
-            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objectItem in this.shoppingRepository.GetItems()
-                                                                       join
-                                                                           objectCategory in this.shoppingRepository.GetCategories()
-                                                                           on objectItem.CategoryId equals objectCategory.Id
-                                                                       select new ShoppingViewModel()
-                                                                       {
-                                                                           ItemName = objectItem.Name,
-                                                                           ImageContent = objectItem.ImageContent,
-                                                                           Description = objectItem.Description,
-                                                                           ItemPrice = objectItem.Price,
-                                                                           ItemBrand = objectItem.Brand,
-                                                                           ItemId = objectItem.Id,
-                                                                           Category = objectCategory.Name,
-                                                                           ItemCode = objectItem.Code,
-                                                                       })
-                                                                        .ToList();
+            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = this.shoppingRepository.GetItems();
             return this.View(listOfShoppingViewModels);
         }
 

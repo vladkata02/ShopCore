@@ -20,14 +20,23 @@
             this.context = context;
         }
 
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<ShoppingViewModel> GetItems()
         {
-            return this.context.Categories.ToList();
-        }
-
-        public IEnumerable<Item> GetItems()
-        {
-            return this.context.Items.ToList();
+            return (from objectItem in this.context.Items
+                    join
+                    objectCategory in this.context.Categories
+            on objectItem.CategoryId equals objectCategory.Id
+                    select new ShoppingViewModel()
+                    {
+                        ItemName = objectItem.Name,
+                        ImageContent = objectItem.ImageContent,
+                        Description = objectItem.Description,
+                        ItemPrice = objectItem.Price,
+                        ItemBrand = objectItem.Brand,
+                        ItemId = objectItem.Id,
+                        Category = objectCategory.Name,
+                        ItemCode = objectItem.Code,
+                    }).ToList();
         }
 
         public Item FindItemById(string itemId)

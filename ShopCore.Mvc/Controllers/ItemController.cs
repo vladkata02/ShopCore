@@ -32,9 +32,7 @@
         [HttpPost]
         public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
-            var fileName = Path.GetFileName(files.FileName);
-            var fileExtension = Path.GetExtension(fileName);
-            var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+            var newFileName = Utilities.FileName.GetFileName(files);
 
             Item objectItem = new Item();
             objectItem.ImageName = newFileName;
