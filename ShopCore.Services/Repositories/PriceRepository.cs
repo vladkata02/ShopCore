@@ -20,19 +20,23 @@
             this.context = context;
         }
 
-        public Item CheckId(Guid itemId)
+        public Item FindElementById(Guid itemId)
         {
-            return this.context.Items.SingleOrDefault(model => model.Id == itemId);
+            return this.context.Items
+                .SingleOrDefault(model => model.Id == itemId);
         }
 
-        public bool IfAnyCheckId(Guid itemId)
+        public bool IfAnyPricesInDatabase(Guid itemId)
         {
-            return this.context.Prices.Any(model => model.ItemId == itemId.ToString());
+            return this.context.Prices
+                .Any(model => model.ItemId == itemId
+                .ToString());
         }
 
         public Item CheckOriginalPrice(Guid itemId)
         {
-            return this.context.Items.FirstOrDefault(item => item.Id == itemId);
+            return this.context.Items
+                .FirstOrDefault(item => item.Id == itemId);
         }
 
         public int TableCount()
@@ -47,17 +51,22 @@
 
         public void UpdatePrice(Item entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
+            this.context
+                .Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<Price> WhereId(Guid itemId)
+        public IEnumerable<Price> FindPriceHistoryById(Guid itemId)
         {
-            return this.context.Prices.Where(element => element.ItemId == itemId.ToString());
+            return this.context.Prices
+                .Where(element => element.ItemId == itemId
+                .ToString());
         }
 
         public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
         {
-            return this.context.Items.Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
+            return this.context.Items
+                .Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId)
+                .FirstOrDefault();
         }
 
         public void AddChangedPrice(Price objPrice)

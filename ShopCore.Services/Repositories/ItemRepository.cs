@@ -20,7 +20,9 @@
 
         public List<Category> GetCategories()
         {
-            return this.context.Categories.Select(x => new Category { Id = x.Id, Name = x.Name }).ToList();
+            return this.context.Categories
+                .Select(x => new Category { Id = x.Id, Name = x.Name })
+                .ToList();
         }
 
         public void AddItem(Item objItem)

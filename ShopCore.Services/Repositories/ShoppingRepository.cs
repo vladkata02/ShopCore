@@ -30,14 +30,16 @@
             return this.context.Items.ToList();
         }
 
-        public Item CheckId(string itemId)
+        public Item FindItemById(string itemId)
         {
-            return this.context.Items.Single(model => model.Id.ToString() == itemId);
+            return this.context.Items
+                .Single(model => model.Id.ToString() == itemId);
         }
 
-        public Cart IfCheckId(string itemId, string userName)
+        public Cart IfItemExistInCartById(string itemId, string userName)
         {
-            return this.context.Carts.SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
+            return this.context.Carts
+                .SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
         }
 
         public int TableCount()
@@ -45,39 +47,47 @@
             return this.context.Carts.Count() + 1;
         }
 
-        public void AddCartItem(Cart objShoppingCartModel)
+        public void AddToCartItem(Cart objShoppingCartModel)
         {
             this.context.Carts.Add(objShoppingCartModel);
         }
 
-        public Cart CheckIdForQuantity(string itemId, string userName)
+        public Cart FindItemQuantityById(string itemId, string userName)
         {
-            return this.context.Carts.Single(model => model.ItemId == itemId && model.Account == userName);
+            return this.context.Carts
+                .Single(model => model.ItemId == itemId && model.Account == userName);
         }
 
-        public IEnumerable<Cart> CheckWhichAccCartIs(string userName)
+        public IEnumerable<Cart> FindWhichAccoutCartIs(string userName)
         {
-            return this.context.Carts.Where(element => element.Account == userName);
+            return this.context.Carts
+                .Where(element => element.Account == userName);
         }
 
         public Item FindElementById(Cart cart)
         {
-            return this.context.Items.Where(check => check.Id.ToString() == cart.ItemId).FirstOrDefault();
+            return this.context.Items
+                .Where(check => check.Id.ToString() == cart.ItemId)
+                .FirstOrDefault();
         }
 
         public void UpdatePrice(Item entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
+            this.context
+                .Entry(entity).State = EntityState.Modified;
         }
 
         public IEnumerable<Price> WhereId(Guid itemId)
         {
-            return this.context.Prices.Where(element => element.ItemId == itemId.ToString());
+            return this.context.Prices
+                .Where(element => element.ItemId == itemId.ToString());
         }
 
         public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
         {
-            return this.context.Items.Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId).FirstOrDefault();
+            return this.context.Items
+                .Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId)
+                .FirstOrDefault();
         }
 
         public void AddOrderTime(Order orderObj)
@@ -92,17 +102,22 @@
 
         public IEnumerable<OrderDetail> FindAccOrders(string userName)
         {
-            return this.context.OrderDetails.Where(element => element.Account == userName);
+            return this.context.OrderDetails
+                .Where(element => element.Account == userName);
         }
 
         public Order FindDateById(OrderDetail order)
         {
-            return this.context.Orders.Where(check => check.Id == order.OrderId).FirstOrDefault();
+            return this.context.Orders
+                .Where(check => check.Id == order.OrderId)
+                .FirstOrDefault();
         }
 
         public Item FindItemByIdForOrders(OrderDetail order)
         {
-            return this.context.Items.Where(check => check.Id.ToString() == order.ItemId).FirstOrDefault();
+            return this.context.Items
+                .Where(check => check.Id.ToString() == order.ItemId)
+                .FirstOrDefault();
         }
 
         public void RemoveItem(Cart item)

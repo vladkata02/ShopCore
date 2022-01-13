@@ -10,11 +10,11 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class AccountController : Controller
+    public class UserController : Controller
     {
-        private IAccountRepository accountRepository;
+        private IUserRepository accountRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+        public UserController(IUserRepository accountRepository)
         {
             this.accountRepository = accountRepository;
         }

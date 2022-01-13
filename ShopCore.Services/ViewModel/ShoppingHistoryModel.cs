@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ShopCore.Services.ViewModel
+﻿namespace ShopCore.Services.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
     public class ShoppingHistoryModel
     {
         public int OrderDetailId { get; set; }
@@ -17,7 +17,7 @@ namespace ShopCore.Services.ViewModel
 
         public decimal Total { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] ImageContent { get; set; }
 
         public string ItemBrand { get; set; }
 
@@ -27,6 +27,6 @@ namespace ShopCore.Services.ViewModel
 
         public int OrderNumber { get; set; }
 
-        public string User { get; set; }
+        public string Account { get; set; }
     }
 }

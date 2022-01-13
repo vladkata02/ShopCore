@@ -7,9 +7,9 @@
     using ShopCore.Data.Models;
     using ShopCore.Services.ViewModel;
 
-    public interface IAccountRepository
+    public interface IUserRepository
     {
-        void AddAccount(User user);
+        void Add(User user);
 
         void Save();
 

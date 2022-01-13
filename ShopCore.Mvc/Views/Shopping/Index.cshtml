@@ -70,7 +70,7 @@
                 <div>
                     <div class="col-md-12">
                         @{
-                            string imageBase64 = Convert.ToBase64String(item.Image);
+                            string imageBase64 = Convert.ToBase64String(item.ImageContent);
                             string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
                         <img src="@imageSrc" width="210" height="160" />
                          }
