@@ -17,6 +17,7 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Settings;
     using ShopCore.Services.ViewModel;
+    using static ShopCore.Services.Settings.MailSettings;
     using SmtpClient = System.Net.Mail.SmtpClient;
 
     public class ShoppingController : Controller
@@ -132,8 +133,9 @@
                 this.shoppingRepository.AddOrderDetails(objectOrderDetails);
             }
 
-            string templatePath = System.IO.File.ReadAllText(this.mailSettings.TemplatePath);
-            var renderedTemplate = Engine.Razor.RunCompile(templatePath, DateTime.Now.TimeOfDay.ToString(), null, receiptForMail);
+            TemplateType template = TemplateType.Receipt;
+            string templateContent = System.IO.File.ReadAllText(MailSettings.GetFilePath(template));
+            var renderedTemplate = Engine.Razor.RunCompile(templateContent, DateTime.Now.TimeOfDay.ToString(), null, receiptForMail);
 
             MailMessage mail = new MailMessage { Subject = "Order " + orderId + " Receipt", IsBodyHtml = true };
             mail.Body = renderedTemplate;
