@@ -10,11 +10,11 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class UserRepository : IUserRepository
+    public class AccountRepository : IAccountRepository
     {
         private ShopDBContext context;
 
-        public UserRepository(ShopDBContext context)
+        public AccountRepository(ShopDBContext context)
         {
             this.context = context;
         }

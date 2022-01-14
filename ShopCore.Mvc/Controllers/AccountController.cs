@@ -10,13 +10,13 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class UserController : Controller
+    public class AccountController : Controller
     {
-        private IUserRepository userRepository;
+        private IAccountRepository accountRepository;
 
-        public UserController(IUserRepository userRepository)
+        public AccountController(IAccountRepository accountRepository)
         {
-            this.userRepository = userRepository;
+            this.accountRepository = accountRepository;
         }
 
         public IActionResult Register()
@@ -34,8 +34,8 @@
                 user.Password = model.Password;
                 user.Roles = "Manager,Admin";
 
-                this.userRepository.Add(user);
-                this.userRepository.Save();
+                this.accountRepository.Add(user);
+                this.accountRepository.Save();
 
                 this.TempData["message"] = "User created successfully!";
             }
@@ -53,7 +53,7 @@
         {
             bool isUservalid = false;
 
-            User user = this.userRepository.LoginCheck(model);
+            User user = this.accountRepository.LoginCheck(model);
 
             if (user != null)
             {
