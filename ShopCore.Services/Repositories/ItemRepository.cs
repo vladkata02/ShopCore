@@ -21,10 +21,10 @@
             this.context = context;
         }
 
-        public List<Category> GetCategories()
+        public List<CategoryViewModel> GetCategories()
         {
             return this.context.Categories
-                .Select(x => new Category { Id = x.Id, Name = x.Name })
+                .Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name })
                 .ToList();
         }
 

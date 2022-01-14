@@ -23,7 +23,7 @@
 
         public IActionResult Index()
         {
-            List<Category> categoryList = this.itemRepository.GetCategories();
+            List<CategoryViewModel> categoryList = this.itemRepository.GetCategories();
             this.ViewBag.CategoriesList = categoryList;
 
             return this.View();

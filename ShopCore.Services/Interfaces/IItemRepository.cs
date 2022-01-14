@@ -10,7 +10,7 @@
 
     public interface IItemRepository
     {
-        List<Category> GetCategories();
+        List<CategoryViewModel> GetCategories();
 
         void AddItem(ItemViewModel objectItemViewModel, string newFileName, IFormFile files);
 
