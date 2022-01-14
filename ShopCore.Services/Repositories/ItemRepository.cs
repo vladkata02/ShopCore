@@ -2,12 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
     using ShopCore.Data.Context;
     using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
 
     public class ItemRepository : IItemRepository
     {
@@ -25,9 +28,25 @@
                 .ToList();
         }
 
-        public void AddItem(Item objItem)
+        public void AddItem(ItemViewModel objectItemViewModel, string newFileName, IFormFile files)
         {
-            this.context.Items.Add(objItem);
+            Item objectItem = new Item();
+            objectItem.ImageName = newFileName;
+            objectItem.CategoryId = objectItemViewModel.CategoryId;
+            objectItem.Description = objectItemViewModel.Description;
+            objectItem.Code = objectItemViewModel.Code;
+            objectItem.Id = Guid.NewGuid();
+            objectItem.Name = objectItemViewModel.Name;
+            objectItem.Brand = objectItemViewModel.Brand;
+            objectItem.Price = objectItemViewModel.Price;
+
+            using (var target = new MemoryStream())
+            {
+                files.CopyTo(target);
+                objectItem.ImageContent = target.ToArray();
+            }
+
+            this.context.Items.Add(objectItem);
         }
 
         public void Save()
