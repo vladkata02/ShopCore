@@ -5,9 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
-    using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
@@ -23,72 +20,20 @@
         [HttpPost]
         public IActionResult Index(Guid buttonPassingId)
         {
-            Guid itemId = buttonPassingId;
-            var elementWithData = this.priceRepository.FindElementById(itemId);
+            PriceEditorViewModel objectPriceEditor = this.priceRepository.GetPriceEditor(buttonPassingId);
 
-            PriceEditorViewModel objectItem = new PriceEditorViewModel();
-            objectItem.ItemName = elementWithData.Name;
-            objectItem.ImageContent = elementWithData.ImageContent;
-            objectItem.ItemPrice = elementWithData.Price;
-            objectItem.ItemBrand = elementWithData.Brand;
-            objectItem.ItemId = itemId;
-
-            return this.View(objectItem);
+            return this.View(objectPriceEditor);
         }
 
-        [HttpPost]
-        public IActionResult ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId)
+        public IActionResult PriceHistory(PriceEditorViewModel objectItem, Guid buttonPassingId)
         {
-            Guid itemId = buttonPassingId;
-            bool hasAnyPrice = this.priceRepository.IfAnyPricesInDatabase(itemId);
-            if (!hasAnyPrice)
+            if (objectItem.CurrentPrice != 0)
             {
-                var originalPrice = this.priceRepository.CheckOriginalPrice(itemId);
-                Price objectFirstPrice = new Price();
-                objectFirstPrice.Id = this.priceRepository.TableCount();
-                objectFirstPrice.ItemId = itemId.ToString();
-                objectFirstPrice.PriceValue = originalPrice.Price;
-                objectFirstPrice.Date = DateTime.Now;
-
-                this.priceRepository.AddFirstPrice(objectFirstPrice);
-                this.priceRepository.Save();
+                this.priceRepository.ChangePrice(objectItem, buttonPassingId);
             }
 
-            Price objectPrice = new Price();
-            objectPrice.Id = this.priceRepository.TableCount();
-            objectPrice.ItemId = itemId.ToString();
-            objectPrice.PriceValue = objectItem.CurrentPrice;
-            objectPrice.Date = DateTime.Now;
-
-            var entityWithOriginalPrice = this.priceRepository.CheckOriginalPrice(itemId);
-            entityWithOriginalPrice.Price = objectItem.CurrentPrice;
-
-            this.priceRepository.UpdatePrice(entityWithOriginalPrice);
-            this.priceRepository.AddChangedPrice(objectPrice);
-            this.priceRepository.Save();
-
-            return this.RedirectToAction("PriceHistory", new { buttonPassingId });
-        }
-
-        public IActionResult PriceHistory(Guid buttonPassingId)
-        {
-            Guid itemId = buttonPassingId;
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
-
-            foreach (var order in this.priceRepository.GetPriceHistoryById(itemId))
-            {
-                PriceHistoryViewModel objectPriceHistoryModel = new PriceHistoryViewModel();
-                objectPriceHistoryModel.ItemId = order.ItemId;
-                objectPriceHistoryModel.CurrentPrice = order.PriceValue;
-                objectPriceHistoryModel.Date = order.Date;
-
-                var findElementById = this.priceRepository.FindItemById(itemId, objectPriceHistoryModel);
-                objectPriceHistoryModel.ImageContent = findElementById.ImageContent;
-                objectPriceHistoryModel.ItemBrand = findElementById.Brand;
-                objectPriceHistoryModel.ItemName = findElementById.Name;
-
-                listOfItemsHistory.Add(objectPriceHistoryModel);
-            }
+            listOfItemsHistory = this.priceRepository.GetPriceHistory(listOfItemsHistory, buttonPassingId);
 
             return this.View(listOfItemsHistory);
         }

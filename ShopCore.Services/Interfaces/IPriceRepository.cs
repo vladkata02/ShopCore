@@ -11,22 +11,26 @@
     {
         Item FindElementById(Guid itemId);
 
+        public PriceEditorViewModel GetPriceEditor(Guid buttonPassingId);
+
         bool IfAnyPricesInDatabase(Guid itemId);
 
-        Item CheckOriginalPrice(Guid itemId);
-
-        void Save();
+        Item FindOriginalPrice(Guid itemId);
 
         int TableCount();
 
-        void AddFirstPrice(Price objFirstPrice);
+        void AddFirstPrice(Guid itemId);
 
-        void AddChangedPrice(Price objPrice);
+        void AddChangedPrice(Guid itemId, PriceEditorViewModel objectItem);
 
-        void UpdatePrice(Item entity);
+        void UpdatePrice(Guid buttonPassingId, PriceEditorViewModel objectItem);
 
         IEnumerable<Price> GetPriceHistoryById(Guid itemId);
 
         Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
+
+        public void ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId);
+
+        public List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid buttonPassingId);
     }
 }

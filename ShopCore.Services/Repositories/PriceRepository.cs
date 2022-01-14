@@ -26,6 +26,19 @@
                 .SingleOrDefault(model => model.Id == itemId);
         }
 
+        public PriceEditorViewModel GetPriceEditor(Guid buttonPassingId)
+        {
+            var elementWithData = this.FindElementById(buttonPassingId);
+            PriceEditorViewModel objectPriceEditor = new PriceEditorViewModel();
+            objectPriceEditor.ItemName = elementWithData.Name;
+            objectPriceEditor.ImageContent = elementWithData.ImageContent;
+            objectPriceEditor.ItemPrice = elementWithData.Price;
+            objectPriceEditor.ItemBrand = elementWithData.Brand;
+            objectPriceEditor.ItemId = buttonPassingId;
+
+            return objectPriceEditor;
+        }
+
         public bool IfAnyPricesInDatabase(Guid itemId)
         {
             return this.context.Prices
@@ -33,7 +46,7 @@
                 .ToString());
         }
 
-        public Item CheckOriginalPrice(Guid itemId)
+        public Item FindOriginalPrice(Guid itemId)
         {
             return this.context.Items
                 .FirstOrDefault(item => item.Id == itemId);
@@ -44,15 +57,21 @@
             return this.context.Prices.Count() + 1;
         }
 
-        public void AddFirstPrice(Price objFirstPrice)
+        public void AddFirstPrice(Guid itemId)
         {
-            this.context.Prices.Add(objFirstPrice);
+            Price objectFirstPrice = new Price();
+            objectFirstPrice.Id = this.TableCount();
+            objectFirstPrice.ItemId = itemId.ToString();
+            objectFirstPrice.PriceValue = this.FindOriginalPrice(itemId).Price;
+            objectFirstPrice.Date = DateTime.Now;
+            this.context.Prices.Add(objectFirstPrice);
         }
 
-        public void UpdatePrice(Item entity)
+        public void UpdatePrice(Guid buttonPassingId, PriceEditorViewModel objectItem)
         {
-            this.context
-                .Entry(entity).State = EntityState.Modified;
+            Item entity = this.FindOriginalPrice(buttonPassingId);
+            entity.Price = objectItem.CurrentPrice;
+            this.context.Entry(entity).State = EntityState.Modified;
         }
 
         public IEnumerable<Price> GetPriceHistoryById(Guid itemId)
@@ -69,14 +88,48 @@
                 .FirstOrDefault();
         }
 
-        public void AddChangedPrice(Price objPrice)
+        public void AddChangedPrice(Guid buttonPassingId, PriceEditorViewModel objectItem)
         {
-            this.context.Prices.Add(objPrice);
+            Price objectPrice = new Price();
+            objectPrice.Id = this.TableCount();
+            objectPrice.ItemId = buttonPassingId.ToString();
+            objectPrice.PriceValue = objectItem.CurrentPrice;
+            objectPrice.Date = DateTime.Now;
+            this.context.Prices.Add(objectPrice);
         }
 
-        public void Save()
+        public void ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId)
         {
+            bool hasAnyPrice = this.IfAnyPricesInDatabase(buttonPassingId);
+            if (!hasAnyPrice)
+            {
+                this.AddFirstPrice(buttonPassingId);
+                this.context.SaveChanges();
+            }
+
+            this.UpdatePrice(buttonPassingId, objectItem);
+            this.AddChangedPrice(buttonPassingId, objectItem);
             this.context.SaveChanges();
+        }
+
+        public List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid buttonPassingId)
+        {
+            foreach (var order in this.GetPriceHistoryById(buttonPassingId))
+            {
+                PriceHistoryViewModel objectPriceHistoryModel = new PriceHistoryViewModel();
+                objectPriceHistoryModel.ItemId = order.ItemId;
+                objectPriceHistoryModel.CurrentPrice = order.PriceValue;
+                objectPriceHistoryModel.Date = order.Date;
+
+                var findElementById = this.FindItemById(buttonPassingId, objectPriceHistoryModel);
+                objectPriceHistoryModel.ImageContent = findElementById.ImageContent;
+                objectPriceHistoryModel.ItemBrand = findElementById.Brand;
+                objectPriceHistoryModel.ItemName = findElementById.Name;
+
+                listOfItemsHistory.Add(objectPriceHistoryModel);
+            }
+
+            return listOfItemsHistory;
         }
     }
 }
