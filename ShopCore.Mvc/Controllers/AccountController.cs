@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
-    using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
@@ -29,12 +28,7 @@
         {
             if (this.ModelState.IsValid)
             {
-                User user = new User();
-                user.Username = model.UserName;
-                user.Password = model.Password;
-                user.Roles = "Manager,Admin";
-
-                this.accountRepository.Add(user);
+                this.accountRepository.Add(model);
                 this.accountRepository.Save();
 
                 this.TempData["message"] = "User created successfully!";
@@ -53,7 +47,7 @@
         {
             bool isUservalid = false;
 
-            User user = this.accountRepository.LoginCheck(model);
+            UserViewModel user = this.accountRepository.LoginCheck(model);
 
             if (user != null)
             {

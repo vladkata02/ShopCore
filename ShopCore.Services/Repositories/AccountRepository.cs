@@ -10,6 +10,7 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
+
     public class AccountRepository : IAccountRepository
     {
         private ShopDBContext context;
@@ -19,15 +20,26 @@
             this.context = context;
         }
 
-        public User LoginCheck(LoginViewModel model)
+        public UserViewModel LoginCheck(LoginViewModel model)
         {
-            return this.context.Users
+            var entityUser = this.context.Users
                 .Where(usr => usr.Username == model.UserName && usr.Password == model.Password)
                 .SingleOrDefault();
+            UserViewModel user = new UserViewModel();
+            user.Id = entityUser.Id;
+            user.Username = entityUser.Username;
+            user.Password = entityUser.Password;
+            user.Roles = entityUser.Roles;
+
+            return user;
         }
 
-        public void Add(User user)
+        public void Add(RegisterViewModel model)
         {
+            User user = new User();
+            user.Username = model.UserName;
+            user.Password = model.Password;
+            user.Roles = "Manager,Admin";
             this.context.Users.Add(user);
         }
 
