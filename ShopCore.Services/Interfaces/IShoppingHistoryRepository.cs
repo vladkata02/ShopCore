@@ -15,6 +15,6 @@
 
         IEnumerable<OrderDetail> FindAccOrders(string userName);
 
-        List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory);
+        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory);
     }
 }

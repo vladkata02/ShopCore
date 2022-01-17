@@ -228,11 +228,11 @@
             }
         }
 
-        public List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory)
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory)
         {
             foreach (var order in this.FindAccOrders(userName))
             {
-                ShoppingHistoryModel objectShoppingHistoryModel = new ShoppingHistoryModel();
+                ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel();
                 objectShoppingHistoryModel.OrderDetailId = order.Id;
                 objectShoppingHistoryModel.OrderNumber = order.OrderId;
                 objectShoppingHistoryModel.ItemId = order.ItemId;

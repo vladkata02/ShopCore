@@ -43,7 +43,7 @@
 
         void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail);
 
-        public List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory);
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory);
 
         void Save();
     }

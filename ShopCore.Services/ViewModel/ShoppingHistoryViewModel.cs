@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Web;
 
-    public class ShoppingHistoryModel
+    public class ShoppingHistoryViewModel
     {
         public int OrderDetailId { get; set; }
 

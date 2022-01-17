@@ -86,7 +86,7 @@
         public IActionResult ShoppingHistory()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            List<ShoppingHistoryModel> listOfShoppingHistory = new List<ShoppingHistoryModel>();
+            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
             listOfShoppingHistory = this.shoppingRepository.GetShoppingHistory(userName, listOfShoppingHistory);
 
             return this.View(listOfShoppingHistory);

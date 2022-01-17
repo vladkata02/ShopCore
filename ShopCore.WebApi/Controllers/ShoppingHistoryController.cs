@@ -20,10 +20,10 @@
         }
 
         [HttpGet("{id}")]
-        public List<ShoppingHistoryModel> Get(string id)
+        public List<ShoppingHistoryViewModel> Get(string id)
         {
             string userName = id.ToString();
-            List<ShoppingHistoryModel> listOfShoppingHistory = new List<ShoppingHistoryModel>();
+            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
             listOfShoppingHistory = this.shoppingHistoryRepository.GetShoppingHistory(userName, listOfShoppingHistory);
 
             return listOfShoppingHistory;
