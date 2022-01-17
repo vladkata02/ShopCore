@@ -39,6 +39,61 @@
                     }).ToList();
         }
 
+        public void AddItemToCart(string itemId, string userName)
+        {
+            Cart objectShoppingCart = new Cart();
+            Item objectItem = this.FindItemById(itemId);
+
+            var ifAnyItemExistId = this.IfItemExistInCartById(itemId, userName);
+            if (ifAnyItemExistId == null)
+            {
+                objectShoppingCart.Id = this.TableCount();
+                objectShoppingCart.ItemId = itemId;
+                objectShoppingCart.ImageContent = objectItem.ImageContent;
+                objectShoppingCart.ItemName = objectItem.Name;
+                objectShoppingCart.Quantity = 1;
+                objectShoppingCart.Total = objectItem.Price;
+                objectShoppingCart.Account = userName;
+                objectShoppingCart.UnitPrice = objectItem.Price;
+                this.AddToCartItem(objectShoppingCart);
+            }
+            else
+            {
+                var foundItem = this.FindItemQuantityById(itemId, userName);
+                foundItem.Quantity++;
+                foundItem.Total = foundItem.Quantity * foundItem.UnitPrice;
+            }
+        }
+
+        public void DisplayShoppingCart(List<ShoppingCartViewModel> list, string userName)
+        {
+            foreach (var cart in this.GetWhichAccoutCartIs(userName))
+            {
+                ShoppingCartViewModel objCart = new ShoppingCartViewModel();
+                objCart.ItemId = cart.ItemId;
+                objCart.UnitPrice = cart.UnitPrice;
+                objCart.Total = cart.Total;
+
+                var findElementById = this.FindElementById(cart);
+                objCart.ImageContent = findElementById.ImageContent;
+                objCart.ItemBrand = findElementById.Brand;
+                objCart.ItemName = findElementById.Name;
+                objCart.Quantity = cart.Quantity;
+                objCart.Account = userName;
+
+                list.Add(objCart);
+            }
+        }
+
+        public void AddOrderDate()
+        {
+            Order objectOrder = new Order()
+            {
+                Date = DateTime.Now,
+                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
+            };
+        }
+
         public Item FindItemById(string itemId)
         {
             return this.context.Items
@@ -99,9 +154,45 @@
                 .FirstOrDefault();
         }
 
-        public void AddOrderTime(Order orderObj)
+        public int AddOrderTime()
         {
-            this.context.Orders.Add(orderObj);
+            Order objectOrder = new Order()
+            {
+                Date = DateTime.Now,
+                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
+            };
+            this.context.Orders.Add(objectOrder);
+            this.context.SaveChanges();
+            return objectOrder.Id;
+        }
+
+        public void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail)
+        {
+            foreach (var item in this.GetWhichAccoutCartIs(userName))
+            {
+                OrderDetail objectOrderDetails = new OrderDetail();
+                objectOrderDetails.Total = item.Total;
+                objectOrderDetails.ItemId = item.ItemId;
+                objectOrderDetails.OrderId = orderId;
+                objectOrderDetails.Quantity = item.Quantity;
+                objectOrderDetails.UnitPrice = item.UnitPrice;
+                objectOrderDetails.Account = userName;
+
+                ShoppingCartViewModel objectCartForMail = new ShoppingCartViewModel();
+                objectCartForMail.ItemId = item.ItemId;
+                objectCartForMail.UnitPrice = item.UnitPrice;
+                objectCartForMail.Total = item.Total;
+
+                var currentElement = this.FindElementById(item);
+                objectCartForMail.ImageContent = currentElement.ImageContent;
+                objectCartForMail.ItemBrand = currentElement.Brand;
+                objectCartForMail.ItemName = currentElement.Name;
+                objectCartForMail.Quantity = item.Quantity;
+                objectCartForMail.Account = userName;
+
+                receiptForMail.Add(objectCartForMail);
+                this.AddOrderDetails(objectOrderDetails);
+            }
         }
 
         public void AddOrderDetails(OrderDetail objOrderDetail)
@@ -129,9 +220,42 @@
                 .FirstOrDefault();
         }
 
-        public void RemoveItem(Cart item)
+        public void ClearCart(string userName)
         {
-            this.context.Carts.Remove(item);
+            foreach (var item in this.GetWhichAccoutCartIs(userName))
+            {
+                this.context.Carts.Remove(item);
+            }
+        }
+
+        public List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory)
+        {
+            foreach (var order in this.FindAccOrders(userName))
+            {
+                ShoppingHistoryModel objectShoppingHistoryModel = new ShoppingHistoryModel();
+                objectShoppingHistoryModel.OrderDetailId = order.Id;
+                objectShoppingHistoryModel.OrderNumber = order.OrderId;
+                objectShoppingHistoryModel.ItemId = order.ItemId;
+                objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
+                objectShoppingHistoryModel.Total = order.Total;
+
+                var foundDate = this.context.Orders
+                .Where(check => check.Id == order.OrderId)
+                .FirstOrDefault();
+
+                objectShoppingHistoryModel.OrderDate = foundDate.Date;
+
+                var findElementById = this.FindItemByIdForOrders(order);
+                objectShoppingHistoryModel.ImageContent = findElementById.ImageContent;
+                objectShoppingHistoryModel.ItemBrand = findElementById.Brand;
+                objectShoppingHistoryModel.ItemName = findElementById.Name;
+                objectShoppingHistoryModel.Quantity = order.Quantity;
+                objectShoppingHistoryModel.Account = userName;
+
+                listOfShoppingHistory.Add(objectShoppingHistoryModel);
+            }
+
+            return listOfShoppingHistory;
         }
 
         public void Save()

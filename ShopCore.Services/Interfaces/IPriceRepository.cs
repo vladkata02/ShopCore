@@ -11,7 +11,7 @@
     {
         Item FindElementById(Guid itemId);
 
-        public PriceEditorViewModel GetPriceEditor(Guid buttonPassingId);
+        PriceEditorViewModel GetPriceEditor(Guid buttonPassingId);
 
         bool IfAnyPricesInDatabase(Guid itemId);
 
@@ -29,8 +29,8 @@
 
         Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
 
-        public void ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId);
+        void ChangePrice(PriceEditorViewModel objectItem, Guid buttonPassingId);
 
-        public List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid buttonPassingId);
+        List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid buttonPassingId);
     }
 }

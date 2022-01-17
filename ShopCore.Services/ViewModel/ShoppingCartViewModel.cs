@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Web;
 
-    public class ShoppingCartModel
+    public class ShoppingCartViewModel
     {
         public string ItemId { get; set; }
 
