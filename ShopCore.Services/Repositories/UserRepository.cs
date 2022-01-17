@@ -20,7 +20,7 @@
             this.context = context;
         }
 
-        public UserViewModel LoginCheck(LoginViewModel model)
+        public UserViewModel LoginVerification(LoginViewModel model)
         {
             var entityUser = this.context.Users
                 .Where(usr => usr.Username == model.UserName && usr.Password == model.Password)

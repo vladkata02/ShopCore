@@ -47,7 +47,7 @@
         {
             bool isUservalid = false;
 
-            UserViewModel user = this.userRepository.LoginCheck(model);
+            UserViewModel user = this.userRepository.LoginVerification(model);
 
             if (user != null)
             {
@@ -76,7 +76,7 @@
 
                 this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
 
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("Index", "Shopping");
             }
             else
             {

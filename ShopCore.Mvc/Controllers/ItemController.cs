@@ -32,7 +32,7 @@
         public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
             string newFileName = Utilities.File.GetFileFullName(files);
-            this.itemRepository.AddItem(objectItemViewModel, newFileName, files);
+            this.itemRepository.Add(objectItemViewModel, newFileName, files);
             this.itemRepository.Save();
 
             return this.RedirectToAction("Index");

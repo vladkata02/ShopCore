@@ -14,5 +14,7 @@
         Item FindItemByIdForOrders(OrderDetail order);
 
         IEnumerable<OrderDetail> FindAccOrders(string userName);
+
+        List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory);
     }
 }

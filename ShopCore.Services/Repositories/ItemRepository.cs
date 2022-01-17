@@ -28,7 +28,7 @@
                 .ToList();
         }
 
-        public void AddItem(ItemViewModel objectItemViewModel, string newFileName, IFormFile files)
+        public void Add(ItemViewModel objectItemViewModel, string newFileName, IFormFile files)
         {
             Item objectItem = new Item();
             objectItem.ImageName = newFileName;

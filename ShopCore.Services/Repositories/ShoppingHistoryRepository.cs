@@ -39,5 +39,32 @@
                 .Where(check => check.Id.ToString() == order.ItemId)
                 .FirstOrDefault();
         }
+
+        public List<ShoppingHistoryModel> GetShoppingHistory(string userName, List<ShoppingHistoryModel> listOfShoppingHistory)
+        {
+            foreach (var order in this.FindAccOrders(userName))
+            {
+                ShoppingHistoryModel objectShoppingHistoryModel = new ShoppingHistoryModel();
+                objectShoppingHistoryModel.OrderDetailId = order.Id;
+                objectShoppingHistoryModel.OrderNumber = order.OrderId;
+                objectShoppingHistoryModel.ItemId = order.ItemId;
+                objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
+                objectShoppingHistoryModel.Total = order.Total;
+
+                var foundDate = this.FindDateById(order);
+
+                objectShoppingHistoryModel.OrderDate = foundDate.Date;
+
+                var findElementById = this.FindItemByIdForOrders(order);
+                objectShoppingHistoryModel.ItemBrand = findElementById.Brand;
+                objectShoppingHistoryModel.ItemName = findElementById.Name;
+                objectShoppingHistoryModel.Quantity = order.Quantity;
+                objectShoppingHistoryModel.Account = userName;
+
+                listOfShoppingHistory.Add(objectShoppingHistoryModel);
+            }
+
+            return listOfShoppingHistory;
+        }
     }
 }

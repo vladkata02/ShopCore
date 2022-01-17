@@ -24,27 +24,7 @@
         {
             string userName = id.ToString();
             List<ShoppingHistoryModel> listOfShoppingHistory = new List<ShoppingHistoryModel>();
-
-            foreach (var order in this.shoppingHistoryRepository.FindAccOrders(userName))
-            {
-                ShoppingHistoryModel objShoppingHistoryModel = new ShoppingHistoryModel();
-                objShoppingHistoryModel.OrderDetailId = order.Id;
-                objShoppingHistoryModel.OrderNumber = order.OrderId;
-                objShoppingHistoryModel.ItemId = order.ItemId;
-                objShoppingHistoryModel.UnitPrice = order.UnitPrice;
-                objShoppingHistoryModel.Total = order.Total;
-
-                var foundDate = this.shoppingHistoryRepository.FindDateById(order);
-                objShoppingHistoryModel.OrderDate = foundDate.Date;
-
-                var foundElementById = this.shoppingHistoryRepository.FindItemByIdForOrders(order);
-                objShoppingHistoryModel.ItemBrand = foundElementById.Brand;
-                objShoppingHistoryModel.ItemName = foundElementById.Name;
-                objShoppingHistoryModel.Quantity = order.Quantity;
-                objShoppingHistoryModel.Account = userName;
-
-                listOfShoppingHistory.Add(objShoppingHistoryModel);
-            }
+            listOfShoppingHistory = this.shoppingHistoryRepository.GetShoppingHistory(userName, listOfShoppingHistory);
 
             return listOfShoppingHistory;
         }

@@ -239,9 +239,7 @@
                 objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objectShoppingHistoryModel.Total = order.Total;
 
-                var foundDate = this.context.Orders
-                .Where(check => check.Id == order.OrderId)
-                .FirstOrDefault();
+                var foundDate = this.FindDateById(order);
 
                 objectShoppingHistoryModel.OrderDate = foundDate.Date;
 

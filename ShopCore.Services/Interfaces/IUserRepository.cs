@@ -13,6 +13,6 @@
 
         void Save();
 
-        UserViewModel LoginCheck(LoginViewModel model);
+        UserViewModel LoginVerification(LoginViewModel model);
     }
 }

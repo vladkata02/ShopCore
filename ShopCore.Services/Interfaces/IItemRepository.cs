@@ -12,7 +12,7 @@
     {
         List<CategoryViewModel> GetCategories();
 
-        void AddItem(ItemViewModel objectItemViewModel, string newFileName, IFormFile files);
+        void Add(ItemViewModel objectItemViewModel, string newFileName, IFormFile files);
 
         void Save();
     }
