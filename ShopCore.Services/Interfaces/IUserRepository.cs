@@ -7,7 +7,7 @@
     using ShopCore.Data.Models;
     using ShopCore.Services.ViewModel;
 
-    public interface IAccountRepository
+    public interface IUserRepository
     {
         void Add(RegisterViewModel model);
 

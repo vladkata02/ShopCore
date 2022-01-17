@@ -14,7 +14,7 @@
     public static IServiceCollection AddShopCoreServices(this IServiceCollection services)
     {
             services.AddScoped<IItemRepository, ItemRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPriceRepository, PriceRepository>();
             services.AddScoped<IShoppingRepository, ShoppingRepository>();
             services.AddScoped<IShoppingHistoryRepository, ShoppingHistoryRepository>();

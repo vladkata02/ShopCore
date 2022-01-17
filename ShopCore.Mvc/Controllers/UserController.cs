@@ -9,13 +9,13 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class AccountController : Controller
+    public class UserController : Controller
     {
-        private IAccountRepository accountRepository;
+        private IUserRepository userRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+        public UserController(IUserRepository userRepository)
         {
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
         }
 
         public IActionResult Register()
@@ -28,8 +28,8 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.accountRepository.Add(model);
-                this.accountRepository.Save();
+                this.userRepository.Add(model);
+                this.userRepository.Save();
 
                 this.TempData["message"] = "User created successfully!";
             }
@@ -47,7 +47,7 @@
         {
             bool isUservalid = false;
 
-            UserViewModel user = this.accountRepository.LoginCheck(model);
+            UserViewModel user = this.userRepository.LoginCheck(model);
 
             if (user != null)
             {
@@ -91,7 +91,7 @@
         {
             this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return this.RedirectToAction("Login", "Account");
+            return this.RedirectToAction("Login", "User");
         }
     }
 }
