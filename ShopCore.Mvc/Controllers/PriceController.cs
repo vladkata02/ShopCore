@@ -11,10 +11,12 @@
     public class PriceController : Controller
     {
         private IPriceRepository priceRepository;
+        private IUnitOfWork unitOfWork;
 
-        public PriceController(IPriceRepository priceRepository)
+        public PriceController(IPriceRepository priceRepository, IUnitOfWork unitOfWork)
         {
             this.priceRepository = priceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -29,7 +31,16 @@
         {
             if (priceEditor.CurrentPrice != 0)
             {
-                this.priceRepository.ChangePrice(priceEditor, itemGuid);
+                bool hasAnyPrice = this.priceRepository.IfAnyPricesInDatabase(itemGuid);
+                if (!hasAnyPrice)
+                {
+                    this.priceRepository.AddFirstPrice(itemGuid);
+                    this.unitOfWork.SaveChanges();
+                }
+
+                this.priceRepository.UpdatePrice(itemGuid, priceEditor);
+                this.priceRepository.AddChangedPrice(itemGuid, priceEditor);
+                this.unitOfWork.SaveChanges();
             }
 
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();

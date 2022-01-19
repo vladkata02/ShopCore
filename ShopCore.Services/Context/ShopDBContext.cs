@@ -1,4 +1,4 @@
-﻿namespace ShopCore.Data.Context
+﻿namespace ShopCore.Services.Context
     {
     using System.IO;
     using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@
     using Microsoft.Extensions.Configuration;
     using ShopCore.Data.Models;
 
-    public class ShopDBContext : DbContext
+    internal class ShopDBContext : DbContext
         {
         public ShopDBContext(DbContextOptions<ShopDBContext> options)
                 : base(options)

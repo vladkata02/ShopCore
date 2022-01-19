@@ -7,12 +7,12 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class ItemRepository : IItemRepository
+    internal class ItemRepository : IItemRepository
     {
         private ShopDBContext context;
 
@@ -47,11 +47,6 @@
             }
 
             this.context.Items.Add(objectItem);
-        }
-
-        public void Save()
-        {
-            this.context.SaveChanges();
         }
     }
 }

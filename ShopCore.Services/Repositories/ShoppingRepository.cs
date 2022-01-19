@@ -6,12 +6,12 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class ShoppingRepository : IShoppingRepository
+    internal class ShoppingRepository : IShoppingRepository
     {
         private ShopDBContext context;
 
@@ -145,7 +145,7 @@
                 objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
                 objectShoppingHistoryModel.Total = order.Total;
 
-                var foundDate = this.FindDateById(order);
+                var foundDate = this.FindOrderDateById(order);
 
                 objectShoppingHistoryModel.OrderDate = foundDate.Date;
 
@@ -160,6 +160,13 @@
             }
 
             return listOfShoppingHistory;
+        }
+
+        private Order FindOrderDateById(OrderDetail order)
+        {
+            return this.context.Orders
+                .Where(check => check.Id == order.OrderId)
+                .FirstOrDefault();
         }
 
         private Item FindItemById(string itemId)
@@ -200,7 +207,7 @@
         {
             return this.context.Items
                 .Where(check => check.Id.ToString() == cart.ItemId)
-                .FirstOrDefault(); 
+                .FirstOrDefault();
         }
 
         private void AddOrderDetails(OrderDetail objOrderDetail)
@@ -214,23 +221,11 @@
                 .Where(element => element.Account == userName);
         }
 
-        private Order FindDateById(OrderDetail order)
-        {
-            return this.context.Orders
-                .Where(check => check.Id == order.OrderId)
-                .FirstOrDefault();
-        }
-
         private Item FindItemByIdForOrders(OrderDetail order)
         {
             return this.context.Items
                 .Where(check => check.Id.ToString() == order.ItemId)
                 .FirstOrDefault();
-        }
-
-        public void Save()
-        {
-            this.context.SaveChanges();
         }
     }
 }

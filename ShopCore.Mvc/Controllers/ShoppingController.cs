@@ -21,11 +21,13 @@
     {
         private readonly MailSettings mailSettings;
         private IShoppingRepository shoppingRepository;
+        private IUnitOfWork unitOfWork;
 
-        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings)
+        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings, IUnitOfWork unitOfWork)
         {
             this.shoppingRepository = shoppingRepository;
             this.mailSettings = mailSettings.Value;
+            this.unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -40,7 +42,7 @@
         {
             string userName = this.HttpContext.User.Identity.Name;
             this.shoppingRepository.AddItemToCart(itemId, userName);
-            this.shoppingRepository.Save();
+            this.unitOfWork.SaveChanges();
 
             return this.Json(new { Success = true });
         }
@@ -59,7 +61,7 @@
         {
             string userName = this.HttpContext.User.Identity.Name;
             int orderId = this.shoppingRepository.AddOrderTime();
-            this.shoppingRepository.Save();
+            this.unitOfWork.SaveChanges();
 
             List<ShoppingCartViewModel> receiptForMail = new List<ShoppingCartViewModel>();
 
@@ -79,7 +81,7 @@
 
             this.shoppingRepository.ClearCart(userName);
 
-            this.shoppingRepository.Save();
+            this.unitOfWork.SaveChanges();
             return this.RedirectToAction("Index");
         }
 

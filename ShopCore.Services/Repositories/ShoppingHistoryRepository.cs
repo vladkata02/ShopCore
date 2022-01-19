@@ -6,12 +6,12 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class ShoppingHistoryRepository : IShoppingHistoryRepository
+    internal class ShoppingHistoryRepository : IShoppingHistoryRepository
     {
         private ShopDBContext context;
 

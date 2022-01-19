@@ -14,10 +14,12 @@
     public class ItemController : Controller
     {
         private IItemRepository itemRepository;
+        private IUnitOfWork unitOfWork;
 
-        public ItemController(IItemRepository itemRepository)
+        public ItemController(IItemRepository itemRepository, IUnitOfWork unitOfWork)
         {
             this.itemRepository = itemRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -33,7 +35,7 @@
         {
             string newFileName = Utilities.File.GetFileFullName(files);
             this.itemRepository.Add(objectItemViewModel, newFileName, files);
-            this.itemRepository.Save();
+            this.unitOfWork.SaveChanges();
 
             return this.RedirectToAction("Index");
         }

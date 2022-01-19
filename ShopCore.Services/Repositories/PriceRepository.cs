@@ -6,12 +6,12 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    public class PriceRepository : IPriceRepository
+    internal class PriceRepository : IPriceRepository
     {
         private ShopDBContext context;
 
@@ -53,30 +53,43 @@
             return priceEditor;
         }
 
-        public void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid)
+        public void AddFirstPrice(Guid itemGuid)
         {
-            bool hasAnyPrice = this.IfAnyPricesInDatabase(itemGuid);
-            if (!hasAnyPrice)
-            {
-                this.AddFirstPrice(itemGuid);
-                this.context.SaveChanges();
-            }
+            Price firstPrice = new Price();
+            firstPrice.Id = this.TableCount();
+            firstPrice.ItemId = itemGuid;
+            firstPrice.PriceValue = this.FindItemWithOriginalPrice(itemGuid).Price;
+            firstPrice.Date = DateTime.Now;
+            this.context.Prices.Add(firstPrice);
+        }
 
-            this.UpdatePrice(itemGuid, priceEditor);
-            this.AddChangedPrice(itemGuid, priceEditor);
-            this.context.SaveChanges();
+        public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
+        {
+            Item entity = this.FindItemWithOriginalPrice(itemGuid);
+            entity.Price = priceEditor.CurrentPrice;
+            this.context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
+        {
+            Price objectPrice = new Price();
+            objectPrice.Id = this.TableCount();
+            objectPrice.ItemId = itemGuid;
+            objectPrice.PriceValue = priceEditor.CurrentPrice;
+            objectPrice.Date = DateTime.Now;
+            this.context.Prices.Add(objectPrice);
+        }
+
+        public bool IfAnyPricesInDatabase(Guid itemGuid)
+        {
+            return this.context.Prices
+                .Any(model => model.ItemId == itemGuid);
         }
 
         private Item GetCurrentPrice(Guid itemGuid)
         {
             return this.context.Items
                 .SingleOrDefault(model => model.Id == itemGuid);
-        }
-
-        private bool IfAnyPricesInDatabase(Guid itemGuid)
-        {
-            return this.context.Prices
-                .Any(model => model.ItemId == itemGuid);
         }
 
         private Item FindItemWithOriginalPrice(Guid itemGuid)
@@ -90,23 +103,6 @@
             return this.context.Prices.Count() + 1;
         }
 
-        private void AddFirstPrice(Guid itemGuid)
-        {
-            Price firstPrice = new Price();
-            firstPrice.Id = this.TableCount();
-            firstPrice.ItemId = itemGuid;
-            firstPrice.PriceValue = this.FindItemWithOriginalPrice(itemGuid).Price;
-            firstPrice.Date = DateTime.Now;
-            this.context.Prices.Add(firstPrice);
-        }
-
-        private void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
-        {
-            Item entity = this.FindItemWithOriginalPrice(itemGuid);
-            entity.Price = priceEditor.CurrentPrice;
-            this.context.Entry(entity).State = EntityState.Modified;
-        }
-
         private IEnumerable<Price> GetPriceHistoryById(Guid itemGuid)
         {
             return this.context.Prices
@@ -118,16 +114,6 @@
             return this.context.Items
                 .Where(check => check.Id == objPriceHistoryModel.ItemId)
                 .FirstOrDefault();
-        }
-
-        private void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
-        {
-            Price objectPrice = new Price();
-            objectPrice.Id = this.TableCount();
-            objectPrice.ItemId = itemGuid;
-            objectPrice.PriceValue = priceEditor.CurrentPrice;
-            objectPrice.Date = DateTime.Now;
-            this.context.Prices.Add(objectPrice);
         }
     }
 }

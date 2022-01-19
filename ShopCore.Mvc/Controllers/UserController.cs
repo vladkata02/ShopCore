@@ -12,10 +12,12 @@
     public class UserController : Controller
     {
         private IUserRepository userRepository;
+        private IUnitOfWork unitOfWork;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public IActionResult Register()
@@ -29,7 +31,7 @@
             if (this.ModelState.IsValid)
             {
                 this.userRepository.Add(model);
-                this.userRepository.Save();
+                this.unitOfWork.SaveChanges();
 
                 this.TempData["message"] = "User created successfully!";
             }

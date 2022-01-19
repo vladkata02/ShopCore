@@ -18,6 +18,7 @@
             services.AddScoped<IPriceRepository, PriceRepository>();
             services.AddScoped<IShoppingRepository, ShoppingRepository>();
             services.AddScoped<IShoppingHistoryRepository, ShoppingHistoryRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
     }

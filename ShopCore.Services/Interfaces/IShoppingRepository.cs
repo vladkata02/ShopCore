@@ -22,7 +22,5 @@
         void ClearCart(string userName);
 
         List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory);
-
-        void Save();
     }
 }

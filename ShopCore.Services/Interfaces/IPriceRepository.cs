@@ -13,6 +13,12 @@
 
         List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid itemGuid);
 
-        void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid);
+        void AddFirstPrice(Guid itemGuid);
+
+        bool IfAnyPricesInDatabase(Guid itemGuid);
+
+        void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor);
+
+        void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor);
     }
 }

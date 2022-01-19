@@ -11,8 +11,6 @@
     {
         void Add(RegisterViewModel model);
 
-        void Save();
-
         UserViewModel LoginVerification(LoginViewModel model);
     }
 }
