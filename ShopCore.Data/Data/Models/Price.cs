@@ -9,7 +9,7 @@
     {
         public int Id { get; set; }
 
-        public string ItemId { get; set; }
+        public Guid ItemId { get; set; }
 
         public decimal PriceValue { get; set; }
 

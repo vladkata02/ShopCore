@@ -7,7 +7,7 @@
 
     public class PriceHistoryViewModel
     {
-        public string ItemId { get; set; }
+        public Guid ItemId { get; set; }
 
         public decimal CurrentPrice { get; set; }
 

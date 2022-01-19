@@ -163,8 +163,8 @@ namespace ShopCore.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PriceValue")
                         .HasColumnType("decimal(18,2)");

@@ -144,13 +144,13 @@
         public IEnumerable<Price> WhereId(Guid itemId)
         {
             return this.context.Prices
-                .Where(element => element.ItemId == itemId.ToString());
+                .Where(element => element.ItemId == itemId);
         }
 
         public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
         {
             return this.context.Items
-                .Where(check => check.Id.ToString() == objPriceHistoryModel.ItemId)
+                .Where(check => check.Id == objPriceHistoryModel.ItemId)
                 .FirstOrDefault();
         }
 

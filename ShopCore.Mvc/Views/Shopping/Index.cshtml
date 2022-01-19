@@ -91,7 +91,7 @@
                     @if (username == "admin")
                     {
                     <form method="post" asp-controller="Price" asp-action="Index">
-                                <button name="buttonPassingId" class="btn btn-info" value="@item.ItemId" asp-controller="Price" asp-action="Index">Edit Price</button>
+                                <button name="itemGuid" class="btn btn-info" value="@item.ItemId" asp-controller="Price" asp-action="Index">Edit Price</button>
                     </form>
                     }
                     <button class="btn btn-primary" itemid="@item.ItemId" id="btnAddToCart" onclick="AddToCart(this)" asp-controller="Shopping" asp-action="Index">Add to cart</button>

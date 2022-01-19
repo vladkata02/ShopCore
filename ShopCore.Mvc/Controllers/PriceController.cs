@@ -18,22 +18,22 @@
         }
 
         [HttpPost]
-        public IActionResult Index(Guid buttonPassingId)
+        public IActionResult Index(Guid itemGuid)
         {
-            PriceEditorViewModel objectPriceEditor = this.priceRepository.GetPriceEditor(buttonPassingId);
+            PriceEditorViewModel priceEditor = this.priceRepository.GetPriceEditor(itemGuid);
 
-            return this.View(objectPriceEditor);
+            return this.View(priceEditor);
         }
 
-        public IActionResult PriceHistory(PriceEditorViewModel objectItem, Guid buttonPassingId)
+        public IActionResult PriceHistory(PriceEditorViewModel priceEditor, Guid itemGuid)
         {
-            if (objectItem.CurrentPrice != 0)
+            if (priceEditor.CurrentPrice != 0)
             {
-                this.priceRepository.ChangePrice(objectItem, buttonPassingId);
+                this.priceRepository.ChangePrice(priceEditor, itemGuid);
             }
 
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
-            listOfItemsHistory = this.priceRepository.GetPriceHistory(listOfItemsHistory, buttonPassingId);
+            listOfItemsHistory = this.priceRepository.GetPriceHistory(listOfItemsHistory, itemGuid);
 
             return this.View(listOfItemsHistory);
         }
