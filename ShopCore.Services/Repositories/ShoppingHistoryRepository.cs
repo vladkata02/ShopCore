@@ -20,26 +20,6 @@
             this.context = context;
         }
 
-        public IEnumerable<OrderDetail> FindAccOrders(string userName)
-        {
-            return this.context.OrderDetails
-                .Where(element => element.Account == userName);
-        }
-
-        public Order FindDateById(OrderDetail order)
-        {
-            return this.context.Orders
-                .Where(check => check.Id == order.OrderId)
-                .FirstOrDefault();
-        }
-
-        public Item FindItemByIdForOrders(OrderDetail order)
-        {
-            return this.context.Items
-                .Where(check => check.Id.ToString() == order.ItemId)
-                .FirstOrDefault();
-        }
-
         public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory)
         {
             foreach (var order in this.FindAccOrders(userName))
@@ -65,6 +45,26 @@
             }
 
             return listOfShoppingHistory;
+        }
+
+        private IEnumerable<OrderDetail> FindAccOrders(string userName)
+        {
+            return this.context.OrderDetails
+                .Where(element => element.Account == userName);
+        }
+
+        private Order FindDateById(OrderDetail order)
+        {
+            return this.context.Orders
+                .Where(check => check.Id == order.OrderId)
+                .FirstOrDefault();
+        }
+
+        private Item FindItemByIdForOrders(OrderDetail order)
+        {
+            return this.context.Items
+                .Where(check => check.Id.ToString() == order.ItemId)
+                .FirstOrDefault();
         }
     }
 }

@@ -9,7 +9,10 @@
 
     public class MailSettings
     {
-        public enum TemplateType { Receipt }
+        public enum TemplateType
+        {
+            Receipt,
+        }
 
         public static string TemplateFolder { get; set; }
 

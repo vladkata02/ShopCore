@@ -29,7 +29,7 @@
                 objectPriceHistoryModel.CurrentPrice = order.PriceValue;
                 objectPriceHistoryModel.Date = order.Date;
 
-                var item = this.FindItemById(itemGuid, objectPriceHistoryModel);
+                var item = this.FindItemById(objectPriceHistoryModel);
                 objectPriceHistoryModel.ImageContent = item.ImageContent;
                 objectPriceHistoryModel.ItemBrand = item.Brand;
                 objectPriceHistoryModel.ItemName = item.Name;
@@ -79,7 +79,7 @@
                 .Any(model => model.ItemId == itemGuid);
         }
 
-        private Item FindOriginalPrice(Guid itemGuid)
+        private Item FindItemWithOriginalPrice(Guid itemGuid)
         {
             return this.context.Items
                 .FirstOrDefault(item => item.Id == itemGuid);
@@ -95,14 +95,14 @@
             Price firstPrice = new Price();
             firstPrice.Id = this.TableCount();
             firstPrice.ItemId = itemGuid;
-            firstPrice.PriceValue = this.FindOriginalPrice(itemGuid).Price;
+            firstPrice.PriceValue = this.FindItemWithOriginalPrice(itemGuid).Price;
             firstPrice.Date = DateTime.Now;
             this.context.Prices.Add(firstPrice);
         }
 
         private void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
-            Item entity = this.FindOriginalPrice(itemGuid);
+            Item entity = this.FindItemWithOriginalPrice(itemGuid);
             entity.Price = priceEditor.CurrentPrice;
             this.context.Entry(entity).State = EntityState.Modified;
         }
@@ -113,7 +113,7 @@
                 .Where(element => element.ItemId == itemGuid);
         }
 
-        private Item FindItemById(Guid itemGuid, PriceHistoryViewModel objPriceHistoryModel)
+        private Item FindItemById(PriceHistoryViewModel objPriceHistoryModel)
         {
             return this.context.Items
                 .Where(check => check.Id == objPriceHistoryModel.ItemId)

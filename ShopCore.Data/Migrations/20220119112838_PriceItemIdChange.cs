@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace ShopCore.Data.Migrations
+﻿namespace ShopCore.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class PriceItemIdChange : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

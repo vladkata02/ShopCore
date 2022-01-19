@@ -85,75 +85,6 @@
             }
         }
 
-        public void AddOrderDate()
-        {
-            Order objectOrder = new Order()
-            {
-                Date = DateTime.Now,
-                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
-            };
-        }
-
-        public Item FindItemById(string itemId)
-        {
-            return this.context.Items
-                .Single(model => model.Id.ToString() == itemId);
-        }
-
-        public Cart IfItemExistInCartById(string itemId, string userName)
-        {
-            return this.context.Carts
-                .SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
-        }
-
-        public int TableCount()
-        {
-            return this.context.Carts.Count() + 1;
-        }
-
-        public void AddToCartItem(Cart objShoppingCartModel)
-        {
-            this.context.Carts.Add(objShoppingCartModel);
-        }
-
-        public Cart FindItemQuantityById(string itemId, string userName)
-        {
-            return this.context.Carts
-                .Single(model => model.ItemId == itemId && model.Account == userName);
-        }
-
-        public IEnumerable<Cart> GetWhichAccoutCartIs(string userName)
-        {
-            return this.context.Carts
-                .Where(element => element.Account == userName);
-        }
-
-        public Item FindElementById(Cart cart)
-        {
-            return this.context.Items
-                .Where(check => check.Id.ToString() == cart.ItemId)
-                .FirstOrDefault();
-        }
-
-        public void UpdatePrice(Item entity)
-        {
-            this.context
-                .Entry(entity).State = EntityState.Modified;
-        }
-
-        public IEnumerable<Price> WhereId(Guid itemId)
-        {
-            return this.context.Prices
-                .Where(element => element.ItemId == itemId);
-        }
-
-        public Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel)
-        {
-            return this.context.Items
-                .Where(check => check.Id == objPriceHistoryModel.ItemId)
-                .FirstOrDefault();
-        }
-
         public int AddOrderTime()
         {
             Order objectOrder = new Order()
@@ -195,31 +126,6 @@
             }
         }
 
-        public void AddOrderDetails(OrderDetail objOrderDetail)
-        {
-            this.context.OrderDetails.Add(objOrderDetail);
-        }
-
-        public IEnumerable<OrderDetail> FindAccOrders(string userName)
-        {
-            return this.context.OrderDetails
-                .Where(element => element.Account == userName);
-        }
-
-        public Order FindDateById(OrderDetail order)
-        {
-            return this.context.Orders
-                .Where(check => check.Id == order.OrderId)
-                .FirstOrDefault();
-        }
-
-        public Item FindItemByIdForOrders(OrderDetail order)
-        {
-            return this.context.Items
-                .Where(check => check.Id.ToString() == order.ItemId)
-                .FirstOrDefault();
-        }
-
         public void ClearCart(string userName)
         {
             foreach (var item in this.GetWhichAccoutCartIs(userName))
@@ -254,6 +160,72 @@
             }
 
             return listOfShoppingHistory;
+        }
+
+        private Item FindItemById(string itemId)
+        {
+            return this.context.Items
+                .Single(model => model.Id.ToString() == itemId);
+        }
+
+        private Cart IfItemExistInCartById(string itemId, string userName)
+        {
+            return this.context.Carts
+                .SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
+        }
+
+        private int TableCount()
+        {
+            return this.context.Carts.Count() + 1;
+        }
+
+        private void AddToCartItem(Cart objShoppingCartModel)
+        {
+            this.context.Carts.Add(objShoppingCartModel);
+        }
+
+        private Cart FindItemQuantityById(string itemId, string userName)
+        {
+            return this.context.Carts
+                .Single(model => model.ItemId == itemId && model.Account == userName);
+        }
+
+        private IEnumerable<Cart> GetWhichAccoutCartIs(string userName)
+        {
+            return this.context.Carts
+                .Where(element => element.Account == userName);
+        }
+
+        private Item FindElementById(Cart cart)
+        {
+            return this.context.Items
+                .Where(check => check.Id.ToString() == cart.ItemId)
+                .FirstOrDefault(); 
+        }
+
+        private void AddOrderDetails(OrderDetail objOrderDetail)
+        {
+            this.context.OrderDetails.Add(objOrderDetail);
+        }
+
+        private IEnumerable<OrderDetail> FindAccOrders(string userName)
+        {
+            return this.context.OrderDetails
+                .Where(element => element.Account == userName);
+        }
+
+        private Order FindDateById(OrderDetail order)
+        {
+            return this.context.Orders
+                .Where(check => check.Id == order.OrderId)
+                .FirstOrDefault();
+        }
+
+        private Item FindItemByIdForOrders(OrderDetail order)
+        {
+            return this.context.Items
+                .Where(check => check.Id.ToString() == order.ItemId)
+                .FirstOrDefault();
         }
 
         public void Save()

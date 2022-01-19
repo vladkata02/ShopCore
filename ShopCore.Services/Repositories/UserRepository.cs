@@ -10,7 +10,6 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-
     public class UserRepository : IUserRepository
     {
         private ShopDBContext context;
