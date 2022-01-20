@@ -39,8 +39,6 @@ namespace ShopCore
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
-            services.AddDbContext<ShopDBContext>(options =>
-            options.UseSqlServer("DefaultConnectionString"));
             services.AddShopCoreServices();
             services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));
             services.AddControllers();
