@@ -36,7 +36,7 @@ namespace ShopCore
             services.AddMemoryCache();
             services.AddMvc();
             services.AddControllersWithViews();
-            //services.RegisterDataServices(this.Configuration);
+            services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
             services.AddDbContext<ShopDBContext>(options =>
