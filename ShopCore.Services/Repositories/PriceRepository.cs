@@ -63,13 +63,6 @@
             this.context.Prices.Add(firstPrice);
         }
 
-        public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
-        {
-            Item entity = this.FindItemWithOriginalPrice(itemGuid);
-            entity.Price = priceEditor.CurrentPrice;
-            this.context.Entry(entity).State = EntityState.Modified;
-        }
-
         public void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
             Price objectPrice = new Price();
@@ -78,6 +71,13 @@
             objectPrice.PriceValue = priceEditor.CurrentPrice;
             objectPrice.Date = DateTime.Now;
             this.context.Prices.Add(objectPrice);
+        }
+
+        public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
+        {
+            Item entity = this.FindItemWithOriginalPrice(itemGuid);
+            entity.Price = priceEditor.CurrentPrice;
+            this.context.Entry(entity).State = EntityState.Modified;
         }
 
         public bool IfAnyPricesInDatabase(Guid itemGuid)

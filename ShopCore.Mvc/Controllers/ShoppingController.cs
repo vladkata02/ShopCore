@@ -32,9 +32,9 @@
 
         public IActionResult Index()
         {
-            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = this.shoppingRepository.GetItems();
+            IEnumerable<ShoppingViewModel> listOfShopItems = this.shoppingRepository.GetItems();
 
-            return this.View(listOfShoppingViewModels);
+            return this.View(listOfShopItems);
         }
 
         [HttpPost]
