@@ -26,5 +26,36 @@
         public virtual DbSet<Cart> Carts { get; set; }
 
         public virtual DbSet<Price> Prices { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cart>()
+                .Property(p => p.Quantity)
+                .HasColumnType("decimal(5, 3)");
+            modelBuilder.Entity<Cart>()
+               .Property(p => p.Total)
+               .HasColumnType("decimal(5, 2)");
+            modelBuilder.Entity<Cart>()
+               .Property(p => p.UnitPrice)
+               .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<Item>()
+               .Property(p => p.Price)
+               .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<OrderDetail>()
+                .Property(p => p.Quantity)
+                .HasColumnType("decimal(5, 3)");
+            modelBuilder.Entity<OrderDetail>()
+              .Property(p => p.Total)
+              .HasColumnType("decimal(5, 2)");
+            modelBuilder.Entity<OrderDetail>()
+               .Property(p => p.UnitPrice)
+               .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<Price>()
+               .Property(p => p.PriceValue)
+               .HasColumnType("decimal(5, 2)");
+        }
     }
 }
