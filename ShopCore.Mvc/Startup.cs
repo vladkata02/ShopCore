@@ -13,9 +13,9 @@ namespace ShopCore
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ShopCore.Data;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
     using ShopCore.Services;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
     using ShopCore.Services.Settings;
@@ -36,7 +36,7 @@ namespace ShopCore
             services.AddMemoryCache();
             services.AddMvc();
             services.AddControllersWithViews();
-            services.RegisterDataServices(this.Configuration);
+            //services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
             services.AddDbContext<ShopDBContext>(options =>

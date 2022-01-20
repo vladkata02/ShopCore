@@ -15,8 +15,8 @@ namespace ShopCore.WebApi
     using Microsoft.Extensions.Logging;
     using Microsoft.OpenApi.Models;
     using ShopCore.Data;
-    using ShopCore.Data.Context;
     using ShopCore.Services;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
 
     public class Startup
@@ -31,7 +31,7 @@ namespace ShopCore.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.RegisterDataServices(this.Configuration);
+            //services.RegisterDataServices(this.Configuration);
             services.AddDbContext<ShopDBContext>(options =>
                      options.UseSqlServer("DefaultConnectionString"));
             services.AddShopCoreServices();
