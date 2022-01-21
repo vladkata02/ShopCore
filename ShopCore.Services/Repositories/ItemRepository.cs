@@ -28,8 +28,11 @@
                 .ToList();
         }
 
+        // TODO remove word object from parameter name
         public void Add(ItemViewModel objectItemViewModel, string newFileName, IFormFile files)
         {
+            // TODO create item constructor and hide object creation logic there
+            // TODO remove word object from variable name
             Item objectItem = new Item();
             objectItem.ImageName = newFileName;
             objectItem.CategoryId = objectItemViewModel.CategoryId;

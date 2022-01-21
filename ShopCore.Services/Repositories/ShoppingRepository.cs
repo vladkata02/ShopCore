@@ -22,6 +22,7 @@
 
         public IEnumerable<ShoppingViewModel> GetItems()
         {
+            // TODO remove word object from variables names
             return (from objectItem in this.context.Items
                     join
                     objectCategory in this.context.Categories
@@ -41,6 +42,8 @@
 
         public void AddItemToCart(string itemId, string userName)
         {
+            // TODO Extract creation logic in constructor
+            // TODO remove word object from variables names
             Cart objectShoppingCart = new Cart();
             Item objectItem = this.FindItemById(itemId);
 
@@ -69,6 +72,8 @@
         {
             foreach (var cart in this.GetWhichAccoutCartIs(userName))
             {
+                // TODO Extract creation logic in constructor
+                // TODO remove word obj from variable name
                 ShoppingCartViewModel objCart = new ShoppingCartViewModel();
                 objCart.ItemId = cart.ItemId;
                 objCart.UnitPrice = cart.UnitPrice;
@@ -87,6 +92,8 @@
 
         public int AddOrderTime()
         {
+            // TODO Extract creation logic in constructor
+            // TODO remove word object from variable name
             Order objectOrder = new Order()
             {
                 Date = DateTime.Now,
@@ -101,6 +108,8 @@
         {
             foreach (var item in this.GetWhichAccoutCartIs(userName))
             {
+                // TODO Extract creation logic in constructor
+                // TODO remove word object from variable name
                 OrderDetail objectOrderDetails = new OrderDetail();
                 objectOrderDetails.Total = item.Total;
                 objectOrderDetails.ItemId = item.ItemId;
@@ -109,6 +118,8 @@
                 objectOrderDetails.UnitPrice = item.UnitPrice;
                 objectOrderDetails.Account = userName;
 
+                // TODO Extract creation logic in constructor
+                // TODO remove word object from variable name
                 ShoppingCartViewModel objectCartForMail = new ShoppingCartViewModel();
                 objectCartForMail.ItemId = item.ItemId;
                 objectCartForMail.UnitPrice = item.UnitPrice;
@@ -122,6 +133,9 @@
                 objectCartForMail.Account = userName;
 
                 receiptForMail.Add(objectCartForMail);
+
+                // TODO is there a benefit of using this.AddOrderDetails(objectOrderDetails)
+                // instead of this.context.OrderDetails.Add(objectOrderDetails)?
                 this.AddOrderDetails(objectOrderDetails);
             }
         }
@@ -138,6 +152,8 @@
         {
             foreach (var order in this.FindAccOrders(userName))
             {
+                // TODO Extract creation logic in constructor
+                // TODO remove word object from variable name
                 ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel();
                 objectShoppingHistoryModel.OrderDetailId = order.Id;
                 objectShoppingHistoryModel.OrderNumber = order.OrderId;
@@ -171,16 +187,19 @@
 
         private Item FindItemById(string itemId)
         {
+            // TODO Refactor class types, should not convert int/guid to string for comaprison
             return this.context.Items
                 .Single(model => model.Id.ToString() == itemId);
         }
 
+        // TODO method name implies boolean result
         private Cart IfItemExistInCartById(string itemId, string userName)
         {
             return this.context.Carts
                 .SingleOrDefault(model => model.ItemId == itemId && model.Account == userName);
         }
 
+        // TODO Method name is lying
         private int TableCount()
         {
             return this.context.Carts.Count() + 1;
@@ -191,20 +210,24 @@
             this.context.Carts.Add(objShoppingCartModel);
         }
 
+        // TODO Method name is lying
         private Cart FindItemQuantityById(string itemId, string userName)
         {
             return this.context.Carts
                 .Single(model => model.ItemId == itemId && model.Account == userName);
         }
 
+        // TODO find better name i.e GetAccountRelatedCarts
         private IEnumerable<Cart> GetWhichAccoutCartIs(string userName)
         {
             return this.context.Carts
                 .Where(element => element.Account == userName);
         }
 
+        // NOTICE if pass itemId instead of the whole cart, method will became more reusable, in fact the method FindItemById can be used
         private Item FindElementById(Cart cart)
         {
+            // TODO Refactor class types, should not convert int/guid to string for comaprison
             return this.context.Items
                 .Where(check => check.Id.ToString() == cart.ItemId)
                 .FirstOrDefault();
@@ -215,14 +238,17 @@
             this.context.OrderDetails.Add(objOrderDetail);
         }
 
+        // TODO do not shorten method names
         private IEnumerable<OrderDetail> FindAccOrders(string userName)
         {
             return this.context.OrderDetails
                 .Where(element => element.Account == userName);
         }
 
+        // NOTICE if pass itemId instead of the whole order, method will became more reusable, in fact the method FindItemById can be used
         private Item FindItemByIdForOrders(OrderDetail order)
         {
+            // TODO Refactor class types, should not convert int/guid to string for comaprison
             return this.context.Items
                 .Where(check => check.Id.ToString() == order.ItemId)
                 .FirstOrDefault();

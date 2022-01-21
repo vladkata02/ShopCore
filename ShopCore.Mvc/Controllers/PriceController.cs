@@ -43,6 +43,7 @@
                 this.unitOfWork.SaveChanges();
             }
 
+            // TODO makes no sense to create a list and pass it around, just to get it back
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
             listOfItemsHistory = this.priceRepository.GetPriceHistory(listOfItemsHistory, itemGuid);
 

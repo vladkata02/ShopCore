@@ -24,6 +24,8 @@
         {
             foreach (var order in this.FindAccOrders(userName))
             {
+                // TODO Extract creation logic in constructor
+                // TODO remove word object from variable name
                 ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel();
                 objectShoppingHistoryModel.OrderDetailId = order.Id;
                 objectShoppingHistoryModel.OrderNumber = order.OrderId;
@@ -47,6 +49,7 @@
             return listOfShoppingHistory;
         }
 
+        // TODO do not shorten method names
         private IEnumerable<OrderDetail> FindAccOrders(string userName)
         {
             return this.context.OrderDetails
@@ -62,6 +65,7 @@
 
         private Item FindItemByIdForOrders(OrderDetail order)
         {
+            // TODO Refactor class types, should not convert int/guid to string for comaprison
             return this.context.Items
                 .Where(check => check.Id.ToString() == order.ItemId)
                 .FirstOrDefault();

@@ -24,6 +24,8 @@
         {
             foreach (var order in this.GetPriceHistoryById(itemGuid))
             {
+                // TODO Extract creation logic in constructor
+                // TODO remove word object from variable name
                 PriceHistoryViewModel objectPriceHistoryModel = new PriceHistoryViewModel();
                 objectPriceHistoryModel.ItemId = order.ItemId;
                 objectPriceHistoryModel.CurrentPrice = order.PriceValue;
@@ -43,6 +45,8 @@
         public PriceEditorViewModel GetPriceEditor(Guid itemGuid)
         {
             var lastPrice = this.GetCurrentPrice(itemGuid);
+
+            // TODO Extract creation logic in constructor
             PriceEditorViewModel priceEditor = new PriceEditorViewModel();
             priceEditor.ItemName = lastPrice.Name;
             priceEditor.ImageContent = lastPrice.ImageContent;
@@ -55,6 +59,7 @@
 
         public void AddFirstPrice(Guid itemGuid)
         {
+            // TODO Extract creation logic in constructor
             Price firstPrice = new Price();
             firstPrice.Id = this.TableCount();
             firstPrice.ItemId = itemGuid;
@@ -65,6 +70,8 @@
 
         public void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
+            // TODO Extract creation logic in constructor
+            // TODO remove word object from variable name
             Price objectPrice = new Price();
             objectPrice.Id = this.TableCount();
             objectPrice.ItemId = itemGuid;
@@ -98,6 +105,7 @@
                 .FirstOrDefault(item => item.Id == itemGuid);
         }
 
+        // TODO Method name is lying
         private int TableCount()
         {
             return this.context.Prices.Count() + 1;
