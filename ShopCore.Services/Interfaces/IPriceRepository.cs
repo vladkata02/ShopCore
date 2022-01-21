@@ -11,7 +11,7 @@
     {
         PriceEditorViewModel GetPriceEditor(Guid itemGuid);
 
-        List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid itemGuid);
+        List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid);
 
         void AddFirstPrice(Guid itemGuid);
 

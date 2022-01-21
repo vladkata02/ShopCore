@@ -13,7 +13,7 @@
 
         void AddItemToCart(string itemId, string userName);
 
-        void DisplayShoppingCart(List<ShoppingCartViewModel> list, string userName);
+        List<ShoppingCartViewModel> DisplayShoppingCart(string userName);
 
         int AddOrderTime();
 
@@ -21,6 +21,6 @@
 
         void ClearCart(string userName);
 
-        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory);
+        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName);
     }
 }

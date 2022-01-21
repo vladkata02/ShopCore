@@ -20,8 +20,9 @@
             this.context = context;
         }
 
-        public List<PriceHistoryViewModel> GetPriceHistory(List<PriceHistoryViewModel> listOfItemsHistory, Guid itemGuid)
+        public List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid)
         {
+            List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
             foreach (var order in this.GetPriceHistoryById(itemGuid))
             {
                 // TODO Extract creation logic in constructor

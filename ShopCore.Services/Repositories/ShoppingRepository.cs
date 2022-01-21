@@ -44,21 +44,21 @@
         {
             // TODO Extract creation logic in constructor
             // TODO remove word object from variables names
-            Cart objectShoppingCart = new Cart();
+            Cart shoppingCart = new Cart();
             Item objectItem = this.FindItemById(itemId);
 
             var ifAnyItemExistId = this.IfItemExistInCartById(itemId, userName);
             if (ifAnyItemExistId == null)
             {
-                objectShoppingCart.Id = this.TableCount();
-                objectShoppingCart.ItemId = itemId;
-                objectShoppingCart.ImageContent = objectItem.ImageContent;
-                objectShoppingCart.ItemName = objectItem.Name;
-                objectShoppingCart.Quantity = 1;
-                objectShoppingCart.Total = objectItem.Price;
-                objectShoppingCart.Account = userName;
-                objectShoppingCart.UnitPrice = objectItem.Price;
-                this.AddToCartItem(objectShoppingCart);
+                shoppingCart.Id = this.TableCount();
+                shoppingCart.ItemId = itemId;
+                shoppingCart.ImageContent = objectItem.ImageContent;
+                shoppingCart.ItemName = objectItem.Name;
+                shoppingCart.Quantity = 1;
+                shoppingCart.Total = objectItem.Price;
+                shoppingCart.Account = userName;
+                shoppingCart.UnitPrice = objectItem.Price;
+                this.AddToCartItem(shoppingCart);
             }
             else
             {
@@ -68,40 +68,43 @@
             }
         }
 
-        public void DisplayShoppingCart(List<ShoppingCartViewModel> list, string userName)
+        public List<ShoppingCartViewModel> DisplayShoppingCart(string userName)
         {
-            foreach (var cart in this.GetWhichAccoutCartIs(userName))
+            List<ShoppingCartViewModel> listOfCartItems = new List<ShoppingCartViewModel>();
+            foreach (var cartItem in this.GetWhichAccoutCartIs(userName))
             {
                 // TODO Extract creation logic in constructor
                 // TODO remove word obj from variable name
-                ShoppingCartViewModel objCart = new ShoppingCartViewModel();
-                objCart.ItemId = cart.ItemId;
-                objCart.UnitPrice = cart.UnitPrice;
-                objCart.Total = cart.Total;
+                ShoppingCartViewModel cart = new ShoppingCartViewModel();
+                cart.ItemId = cartItem.ItemId;
+                cart.UnitPrice = cartItem.UnitPrice;
+                cart.Total = cartItem.Total;
 
-                var findElementById = this.FindElementById(cart);
-                objCart.ImageContent = findElementById.ImageContent;
-                objCart.ItemBrand = findElementById.Brand;
-                objCart.ItemName = findElementById.Name;
-                objCart.Quantity = cart.Quantity;
-                objCart.Account = userName;
+                var findElementById = this.FindElementById(cartItem);
+                cart.ImageContent = findElementById.ImageContent;
+                cart.ItemBrand = findElementById.Brand;
+                cart.ItemName = findElementById.Name;
+                cart.Quantity = cart.Quantity;
+                cart.Account = userName;
 
-                list.Add(objCart);
+                listOfCartItems.Add(cart);
             }
+
+            return listOfCartItems;
         }
 
         public int AddOrderTime()
         {
             // TODO Extract creation logic in constructor
             // TODO remove word object from variable name
-            Order objectOrder = new Order()
+            Order order = new Order()
             {
                 Date = DateTime.Now,
                 Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
             };
-            this.context.Orders.Add(objectOrder);
+            this.context.Orders.Add(order);
             this.context.SaveChanges();
-            return objectOrder.Id;
+            return order.Id;
         }
 
         public void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail)
@@ -109,34 +112,30 @@
             foreach (var item in this.GetWhichAccoutCartIs(userName))
             {
                 // TODO Extract creation logic in constructor
-                // TODO remove word object from variable name
-                OrderDetail objectOrderDetails = new OrderDetail();
-                objectOrderDetails.Total = item.Total;
-                objectOrderDetails.ItemId = item.ItemId;
-                objectOrderDetails.OrderId = orderId;
-                objectOrderDetails.Quantity = item.Quantity;
-                objectOrderDetails.UnitPrice = item.UnitPrice;
-                objectOrderDetails.Account = userName;
+                OrderDetail orderDetails = new OrderDetail();
+                orderDetails.Total = item.Total;
+                orderDetails.ItemId = item.ItemId;
+                orderDetails.OrderId = orderId;
+                orderDetails.Quantity = item.Quantity;
+                orderDetails.UnitPrice = item.UnitPrice;
+                orderDetails.Account = userName;
 
                 // TODO Extract creation logic in constructor
-                // TODO remove word object from variable name
-                ShoppingCartViewModel objectCartForMail = new ShoppingCartViewModel();
-                objectCartForMail.ItemId = item.ItemId;
-                objectCartForMail.UnitPrice = item.UnitPrice;
-                objectCartForMail.Total = item.Total;
+                ShoppingCartViewModel cartForMail = new ShoppingCartViewModel();
+                cartForMail.ItemId = item.ItemId;
+                cartForMail.UnitPrice = item.UnitPrice;
+                cartForMail.Total = item.Total;
 
                 var currentElement = this.FindElementById(item);
-                objectCartForMail.ImageContent = currentElement.ImageContent;
-                objectCartForMail.ItemBrand = currentElement.Brand;
-                objectCartForMail.ItemName = currentElement.Name;
-                objectCartForMail.Quantity = item.Quantity;
-                objectCartForMail.Account = userName;
+                cartForMail.ImageContent = currentElement.ImageContent;
+                cartForMail.ItemBrand = currentElement.Brand;
+                cartForMail.ItemName = currentElement.Name;
+                cartForMail.Quantity = item.Quantity;
+                cartForMail.Account = userName;
 
-                receiptForMail.Add(objectCartForMail);
+                receiptForMail.Add(cartForMail);
 
-                // TODO is there a benefit of using this.AddOrderDetails(objectOrderDetails)
-                // instead of this.context.OrderDetails.Add(objectOrderDetails)?
-                this.AddOrderDetails(objectOrderDetails);
+                this.context.OrderDetails.Add(orderDetails);
             }
         }
 
@@ -148,31 +147,31 @@
             }
         }
 
-        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName, List<ShoppingHistoryViewModel> listOfShoppingHistory)
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName)
         {
+            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
             foreach (var order in this.FindAccOrders(userName))
             {
                 // TODO Extract creation logic in constructor
-                // TODO remove word object from variable name
-                ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel();
-                objectShoppingHistoryModel.OrderDetailId = order.Id;
-                objectShoppingHistoryModel.OrderNumber = order.OrderId;
-                objectShoppingHistoryModel.ItemId = order.ItemId;
-                objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
-                objectShoppingHistoryModel.Total = order.Total;
+                ShoppingHistoryViewModel shoppingHistoryModel = new ShoppingHistoryViewModel();
+                shoppingHistoryModel.OrderDetailId = order.Id;
+                shoppingHistoryModel.OrderNumber = order.OrderId;
+                shoppingHistoryModel.ItemId = order.ItemId;
+                shoppingHistoryModel.UnitPrice = order.UnitPrice;
+                shoppingHistoryModel.Total = order.Total;
 
                 var foundDate = this.FindOrderDateById(order);
 
-                objectShoppingHistoryModel.OrderDate = foundDate.Date;
+                shoppingHistoryModel.OrderDate = foundDate.Date;
 
                 var findElementById = this.FindItemByIdForOrders(order);
-                objectShoppingHistoryModel.ImageContent = findElementById.ImageContent;
-                objectShoppingHistoryModel.ItemBrand = findElementById.Brand;
-                objectShoppingHistoryModel.ItemName = findElementById.Name;
-                objectShoppingHistoryModel.Quantity = order.Quantity;
-                objectShoppingHistoryModel.Account = userName;
+                shoppingHistoryModel.ImageContent = findElementById.ImageContent;
+                shoppingHistoryModel.ItemBrand = findElementById.Brand;
+                shoppingHistoryModel.ItemName = findElementById.Name;
+                shoppingHistoryModel.Quantity = order.Quantity;
+                shoppingHistoryModel.Account = userName;
 
-                listOfShoppingHistory.Add(objectShoppingHistoryModel);
+                listOfShoppingHistory.Add(shoppingHistoryModel);
             }
 
             return listOfShoppingHistory;
@@ -231,11 +230,6 @@
             return this.context.Items
                 .Where(check => check.Id.ToString() == cart.ItemId)
                 .FirstOrDefault();
-        }
-
-        private void AddOrderDetails(OrderDetail objOrderDetail)
-        {
-            this.context.OrderDetails.Add(objOrderDetail);
         }
 
         // TODO do not shorten method names

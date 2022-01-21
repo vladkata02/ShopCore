@@ -11,9 +11,9 @@ namespace ShopCore.Utilities
     {
         public static string GetFileFullName(IFormFile files)
         {
-            var fileName = Path.GetFileName(files.FileName);
-            var fileExtension = Path.GetExtension(fileName);
-            var newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+            string fileName = Path.GetFileName(files.FileName);
+            string fileExtension = Path.GetExtension(fileName);
+            string newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
             return newFileName;
         }

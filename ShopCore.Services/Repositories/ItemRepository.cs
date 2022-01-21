@@ -28,28 +28,27 @@
                 .ToList();
         }
 
-        // TODO remove word object from parameter name
-        public void Add(ItemViewModel objectItemViewModel, string newFileName, IFormFile files)
+        public void Add(ItemViewModel itemViewModel, string newFileName, IFormFile files)
         {
             // TODO create item constructor and hide object creation logic there
-            // TODO remove word object from variable name
-            Item objectItem = new Item();
-            objectItem.ImageName = newFileName;
-            objectItem.CategoryId = objectItemViewModel.CategoryId;
-            objectItem.Description = objectItemViewModel.Description;
-            objectItem.Code = objectItemViewModel.Code;
-            objectItem.Id = Guid.NewGuid();
-            objectItem.Name = objectItemViewModel.Name;
-            objectItem.Brand = objectItemViewModel.Brand;
-            objectItem.Price = objectItemViewModel.Price;
+
+            var item = new Item(
+                      itemViewModel.CategoryId,
+                      itemViewModel.Description,
+                      itemViewModel.Code,
+                      itemViewModel.Name,
+                      itemViewModel.Brand,
+                      itemViewModel.Price);
+
+            item.ImageName = newFileName;
 
             using (var target = new MemoryStream())
             {
                 files.CopyTo(target);
-                objectItem.ImageContent = target.ToArray();
+                item.ImageContent = target.ToArray();
             }
 
-            this.context.Items.Add(objectItem);
+            this.context.Items.Add(item);
         }
     }
 }

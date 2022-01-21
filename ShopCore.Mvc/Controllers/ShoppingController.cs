@@ -32,9 +32,7 @@
 
         public IActionResult Index()
         {
-            IEnumerable<ShoppingViewModel> listOfShopItems = this.shoppingRepository.GetItems();
-
-            return this.View(listOfShopItems);
+            return this.View(this.shoppingRepository.GetItems());
         }
 
         [HttpPost]
@@ -50,10 +48,8 @@
         public IActionResult ShoppingCart()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            List<ShoppingCartViewModel> list = new List<ShoppingCartViewModel>();
-            this.shoppingRepository.DisplayShoppingCart(list, userName);
 
-            return this.View(list);
+            return this.View(this.shoppingRepository.DisplayShoppingCart(userName));
         }
 
         [HttpPost]
@@ -88,10 +84,8 @@
         public IActionResult ShoppingHistory()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
-            listOfShoppingHistory = this.shoppingRepository.GetShoppingHistory(userName, listOfShoppingHistory);
 
-            return this.View(listOfShoppingHistory);
+            return this.View(this.shoppingRepository.GetShoppingHistory(userName));
         }
     }
 }
