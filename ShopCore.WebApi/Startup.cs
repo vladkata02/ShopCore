@@ -31,9 +31,7 @@ namespace ShopCore.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.RegisterDataServices(this.Configuration);
-            services.AddDbContext<ShopDBContext>(options =>
-                     options.UseSqlServer("DefaultConnectionString"));
+            services.RegisterDataServices(this.Configuration);
             services.AddShopCoreServices();
         }
 

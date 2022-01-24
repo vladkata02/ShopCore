@@ -6,8 +6,7 @@
     using Microsoft.Extensions.Configuration;
     using ShopCore.Data.Models;
 
-    // TODO Should be accessed only in this assembly, change modifier
-    public class ShopDBContext : DbContext
+    internal class ShopDBContext : DbContext
         {
         public ShopDBContext(DbContextOptions<ShopDBContext> options)
                 : base(options)

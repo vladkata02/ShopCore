@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using ShopCore.Services.Settings;
 using System;
 using System.IO;
-using static ShopCore.Services.Settings.MailSettings;
 
 namespace ShopCore.Utilities
 {
@@ -16,6 +13,17 @@ namespace ShopCore.Utilities
             string newFileName = string.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
             return newFileName;
+        }
+        public static byte[] GetImageContent(IFormFile files)
+        {
+            byte[] imageContent = null;
+            using (var target = new MemoryStream())
+            {
+                files.CopyTo(target);
+                imageContent = target.ToArray();
+            }
+
+            return imageContent;
         }
     }
 }

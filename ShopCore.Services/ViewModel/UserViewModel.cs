@@ -15,5 +15,13 @@
         public string Password { get; set; }
 
         public string Roles { get; set; }
+
+        public UserViewModel(int id, string userName, string password, string roles)
+        {
+            this.Id = id;
+            this.Username = userName;
+            this.Password = password;
+            this.Roles = roles;
+        }
     }
 }

@@ -25,26 +25,24 @@
                 .Where(usr => usr.Username == model.UserName && usr.Password == model.Password)
                 .SingleOrDefault();
 
-            // TODO If entityUser == null?
-            // TODO create item constructor and hide object creation logic there
-            UserViewModel user = new UserViewModel();
-            user.Id = entityUser.Id;
-            user.Username = entityUser.Username;
-            user.Password = entityUser.Password;
-            user.Roles = entityUser.Roles;
+            if (entityUser == null)
+            {
+                return null;
+            }
+
+            UserViewModel user = new UserViewModel(
+                entityUser.Id,
+                entityUser.Username,
+                entityUser.Password,
+                entityUser.Roles);
 
             return user;
         }
 
         public void Add(RegisterViewModel model)
         {
-            // TODO create item constructor and hide object creation logic there
-            User user = new User();
-            user.Username = model.UserName;
-            user.Password = model.Password;
-
-            // TODO remove magic strings, use constants or static class instead
-            user.Roles = "Manager,Admin";
+            const string roles = "Manager,Admin";
+            User user = new User(model.UserName, model.Password, roles);
             this.context.Users.Add(user);
         }
     }

@@ -15,11 +15,16 @@
 
         public DateTime Date { get; set; }
 
-        public Price(int id, decimal priceValue)
+        public Price()
+        {
+        }
+
+        public Price(int id, decimal priceValue, Guid itemGuid)
         {
             this.Id = id;
             this.PriceValue = priceValue;
             this.Date = DateTime.Now;
+            this.ItemId = itemGuid;
         }
     }
 }

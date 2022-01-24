@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
+    <ProjectReference Include="..\ShopCore.Utilities\ShopCore.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

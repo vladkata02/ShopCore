@@ -28,7 +28,7 @@
                 .ToList();
         }
 
-        public void Add(ItemViewModel itemViewModel, string newFileName, IFormFile files)
+        public void Add(ItemViewModel itemViewModel, string newFileName, byte[] imageContent)
         {
             var item = new Item(
                       itemViewModel.CategoryId,
@@ -36,15 +36,9 @@
                       itemViewModel.Code,
                       itemViewModel.Name,
                       itemViewModel.Brand,
-                      itemViewModel.Price);
-
-            item.ImageName = newFileName;
-
-            using (var target = new MemoryStream())
-            {
-                files.CopyTo(target);
-                item.ImageContent = target.ToArray();
-            }
+                      itemViewModel.Price,
+                      newFileName,
+                      imageContent);
 
             this.context.Items.Add(item);
         }

@@ -36,7 +36,7 @@
         }
 
         [HttpPost]
-        public JsonResult Index(string itemId)
+        public JsonResult Index(Guid itemId)
         {
             string userName = this.HttpContext.User.Identity.Name;
             this.shoppingRepository.AddItemToCart(itemId, userName);

@@ -23,10 +23,7 @@
         public List<ShoppingHistoryViewModel> Get(string id)
         {
             string userName = id.ToString();
-            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
-            listOfShoppingHistory = this.shoppingHistoryRepository.GetShoppingHistory(userName, listOfShoppingHistory);
-
-            return listOfShoppingHistory;
+            return this.shoppingHistoryRepository.GetShoppingHistory(userName);
         }
     }
 }

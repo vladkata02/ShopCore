@@ -82,7 +82,7 @@
             }
             else
             {
-                this.TempData["message"] = "Invalid UserName or Password!";
+                this.TempData["message"] = "Invalid username or password!";
             }
 
             return this.View();

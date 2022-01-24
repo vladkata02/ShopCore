@@ -57,8 +57,8 @@
         {
             Price firstPrice = new Price(
                 this.TableCountPlusOne(),
-                this.FindItemWithOriginalPrice(itemGuid).Price);
-            firstPrice.ItemId = itemGuid;
+                this.FindItemWithOriginalPrice(itemGuid).Price,
+                itemGuid);
 
             this.context.Prices.Add(firstPrice);
         }
@@ -67,8 +67,9 @@
         {
             Price price = new Price(
                    this.TableCountPlusOne(),
-                   priceEditor.CurrentPrice);
-            price.ItemId = itemGuid;
+                   priceEditor.CurrentPrice,
+                   itemGuid);
+
             this.context.Prices.Add(price);
         }
 

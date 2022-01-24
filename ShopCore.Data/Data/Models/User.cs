@@ -16,5 +16,16 @@ namespace ShopCore.Data.Models
         public string Password { get; set; }
 
         public string Roles { get; set; }
+
+        public User()
+        {
+        }
+
+        public User(string userName, string password, string roles)
+        {
+            this.Username = userName;
+            this.Password = password;
+            this.Roles = roles;
+        }
     }
 }

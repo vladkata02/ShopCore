@@ -26,7 +26,11 @@ namespace ShopCore.Data.Models
 
         public decimal Price { get; set; }
 
-        public Item(int categoryId, string description, string code, string name, string brand, decimal price)
+        public Item()
+        {
+        }
+
+        public Item(int categoryId, string description, string code, string name, string brand, decimal price, string newFileName, byte[] imageContent)
         {
             this.CategoryId = categoryId;
             this.Description = description;
@@ -35,6 +39,8 @@ namespace ShopCore.Data.Models
             this.Name = name;
             this.Brand = brand;
             this.Price = price;
+            this.ImageName = newFileName;
+            this.ImageContent = imageContent;
         }
     }
 }

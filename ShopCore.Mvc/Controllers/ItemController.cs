@@ -33,12 +33,11 @@
         [HttpPost]
         public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
-            string newFileName = Utilities.File.GetFileFullName(files);
 
-            // TODO IFormFile is part of httpContext, it's not recommended to extend repositories layer with http details
-            // on the other hand methods in controller shouldn't process such a low level work as streams, so utility method is the solution
-            // the utility method should receive IFormFile and return byte[] or stream, which is passed to repository
-            this.itemRepository.Add(objectItemViewModel, newFileName, files);
+            string newFileName = Utilities.File.GetFileFullName(files);
+            byte[] imageContent = Utilities.File.GetImageContent(files);
+
+            this.itemRepository.Add(objectItemViewModel, newFileName, imageContent);
             this.unitOfWork.SaveChanges();
 
             return this.RedirectToAction("Index");

@@ -11,7 +11,7 @@
     {
         IEnumerable<ShoppingViewModel> GetItems();
 
-        void AddItemToCart(string itemId, string userName);
+        void AddItemToCart(Guid itemId, string userName);
 
         List<ShoppingCartViewModel> DisplayShoppingCart(string userName);
 

@@ -12,6 +12,6 @@
     {
         List<CategoryViewModel> GetCategories();
 
-        void Add(ItemViewModel objectItemViewModel, string newFileName, IFormFile files);
+        void Add(ItemViewModel objectItemViewModel, string newFileName, byte[] imageContent);
     }
 }
