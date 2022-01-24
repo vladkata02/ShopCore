@@ -22,9 +22,7 @@
         [HttpPost]
         public IActionResult Index(Guid itemGuid)
         {
-            PriceEditorViewModel priceEditor = this.priceRepository.GetPriceEditor(itemGuid);
-
-            return this.View(priceEditor);
+            return this.View(this.priceRepository.GetPriceEditor(itemGuid));
         }
 
         public IActionResult PriceHistory(PriceEditorViewModel priceEditor, Guid itemGuid)

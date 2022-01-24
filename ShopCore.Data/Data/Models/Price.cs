@@ -14,5 +14,12 @@
         public decimal PriceValue { get; set; }
 
         public DateTime Date { get; set; }
+
+        public Price(int id, decimal priceValue)
+        {
+            this.Id = id;
+            this.PriceValue = priceValue;
+            this.Date = DateTime.Now;
+        }
     }
 }

@@ -30,8 +30,6 @@
 
         public void Add(ItemViewModel itemViewModel, string newFileName, IFormFile files)
         {
-            // TODO create item constructor and hide object creation logic there
-
             var item = new Item(
                       itemViewModel.CategoryId,
                       itemViewModel.Description,

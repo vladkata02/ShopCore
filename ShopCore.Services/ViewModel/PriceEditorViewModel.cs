@@ -18,5 +18,18 @@
         public byte[] ImageContent { get; set; }
 
         public string ItemBrand { get; set; }
+
+        public PriceEditorViewModel()
+        {
+        }
+
+        public PriceEditorViewModel(string name, byte[] imageContent, decimal price, string brand, Guid itemId)
+        {
+            this.ItemName = name;
+            this.ImageContent = imageContent;
+            this.ItemPrice = price;
+            this.ItemBrand = brand;
+            this.ItemId = itemId;
+        }
     }
 }

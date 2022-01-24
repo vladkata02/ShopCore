@@ -23,21 +23,17 @@
         public List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid)
         {
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
-            foreach (var order in this.GetPriceHistoryById(itemGuid))
+            foreach (var price in this.GetPriceHistoryById(itemGuid))
             {
-                // TODO Extract creation logic in constructor
-                // TODO remove word object from variable name
-                PriceHistoryViewModel objectPriceHistoryModel = new PriceHistoryViewModel();
-                objectPriceHistoryModel.ItemId = order.ItemId;
-                objectPriceHistoryModel.CurrentPrice = order.PriceValue;
-                objectPriceHistoryModel.Date = order.Date;
-
-                var item = this.FindItemById(objectPriceHistoryModel);
-                objectPriceHistoryModel.ImageContent = item.ImageContent;
-                objectPriceHistoryModel.ItemBrand = item.Brand;
-                objectPriceHistoryModel.ItemName = item.Name;
-
-                listOfItemsHistory.Add(objectPriceHistoryModel);
+                var item = this.FindItemById(price.ItemId);
+                PriceHistoryViewModel priceHistoryModel = new PriceHistoryViewModel(
+                        price.PriceValue,
+                        price.Date,
+                        item.ImageContent,
+                        item.Brand,
+                        item.Name,
+                        price.ItemId);
+                listOfItemsHistory.Add(priceHistoryModel);
             }
 
             return listOfItemsHistory;
@@ -45,40 +41,35 @@
 
         public PriceEditorViewModel GetPriceEditor(Guid itemGuid)
         {
-            var lastPrice = this.GetCurrentPrice(itemGuid);
+            var lastPrice = this.GetItemWithCurrentPrice(itemGuid);
 
-            // TODO Extract creation logic in constructor
-            PriceEditorViewModel priceEditor = new PriceEditorViewModel();
-            priceEditor.ItemName = lastPrice.Name;
-            priceEditor.ImageContent = lastPrice.ImageContent;
-            priceEditor.ItemPrice = lastPrice.Price;
-            priceEditor.ItemBrand = lastPrice.Brand;
-            priceEditor.ItemId = itemGuid;
+            PriceEditorViewModel priceEditor = new PriceEditorViewModel(
+                lastPrice.Name,
+                lastPrice.ImageContent,
+                lastPrice.Price,
+                lastPrice.Brand,
+                itemGuid);
 
             return priceEditor;
         }
 
         public void AddFirstPrice(Guid itemGuid)
         {
-            // TODO Extract creation logic in constructor
-            Price firstPrice = new Price();
-            firstPrice.Id = this.TableCount();
+            Price firstPrice = new Price(
+                this.TableCountPlusOne(),
+                this.FindItemWithOriginalPrice(itemGuid).Price);
             firstPrice.ItemId = itemGuid;
-            firstPrice.PriceValue = this.FindItemWithOriginalPrice(itemGuid).Price;
-            firstPrice.Date = DateTime.Now;
+
             this.context.Prices.Add(firstPrice);
         }
 
         public void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
-            // TODO Extract creation logic in constructor
-            // TODO remove word object from variable name
-            Price objectPrice = new Price();
-            objectPrice.Id = this.TableCount();
-            objectPrice.ItemId = itemGuid;
-            objectPrice.PriceValue = priceEditor.CurrentPrice;
-            objectPrice.Date = DateTime.Now;
-            this.context.Prices.Add(objectPrice);
+            Price price = new Price(
+                   this.TableCountPlusOne(),
+                   priceEditor.CurrentPrice);
+            price.ItemId = itemGuid;
+            this.context.Prices.Add(price);
         }
 
         public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
@@ -94,7 +85,7 @@
                 .Any(model => model.ItemId == itemGuid);
         }
 
-        private Item GetCurrentPrice(Guid itemGuid)
+        private Item GetItemWithCurrentPrice(Guid itemGuid)
         {
             return this.context.Items
                 .SingleOrDefault(model => model.Id == itemGuid);
@@ -106,8 +97,7 @@
                 .FirstOrDefault(item => item.Id == itemGuid);
         }
 
-        // TODO Method name is lying
-        private int TableCount()
+        private int TableCountPlusOne()
         {
             return this.context.Prices.Count() + 1;
         }
@@ -118,10 +108,10 @@
                 .Where(element => element.ItemId == itemGuid);
         }
 
-        private Item FindItemById(PriceHistoryViewModel objPriceHistoryModel)
+        private Item FindItemById(Guid itemId)
         {
             return this.context.Items
-                .Where(check => check.Id == objPriceHistoryModel.ItemId)
+                .Where(check => check.Id == itemId)
                 .FirstOrDefault();
         }
     }
