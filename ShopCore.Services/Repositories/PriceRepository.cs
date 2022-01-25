@@ -86,12 +86,14 @@
                 .Any(model => model.ItemId == itemGuid);
         }
 
+        // TODO Method actualy gets item from items by Guid
         private Item GetItemWithCurrentPrice(Guid itemGuid)
         {
             return this.context.Items
                 .SingleOrDefault(model => model.Id == itemGuid);
         }
 
+        // TODO Method actualy gets item from items by Guid
         private Item FindItemWithOriginalPrice(Guid itemGuid)
         {
             return this.context.Items
@@ -109,6 +111,7 @@
                 .Where(element => element.ItemId == itemGuid);
         }
 
+        // TODO Method actualy gets item from items by Guid
         private Item FindItemById(Guid itemId)
         {
             return this.context.Items

@@ -59,6 +59,8 @@
                 .FirstOrDefault();
         }
 
+        // TODO Rename the method. FindItemById is great
+        // There is nothing related with orders in the logic below
         private Item FindItemByIdForOrders(Guid itemId)
         {
             return this.context.Items

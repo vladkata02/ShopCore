@@ -27,8 +27,12 @@
 
         public IActionResult PriceHistory(PriceEditorViewModel priceEditor, Guid itemGuid)
         {
+            // TODO the business logic below depends only on priceRepository
+            // and must be extracted there
             if (priceEditor.CurrentPrice != 0)
             {
+                // TODO method names should contains a verb + (adjective ) + noun
+                // IfAnyPricesInDatabase should be changed
                 bool hasAnyPrice = this.priceRepository.IfAnyPricesInDatabase(itemGuid);
                 if (!hasAnyPrice)
                 {
