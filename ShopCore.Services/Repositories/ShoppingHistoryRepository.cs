@@ -28,7 +28,7 @@
             foreach (var order in this.FindAccountOrders(userName))
             {
                 var foundDate = this.FindOrderById(order.OrderId);
-                var findElementById = this.unitOfWork.FindItemByGuid(order.ItemId);
+                var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
                 ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel(
                     order.Id,
                     order.OrderId,

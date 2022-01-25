@@ -18,13 +18,6 @@
             this.context = context;
         }
 
-        public Item FindItemByGuid(Guid itemId)
-        {
-            return this.context.Items
-                .Where(check => check.Id == itemId)
-                .FirstOrDefault();
-        }
-
         public void SaveChanges()
         {
             this.context.SaveChanges();

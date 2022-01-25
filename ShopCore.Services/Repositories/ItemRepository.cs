@@ -16,7 +16,7 @@
     {
         private ShopDBContext context;
 
-        public ItemRepository(ShopDBContext context, IUnitOfWork unitOfWork)
+        public ItemRepository(ShopDBContext context)
         {
             this.context = context;
         }

@@ -43,7 +43,7 @@
 
         public void AddItemToCart(Guid itemId, string userName)
         {
-            Item item = this.unitOfWork.FindItemByGuid(itemId);
+            Item item = this.context.Items.FindItemByGuid(itemId);
 
             bool ifAnyItemExistId = this.IfItemExistInCartById(itemId, userName);
             if (!ifAnyItemExistId)
@@ -71,7 +71,7 @@
             List<ShoppingCartViewModel> listOfCartItems = new List<ShoppingCartViewModel>();
             foreach (var cartItem in this.GetAccountRelatedCarts(userName))
             {
-                var findElementById = this.unitOfWork.FindItemByGuid(cartItem.ItemId);
+                var findElementById = this.context.Items.FindItemByGuid(cartItem.ItemId);
                 ShoppingCartViewModel cart = new ShoppingCartViewModel(
                     cartItem.ItemId,
                     cartItem.UnitPrice,
@@ -109,7 +109,7 @@
                     item.UnitPrice,
                     userName);
 
-                var currentItem = this.unitOfWork.FindItemByGuid(item.ItemId);
+                var currentItem = this.context.Items.FindItemByGuid(item.ItemId);
                 ShoppingCartViewModel cartForMail = new ShoppingCartViewModel(
                     item.ItemId,
                     item.UnitPrice,
@@ -140,7 +140,7 @@
             foreach (var order in this.GetAccountOrders(userName))
             {
                 var foundDate = this.FindOrderById(order.OrderId);
-                var findElementById = this.unitOfWork.FindItemByGuid(order.ItemId);
+                var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
                 ShoppingHistoryViewModel shoppingHistoryModel = new ShoppingHistoryViewModel(
                     order.Id,
                     order.OrderId,

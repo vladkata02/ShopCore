@@ -9,8 +9,6 @@
 
     public interface IUnitOfWork
     {
-        Item FindItemByGuid(Guid itemId);
-
         void SaveChanges();
     }
 }

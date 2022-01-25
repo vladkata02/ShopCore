@@ -11,12 +11,10 @@
     public class PriceController : Controller
     {
         private IPriceRepository priceRepository;
-        private IUnitOfWork unitOfWork;
 
-        public PriceController(IPriceRepository priceRepository, IUnitOfWork unitOfWork)
+        public PriceController(IPriceRepository priceRepository)
         {
             this.priceRepository = priceRepository;
-            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost]

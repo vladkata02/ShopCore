@@ -14,13 +14,5 @@
         PriceEditorViewModel GetPriceEditor(Guid itemGuid);
 
         List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid);
-
-        void AddFirstPrice(Guid itemGuid);
-
-        bool AnyPricesById(Guid itemGuid);
-
-        void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor);
-
-        void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor);
     }
 }

@@ -1,17 +1,19 @@
 ﻿namespace ShopCore.Services.Context
-    {
+{
+    using System;
     using System.IO;
+    using System.Linq;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.Extensions.Configuration;
     using ShopCore.Data.Models;
 
     internal class ShopDBContext : DbContext
-        {
+    {
         public ShopDBContext(DbContextOptions<ShopDBContext> options)
                 : base(options)
-            {
-            }
+        {
+        }
 
         public virtual DbSet<Item> Items { get; set; }
 

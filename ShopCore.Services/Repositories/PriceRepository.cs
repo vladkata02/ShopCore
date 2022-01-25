@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
             foreach (var price in this.GetPriceHistoryById(itemGuid))
             {
-                var item = this.unitOfWork.FindItemByGuid(price.ItemId);
+                var item = this.context.Items.FindItemByGuid(price.ItemId);
                 PriceHistoryViewModel priceHistoryModel = new PriceHistoryViewModel(
                         price.PriceValue,
                         price.Date,
@@ -60,7 +61,7 @@
 
         public PriceEditorViewModel GetPriceEditor(Guid itemGuid)
         {
-            var lastPrice = this.unitOfWork.FindItemByGuid(itemGuid);
+            var lastPrice = this.context.Items.FindItemByGuid(itemGuid);
 
             PriceEditorViewModel priceEditor = new PriceEditorViewModel(
                 lastPrice.Name,
@@ -72,17 +73,17 @@
             return priceEditor;
         }
 
-        public void AddFirstPrice(Guid itemGuid)
+        private void AddFirstPrice(Guid itemGuid)
         {
             Price firstPrice = new Price(
                 this.TableCountPlusOne(),
-                this.unitOfWork.FindItemByGuid(itemGuid).Price,
+                this.context.Items.FindItemByGuid(itemGuid).Price,
                 itemGuid);
 
             this.context.Prices.Add(firstPrice);
         }
 
-        public void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
+        private void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
             Price price = new Price(
                    this.TableCountPlusOne(),
@@ -92,14 +93,14 @@
             this.context.Prices.Add(price);
         }
 
-        public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
+        private void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
-            Item entity = this.unitOfWork.FindItemByGuid(itemGuid);
+            Item entity = this.context.Items.FindItemByGuid(itemGuid);
             entity.Price = priceEditor.CurrentPrice;
             this.context.Entry(entity).State = EntityState.Modified;
         }
 
-        public bool AnyPricesById(Guid itemGuid)
+        private bool AnyPricesById(Guid itemGuid)
         {
             return this.context.Prices
                 .Any(model => model.ItemId == itemGuid);
