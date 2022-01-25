@@ -9,13 +9,15 @@
 
     public interface IPriceRepository
     {
+        void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid);
+
         PriceEditorViewModel GetPriceEditor(Guid itemGuid);
 
         List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid);
 
         void AddFirstPrice(Guid itemGuid);
 
-        bool IfAnyPricesInDatabase(Guid itemGuid);
+        bool AnyPricesById(Guid itemGuid);
 
         void AddChangedPrice(Guid itemGuid, PriceEditorViewModel priceEditor);
 

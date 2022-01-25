@@ -14,10 +14,12 @@
     internal class ShoppingRepository : IShoppingRepository
     {
         private ShopDBContext context;
+        private IUnitOfWork unitOfWork;
 
-        public ShoppingRepository(ShopDBContext context)
+        public ShoppingRepository(ShopDBContext context, IUnitOfWork unitOfWork)
         {
             this.context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         public IEnumerable<ShoppingViewModel> GetItems()
@@ -41,7 +43,7 @@
 
         public void AddItemToCart(Guid itemId, string userName)
         {
-            Item item = this.FindItemById(itemId);
+            Item item = this.unitOfWork.FindItemByGuid(itemId);
 
             bool ifAnyItemExistId = this.IfItemExistInCartById(itemId, userName);
             if (!ifAnyItemExistId)
@@ -69,7 +71,7 @@
             List<ShoppingCartViewModel> listOfCartItems = new List<ShoppingCartViewModel>();
             foreach (var cartItem in this.GetAccountRelatedCarts(userName))
             {
-                var findElementById = this.FindElementById(cartItem.ItemId);
+                var findElementById = this.unitOfWork.FindItemByGuid(cartItem.ItemId);
                 ShoppingCartViewModel cart = new ShoppingCartViewModel(
                     cartItem.ItemId,
                     cartItem.UnitPrice,
@@ -107,7 +109,7 @@
                     item.UnitPrice,
                     userName);
 
-                var currentItem = this.FindElementById(item.ItemId);
+                var currentItem = this.unitOfWork.FindItemByGuid(item.ItemId);
                 ShoppingCartViewModel cartForMail = new ShoppingCartViewModel(
                     item.ItemId,
                     item.UnitPrice,
@@ -135,10 +137,10 @@
         public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName)
         {
             List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
-            foreach (var order in this.FindAccountOrders(userName))
+            foreach (var order in this.GetAccountOrders(userName))
             {
-                var foundDate = this.FindOrderDateById(order.OrderId);
-                var findElementById = this.FindItemByIdForOrders(order.ItemId);
+                var foundDate = this.FindOrderById(order.OrderId);
+                var findElementById = this.unitOfWork.FindItemByGuid(order.ItemId);
                 ShoppingHistoryViewModel shoppingHistoryModel = new ShoppingHistoryViewModel(
                     order.Id,
                     order.OrderId,
@@ -158,17 +160,11 @@
             return listOfShoppingHistory;
         }
 
-        private Order FindOrderDateById(int orderId)
+        private Order FindOrderById(int orderId)
         {
             return this.context.Orders
                 .Where(check => check.Id == orderId)
                 .FirstOrDefault();
-        }
-
-        private Item FindItemById(Guid itemId)
-        {
-            return this.context.Items
-                .Single(model => model.Id == itemId);
         }
 
         private bool IfItemExistInCartById(Guid itemId, string userName)
@@ -199,24 +195,10 @@
                 .Where(element => element.Account == userName);
         }
 
-        private Item FindElementById(Guid itemId)
-        {
-            return this.context.Items
-                .Where(check => check.Id == itemId)
-                .FirstOrDefault();
-        }
-
-        private IEnumerable<OrderDetail> FindAccountOrders(string userName)
+        private IEnumerable<OrderDetail> GetAccountOrders(string userName)
         {
             return this.context.OrderDetails
                 .Where(element => element.Account == userName);
-        }
-
-        private Item FindItemByIdForOrders(Guid itemId)
-        {
-            return this.context.Items
-                .Where(check => check.Id == itemId)
-                .FirstOrDefault();
         }
     }
 }

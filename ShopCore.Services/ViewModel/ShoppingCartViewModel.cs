@@ -34,6 +34,5 @@
             this.Quantity = quantity;
             this.Account = userName;
         }
-
     }
 }

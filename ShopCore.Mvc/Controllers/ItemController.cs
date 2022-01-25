@@ -24,7 +24,7 @@
 
         public IActionResult Index()
         {
-            List<CategoryViewModel> listOfCategories = this.itemRepository.GetCategories();
+            IList<CategoryViewModel> listOfCategories = this.itemRepository.GetCategories();
             this.ViewBag.CategoriesList = listOfCategories;
 
             return this.View();
@@ -33,7 +33,6 @@
         [HttpPost]
         public IActionResult Index(ItemViewModel objectItemViewModel, IFormFile files)
         {
-
             string newFileName = Utilities.File.GetFileFullName(files);
             byte[] imageContent = Utilities.File.GetImageContent(files);
 

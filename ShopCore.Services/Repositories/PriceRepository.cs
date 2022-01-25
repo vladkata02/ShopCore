@@ -14,10 +14,29 @@
     internal class PriceRepository : IPriceRepository
     {
         private ShopDBContext context;
+        private IUnitOfWork unitOfWork;
 
-        public PriceRepository(ShopDBContext context)
+        public PriceRepository(ShopDBContext context, IUnitOfWork unitOfWork)
         {
             this.context = context;
+            this.unitOfWork = unitOfWork;
+        }
+
+        public void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid)
+        {
+            if (priceEditor.CurrentPrice != 0)
+            {
+                bool hasAnyPrice = this.AnyPricesById(itemGuid);
+                if (!hasAnyPrice)
+                {
+                    this.AddFirstPrice(itemGuid);
+                    this.context.SaveChanges();
+                }
+
+                this.UpdatePrice(itemGuid, priceEditor);
+                this.AddChangedPrice(itemGuid, priceEditor);
+                this.context.SaveChanges();
+            }
         }
 
         public List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid)
@@ -25,7 +44,7 @@
             List<PriceHistoryViewModel> listOfItemsHistory = new List<PriceHistoryViewModel>();
             foreach (var price in this.GetPriceHistoryById(itemGuid))
             {
-                var item = this.FindItemById(price.ItemId);
+                var item = this.unitOfWork.FindItemByGuid(price.ItemId);
                 PriceHistoryViewModel priceHistoryModel = new PriceHistoryViewModel(
                         price.PriceValue,
                         price.Date,
@@ -41,7 +60,7 @@
 
         public PriceEditorViewModel GetPriceEditor(Guid itemGuid)
         {
-            var lastPrice = this.GetItemWithCurrentPrice(itemGuid);
+            var lastPrice = this.unitOfWork.FindItemByGuid(itemGuid);
 
             PriceEditorViewModel priceEditor = new PriceEditorViewModel(
                 lastPrice.Name,
@@ -57,7 +76,7 @@
         {
             Price firstPrice = new Price(
                 this.TableCountPlusOne(),
-                this.FindItemWithOriginalPrice(itemGuid).Price,
+                this.unitOfWork.FindItemByGuid(itemGuid).Price,
                 itemGuid);
 
             this.context.Prices.Add(firstPrice);
@@ -75,29 +94,15 @@
 
         public void UpdatePrice(Guid itemGuid, PriceEditorViewModel priceEditor)
         {
-            Item entity = this.FindItemWithOriginalPrice(itemGuid);
+            Item entity = this.unitOfWork.FindItemByGuid(itemGuid);
             entity.Price = priceEditor.CurrentPrice;
             this.context.Entry(entity).State = EntityState.Modified;
         }
 
-        public bool IfAnyPricesInDatabase(Guid itemGuid)
+        public bool AnyPricesById(Guid itemGuid)
         {
             return this.context.Prices
                 .Any(model => model.ItemId == itemGuid);
-        }
-
-        // TODO Method actualy gets item from items by Guid
-        private Item GetItemWithCurrentPrice(Guid itemGuid)
-        {
-            return this.context.Items
-                .SingleOrDefault(model => model.Id == itemGuid);
-        }
-
-        // TODO Method actualy gets item from items by Guid
-        private Item FindItemWithOriginalPrice(Guid itemGuid)
-        {
-            return this.context.Items
-                .FirstOrDefault(item => item.Id == itemGuid);
         }
 
         private int TableCountPlusOne()
@@ -109,14 +114,6 @@
         {
             return this.context.Prices
                 .Where(element => element.ItemId == itemGuid);
-        }
-
-        // TODO Method actualy gets item from items by Guid
-        private Item FindItemById(Guid itemId)
-        {
-            return this.context.Items
-                .Where(check => check.Id == itemId)
-                .FirstOrDefault();
         }
     }
 }

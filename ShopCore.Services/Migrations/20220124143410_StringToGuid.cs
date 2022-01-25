@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace ShopCore.Services.Migrations
+﻿namespace ShopCore.Services.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class StringToGuid : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

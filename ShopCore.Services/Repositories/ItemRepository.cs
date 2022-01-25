@@ -16,12 +16,12 @@
     {
         private ShopDBContext context;
 
-        public ItemRepository(ShopDBContext context)
+        public ItemRepository(ShopDBContext context, IUnitOfWork unitOfWork)
         {
             this.context = context;
         }
 
-        public List<CategoryViewModel> GetCategories()
+        public IList<CategoryViewModel> GetCategories()
         {
             return this.context.Categories
                 .Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name })
