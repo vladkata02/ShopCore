@@ -2,14 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using ShopCore.Data.Context;
+    using Microsoft.AspNetCore.Http;
     using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
 
-    public class ItemRepository : IItemRepository
+    internal class ItemRepository : IItemRepository
     {
         private ShopDBContext context;
 
@@ -18,21 +21,26 @@
             this.context = context;
         }
 
-        public List<Category> GetCategories()
+        public IList<CategoryViewModel> GetCategories()
         {
             return this.context.Categories
-                .Select(x => new Category { Id = x.Id, Name = x.Name })
+                .Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name })
                 .ToList();
         }
 
-        public void AddItem(Item objItem)
+        public void Add(ItemViewModel itemViewModel, string newFileName, byte[] imageContent)
         {
-            this.context.Items.Add(objItem);
-        }
+            var item = new Item(
+                      itemViewModel.CategoryId,
+                      itemViewModel.Description,
+                      itemViewModel.Code,
+                      itemViewModel.Name,
+                      itemViewModel.Brand,
+                      itemViewModel.Price,
+                      newFileName,
+                      imageContent);
 
-        public void Save()
-        {
-            this.context.SaveChanges();
+            this.context.Items.Add(item);
         }
     }
 }

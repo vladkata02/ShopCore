@@ -9,10 +9,8 @@
 
     public interface IUserRepository
     {
-        void Add(User user);
+        void Add(RegisterViewModel model);
 
-        void Save();
-
-        User LoginCheck(LoginViewModel model);
+        UserViewModel LoginVerification(LoginViewModel model);
     }
 }

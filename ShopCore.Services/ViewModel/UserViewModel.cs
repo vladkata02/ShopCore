@@ -1,14 +1,13 @@
-namespace ShopCore.Data.Models
+﻿namespace ShopCore.Services.ViewModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-    [Table("Users")]
-    public class User
+    public class UserViewModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Username { get; set; }
@@ -17,12 +16,9 @@ namespace ShopCore.Data.Models
 
         public string Roles { get; set; }
 
-        public User()
+        public UserViewModel(int id, string userName, string password, string roles)
         {
-        }
-
-        public User(string userName, string password, string roles)
-        {
+            this.Id = id;
             this.Username = userName;
             this.Password = password;
             this.Roles = roles;

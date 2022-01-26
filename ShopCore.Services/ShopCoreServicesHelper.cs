@@ -9,7 +9,7 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
 
-    public static class ShopCoreServicesCollection
+    public static class ShopCoreServicesHelper
     {
     public static IServiceCollection AddShopCoreServices(this IServiceCollection services)
     {
@@ -18,6 +18,7 @@
             services.AddScoped<IPriceRepository, PriceRepository>();
             services.AddScoped<IShoppingRepository, ShoppingRepository>();
             services.AddScoped<IShoppingHistoryRepository, ShoppingHistoryRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
     }

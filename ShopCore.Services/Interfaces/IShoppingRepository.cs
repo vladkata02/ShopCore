@@ -9,36 +9,18 @@
 
     public interface IShoppingRepository
     {
-        IEnumerable<Category> GetCategories();
+        IEnumerable<ShoppingViewModel> GetItems();
 
-        IEnumerable<Item> GetItems();
+        void AddItemToCart(Guid itemId, string userName);
 
-        Item FindItemById(string itemId);
+        List<ShoppingCartViewModel> DisplayShoppingCart(string userName);
 
-        Cart IfItemExistInCartById(string itemId, string userName);
+        int AddOrderTime();
 
-        void AddToCartItem(Cart objShoppingCartModel);
+        void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail);
 
-        Cart FindItemQuantityById(string itemId, string userName);
+        void ClearCart(string userName);
 
-        IEnumerable<Cart> FindWhichAccoutCartIs(string userName);
-
-        Item FindElementById(Cart cart);
-
-        void AddOrderTime(Order orderObj);
-
-        void AddOrderDetails(OrderDetail objOrderDetail);
-
-        Order FindDateById(OrderDetail order);
-
-        Item FindItemByIdForOrders(OrderDetail order);
-
-        IEnumerable<OrderDetail> FindAccOrders(string userName);
-
-        void RemoveItem(Cart item);
-
-        int TableCount();
-
-        void Save();
+        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName);
     }
 }

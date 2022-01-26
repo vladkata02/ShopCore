@@ -11,144 +11,61 @@
     using Microsoft.Extensions.Options;
     using RazorEngine;
     using RazorEngine.Templating;
-    using ShopCore.Data;
-    using ShopCore.Data.Context;
-    using ShopCore.Data.Models;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Settings;
     using ShopCore.Services.ViewModel;
+    using static ShopCore.Services.Settings.MailSettings;
     using SmtpClient = System.Net.Mail.SmtpClient;
 
     public class ShoppingController : Controller
     {
         private readonly MailSettings mailSettings;
         private IShoppingRepository shoppingRepository;
+        private IUnitOfWork unitOfWork;
 
-        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings)
+        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings, IUnitOfWork unitOfWork)
         {
             this.shoppingRepository = shoppingRepository;
             this.mailSettings = mailSettings.Value;
+            this.unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<ShoppingViewModel> listOfShoppingViewModels = (from objectItem in this.shoppingRepository.GetItems()
-                                                                       join
-                                                                           objectCategory in this.shoppingRepository.GetCategories()
-                                                                           on objectItem.CategoryId equals objectCategory.Id
-                                                                       select new ShoppingViewModel()
-                                                                       {
-                                                                           ItemName = objectItem.Name,
-                                                                           ImageContent = objectItem.ImageContent,
-                                                                           Description = objectItem.Description,
-                                                                           ItemPrice = objectItem.Price,
-                                                                           ItemBrand = objectItem.Brand,
-                                                                           ItemId = objectItem.Id,
-                                                                           Category = objectCategory.Name,
-                                                                           ItemCode = objectItem.Code,
-                                                                       })
-                                                                        .ToList();
-            return this.View(listOfShoppingViewModels);
+            return this.View(this.shoppingRepository.GetItems());
         }
 
         [HttpPost]
-        public JsonResult Index(string itemId)
+        public JsonResult Index(Guid itemId)
         {
             string userName = this.HttpContext.User.Identity.Name;
-            Cart objectShoppingCartModel = new Cart();
-            Item objectItem = this.shoppingRepository.FindItemById(itemId);
+            this.shoppingRepository.AddItemToCart(itemId, userName);
+            this.unitOfWork.SaveChanges();
 
-            var ifAnyItemExistId = this.shoppingRepository.IfItemExistInCartById(itemId, userName);
-            if (ifAnyItemExistId == null)
-            {
-                objectShoppingCartModel.Id = this.shoppingRepository.TableCount();
-                objectShoppingCartModel.ItemId = itemId;
-                objectShoppingCartModel.ImageContent = objectItem.ImageContent;
-                objectShoppingCartModel.ItemName = objectItem.Name;
-                objectShoppingCartModel.Quantity = 1;
-                objectShoppingCartModel.Total = objectItem.Price;
-                objectShoppingCartModel.Account = userName;
-                objectShoppingCartModel.UnitPrice = objectItem.Price;
-                this.shoppingRepository.AddToCartItem(objectShoppingCartModel);
-            }
-            else
-            {
-                var foundItem = this.shoppingRepository.FindItemQuantityById(itemId, userName);
-                foundItem.Quantity++;
-                foundItem.Total = foundItem.Quantity * foundItem.UnitPrice;
-            }
-
-            this.shoppingRepository.Save();
             return this.Json(new { Success = true });
         }
 
         public IActionResult ShoppingCart()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            List<ShoppingCartModel> list = new List<ShoppingCartModel>();
-            foreach (var cart in this.shoppingRepository.FindWhichAccoutCartIs(userName))
-            {
-                ShoppingCartModel objCart = new ShoppingCartModel();
-                objCart.ItemId = cart.ItemId;
-                objCart.UnitPrice = cart.UnitPrice;
-                objCart.Total = cart.Total;
 
-                var findElementById = this.shoppingRepository.FindElementById(cart);
-                objCart.ImageContent = findElementById.ImageContent;
-                objCart.ItemBrand = findElementById.Brand;
-                objCart.ItemName = findElementById.Name;
-                objCart.Quantity = cart.Quantity;
-                objCart.Account = userName;
-
-                list.Add(objCart);
-            }
-
-            return this.View(list);
+            return this.View(this.shoppingRepository.DisplayShoppingCart(userName));
         }
 
         [HttpPost]
         public IActionResult AddOrder(string email)
         {
             string userName = this.HttpContext.User.Identity.Name;
-            Order objectOrder = new Order()
-            {
-                Date = DateTime.Now,
-                Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now),
-            };
-            this.shoppingRepository.AddOrderTime(objectOrder);
-            this.shoppingRepository.Save();
-            int orderId = objectOrder.Id;
+            int orderId = this.shoppingRepository.AddOrderTime();
+            this.unitOfWork.SaveChanges();
 
-            List<ShoppingCartModel> receiptForMail = new List<ShoppingCartModel>();
+            List<ShoppingCartViewModel> receiptForMail = new List<ShoppingCartViewModel>();
 
-            foreach (var item in this.shoppingRepository.FindWhichAccoutCartIs(userName))
-            {
-                OrderDetail objectOrderDetails = new OrderDetail();
-                objectOrderDetails.Total = item.Total;
-                objectOrderDetails.ItemId = item.ItemId;
-                objectOrderDetails.OrderId = orderId;
-                objectOrderDetails.Quantity = item.Quantity;
-                objectOrderDetails.UnitPrice = item.UnitPrice;
-                objectOrderDetails.Account = userName;
+            this.shoppingRepository.AddOrder(userName, orderId, receiptForMail);
 
-                ShoppingCartModel objectCartForMail = new ShoppingCartModel();
-                objectCartForMail.ItemId = item.ItemId;
-                objectCartForMail.UnitPrice = item.UnitPrice;
-                objectCartForMail.Total = item.Total;
-
-                var currentElement = this.shoppingRepository.FindElementById(item);
-                objectCartForMail.ImageContent = currentElement.ImageContent;
-                objectCartForMail.ItemBrand = currentElement.Brand;
-                objectCartForMail.ItemName = currentElement.Name;
-                objectCartForMail.Quantity = item.Quantity;
-                objectCartForMail.Account = userName;
-
-                receiptForMail.Add(objectCartForMail);
-                this.shoppingRepository.AddOrderDetails(objectOrderDetails);
-            }
-
-            string templatePath = System.IO.File.ReadAllText(this.mailSettings.TemplatePath);
-            var renderedTemplate = Engine.Razor.RunCompile(templatePath, DateTime.Now.TimeOfDay.ToString(), null, receiptForMail);
+            TemplateType template = TemplateType.Receipt;
+            string templateContent = System.IO.File.ReadAllText(MailSettings.GetFilePath(template));
+            var renderedTemplate = Engine.Razor.RunCompile(templateContent, DateTime.Now.TimeOfDay.ToString(), null, receiptForMail);
 
             MailMessage mail = new MailMessage { Subject = "Order " + orderId + " Receipt", IsBodyHtml = true };
             mail.Body = renderedTemplate;
@@ -158,42 +75,17 @@
             var smtpClient = new SmtpClient(this.mailSettings.SmtpServer, this.mailSettings.Port);
             smtpClient.Send(mail);
 
-            foreach (var item in this.shoppingRepository.FindWhichAccoutCartIs(userName))
-            {
-                this.shoppingRepository.RemoveItem(item);
-            }
+            this.shoppingRepository.ClearCart(userName);
 
-            this.shoppingRepository.Save();
+            this.unitOfWork.SaveChanges();
             return this.RedirectToAction("Index");
         }
 
         public IActionResult ShoppingHistory()
         {
             string userName = this.HttpContext.User.Identity.Name;
-            List<ShoppingHistoryModel> listOfShoppingHistory = new List<ShoppingHistoryModel>();
-            foreach (var order in this.shoppingRepository.FindAccOrders(userName))
-            {
-                ShoppingHistoryModel objectShoppingHistoryModel = new ShoppingHistoryModel();
-                objectShoppingHistoryModel.OrderDetailId = order.Id;
-                objectShoppingHistoryModel.OrderNumber = order.OrderId;
-                objectShoppingHistoryModel.ItemId = order.ItemId;
-                objectShoppingHistoryModel.UnitPrice = order.UnitPrice;
-                objectShoppingHistoryModel.Total = order.Total;
 
-                var foundDate = this.shoppingRepository.FindDateById(order);
-                objectShoppingHistoryModel.OrderDate = foundDate.Date;
-
-                var findElementById = this.shoppingRepository.FindItemByIdForOrders(order);
-                objectShoppingHistoryModel.ImageContent = findElementById.ImageContent;
-                objectShoppingHistoryModel.ItemBrand = findElementById.Brand;
-                objectShoppingHistoryModel.ItemName = findElementById.Name;
-                objectShoppingHistoryModel.Quantity = order.Quantity;
-                objectShoppingHistoryModel.Account = userName;
-
-                listOfShoppingHistory.Add(objectShoppingHistoryModel);
-            }
-
-            return this.View(listOfShoppingHistory);
+            return this.View(this.shoppingRepository.GetShoppingHistory(userName));
         }
     }
 }

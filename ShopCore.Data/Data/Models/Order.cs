@@ -11,5 +11,11 @@ namespace ShopCore.Data.Models
         public System.DateTime Date { get; set; }
 
         public string Number { get; set; }
+
+        public Order()
+        {
+            this.Date = DateTime.Now;
+            this.Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now);
+        }
     }
 }

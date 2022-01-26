@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
     using ShopCore.Data.Models;
+    using ShopCore.Services.ViewModel;
 
     public interface IItemRepository
     {
-        List<Category> GetCategories();
+        IList<CategoryViewModel> GetCategories();
 
-        void AddItem(Item objItem);
-
-        void Save();
+        void Add(ItemViewModel itemViewModel, string newFileName, byte[] imageContent);
     }
 }

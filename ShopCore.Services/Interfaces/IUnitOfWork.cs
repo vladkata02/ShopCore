@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using ShopCore.Data.Models;
-    using ShopCore.Services.ViewModel;
 
-    public interface IShoppingHistoryRepository
+    public interface IUnitOfWork
     {
-        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName);
+        void SaveChanges();
     }
 }

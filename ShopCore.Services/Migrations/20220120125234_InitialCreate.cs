@@ -1,9 +1,9 @@
-﻿namespace ShopCore.Data.Migrations
+﻿namespace ShopCore.Services.Migrations
 {
     using System;
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,7 +97,7 @@
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PriceValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },

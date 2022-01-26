@@ -13,9 +13,9 @@ namespace ShopCore
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ShopCore.Data;
-    using ShopCore.Data.Context;
     using ShopCore.Data.Models;
     using ShopCore.Services;
+    using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
     using ShopCore.Services.Settings;
@@ -39,8 +39,6 @@ namespace ShopCore
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
-            services.AddDbContext<ShopDBContext>(options =>
-            options.UseSqlServer("DefaultConnectionString"));
             services.AddShopCoreServices();
             services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));
             services.AddControllers();
@@ -70,7 +68,7 @@ namespace ShopCore
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Shopping}/{action=Index}/{id?}");
             });
         }
     }

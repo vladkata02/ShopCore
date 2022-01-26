@@ -9,24 +9,10 @@
 
     public interface IPriceRepository
     {
-        Item FindElementById(Guid itemId);
+        void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid);
 
-        bool IfAnyPricesInDatabase(Guid itemId);
+        PriceEditorViewModel GetPriceEditor(Guid itemGuid);
 
-        Item CheckOriginalPrice(Guid itemId);
-
-        void Save();
-
-        int TableCount();
-
-        void AddFirstPrice(Price objFirstPrice);
-
-        void AddChangedPrice(Price objPrice);
-
-        void UpdatePrice(Item entity);
-
-        IEnumerable<Price> FindPriceHistoryById(Guid itemId);
-
-        Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
+        List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid);
     }
 }
