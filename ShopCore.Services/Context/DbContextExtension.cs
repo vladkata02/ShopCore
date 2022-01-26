@@ -8,7 +8,7 @@
     using Microsoft.EntityFrameworkCore;
     using ShopCore.Data.Models;
 
-    public static class ExtensionMethods
+    public static class DbContextExtension
     {
         public static Item FindItemByGuid(this DbSet<Item> items, Guid itemId)
         {
