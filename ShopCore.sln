@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Services", "ShopCo
 		{DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D} = {DA1B73C3-EA57-4BD4-A5BD-2DDD5107FA0D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopCore.Utilities", "ShopCore.Utilities\ShopCore.Utilities.csproj", "{560F2609-5E31-4186-8F67-E0898197BB08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Utilities", "ShopCore.Utilities\ShopCore.Utilities.csproj", "{560F2609-5E31-4186-8F67-E0898197BB08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopCore.StatisticsMail", "ShopCore.StatisticsMail\ShopCore.StatisticsMail.csproj", "{48D55BD1-9276-49AD-8235-000277E017DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{560F2609-5E31-4186-8F67-E0898197BB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{560F2609-5E31-4186-8F67-E0898197BB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{560F2609-5E31-4186-8F67-E0898197BB08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48D55BD1-9276-49AD-8235-000277E017DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48D55BD1-9276-49AD-8235-000277E017DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48D55BD1-9276-49AD-8235-000277E017DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48D55BD1-9276-49AD-8235-000277E017DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
