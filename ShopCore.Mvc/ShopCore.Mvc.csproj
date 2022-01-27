@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.1.2" />
+    <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <PackageReference Include="MailKit" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
@@ -29,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
     <ProjectReference Include="..\ShopCore.Services\ShopCore.Services.csproj" />
+    <ProjectReference Include="..\ShopCore.StatisticsMail\ShopCore.DailyOrders.csproj" />
     <ProjectReference Include="..\ShopCore.Utilities\ShopCore.Utilities.csproj" />
   </ItemGroup>
 

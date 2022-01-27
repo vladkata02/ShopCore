@@ -4,6 +4,8 @@ namespace ShopCore
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -19,6 +21,7 @@ namespace ShopCore
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
     using ShopCore.Services.Settings;
+    using ShopCore.StatisticsMail;
 
     public class Startup
     {
@@ -32,6 +35,10 @@ namespace ShopCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHangfire(options =>
+            {
+                 options.UseMemoryStorage();
+            });
             services.AddSession();
             services.AddMemoryCache();
             services.AddMvc();
@@ -45,6 +52,7 @@ namespace ShopCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -60,9 +68,12 @@ namespace ShopCore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            RecurringJob.AddOrUpdate<EveryDayMailSender>("Today's activity", x => x.SendStatisticsMail(), "0 21 * * *");
 
             app.UseEndpoints(endpoints =>
             {
