@@ -1,38 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ShopCore.Data.Context;
-using ShopCore.Data.Models;
-using ShopCore.Services.Interfaces;
-using ShopCore.Services.ViewModel;
-
-namespace ShopCore.Services.Repositories
+﻿namespace ShopCore.Services.Repositories
 {
-    public class ShoppingHistoryRepository : IShoppingHistoryRepository
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
+
+    internal class ShoppingHistoryRepository : IShoppingHistoryRepository
     {
         private ShopDBContext context;
+        private IUnitOfWork unitOfWork;
 
-        public ShoppingHistoryRepository(ShopDBContext context)
+        public ShoppingHistoryRepository(ShopDBContext context, IUnitOfWork unitOfWork)
         {
             this.context = context;
+            this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<OrderDetail> FindAccOrders(string userName)
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName)
         {
-            return this.context.OrderDetails.Where(element => element.Account == userName);
+            List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
+            foreach (var order in this.FindAccountOrders(userName))
+            {
+                var foundDate = this.FindOrderById(order.OrderId);
+                var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
+                ShoppingHistoryViewModel objectShoppingHistoryModel = new ShoppingHistoryViewModel(
+                    order.Id,
+                    order.OrderId,
+                    order.ItemId,
+                    order.UnitPrice,
+                    order.Total,
+                    foundDate.Date,
+                    findElementById.ImageContent,
+                    findElementById.Brand,
+                    findElementById.Name,
+                    order.Quantity,
+                    userName);
+
+                listOfShoppingHistory.Add(objectShoppingHistoryModel);
+            }
+
+            return listOfShoppingHistory;
         }
 
-        public Order FindDateById(OrderDetail order)
+        private IEnumerable<OrderDetail> FindAccountOrders(string userName)
         {
-            return this.context.Orders.Where(check => check.Id == order.OrderId).FirstOrDefault();
+            return this.context.OrderDetails
+                .Where(element => element.Account == userName);
         }
 
-        public Item FindItemByIdForOrders(OrderDetail order)
+        private Order FindOrderById(int orderId)
         {
-            return this.context.Items.Where(check => check.Id.ToString() == order.ItemId).FirstOrDefault();
+            return this.context.Orders
+                .Where(check => check.Id == orderId)
+                .FirstOrDefault();
         }
     }
 }

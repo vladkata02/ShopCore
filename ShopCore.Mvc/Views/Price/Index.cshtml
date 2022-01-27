@@ -14,7 +14,7 @@
             <div>
                 <div class="col-md-12">
                     @{
-                        string imageBase64 = Convert.ToBase64String(Model.Image);
+                        string imageBase64 = Convert.ToBase64String(Model.ImageContent);
                         string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
                         <img src="@imageSrc" width="210" height="160" />
                     }
@@ -36,8 +36,8 @@
         </div>
 
         <div>
-            <button name="button" value="@Model.ItemId" class="btn btn-primary" asp-controller="Price" asp-action="ChangePrice">Save</button>
-            <button name="button" value="@Model.ItemId" class="btn btn-secondary" asp-controller="Price" asp-action="PriceHistory">View item`s price history</button>
+            <button name="itemGuid" value="@Model.ItemId" class="btn btn-primary" asp-controller="Price" asp-action="PriceHistory">Save</button>
+            <button name="itemGuid" value="@Model.ItemId" class="btn btn-secondary" asp-controller="Price" asp-action="PriceHistory">View item's price history</button>
         </div>
     </form>
 </div>

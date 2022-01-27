@@ -8,8 +8,14 @@ namespace ShopCore.Data.Models
     {
         public int Id { get; set; }
 
-        public System.DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
         public string Number { get; set; }
+
+        public Order()
+        {
+            this.Date = DateTime.Now;
+            this.Number = string.Format("{0:ddmmyyyyyHHmmsss}", DateTime.Now);
+        }
     }
 }

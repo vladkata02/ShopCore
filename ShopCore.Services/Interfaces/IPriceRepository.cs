@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ShopCore.Data.Models;
-using ShopCore.Services.ViewModel;
-
-namespace ShopCore.Services.Interfaces
+﻿namespace ShopCore.Services.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.ViewModel;
+
     public interface IPriceRepository
     {
-        Item CheckId(Guid itemId);
+        void ChangePrice(PriceEditorViewModel priceEditor, Guid itemGuid);
 
-        bool IfAnyCheckId(Guid itemId);
+        PriceEditorViewModel GetPriceEditor(Guid itemGuid);
 
-        Item CheckOriginalPrice(Guid itemId);
-
-        void Save();
-
-        int TableCount();
-
-        void AddFirstPrice(Price objFirstPrice);
-
-        void AddChangedPrice(Price objPrice);
-
-        void UpdatePrice(Item entity);
-
-        IEnumerable<Price> WhereId(Guid itemId);
-
-        Item FindItemById(Guid itemId, PriceHistoryViewModel objPriceHistoryModel);
+        List<PriceHistoryViewModel> GetPriceHistory(Guid itemGuid);
     }
 }

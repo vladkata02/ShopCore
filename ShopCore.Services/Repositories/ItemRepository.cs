@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using ShopCore.Data.Context;
-using ShopCore.Data.Models;
-using ShopCore.Services.Interfaces;
-
-namespace ShopCore.Services.Repositories
+﻿namespace ShopCore.Services.Repositories
 {
-    public class ItemRepository : IItemRepository
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+    using ShopCore.Data.Models;
+    using ShopCore.Services.Context;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
+
+    internal class ItemRepository : IItemRepository
     {
         private ShopDBContext context;
 
@@ -18,19 +21,26 @@ namespace ShopCore.Services.Repositories
             this.context = context;
         }
 
-        public List<Category> GetCategories()
+        public IList<CategoryViewModel> GetCategories()
         {
-            return this.context.Categories.Select(x => new Category { Id = x.Id, Name = x.Name }).ToList();
+            return this.context.Categories
+                .Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name })
+                .ToList();
         }
 
-        public void AddItem(Item objItem)
+        public void Add(ItemViewModel itemViewModel, string newFileName, byte[] imageContent)
         {
-            this.context.Items.Add(objItem);
-        }
+            var item = new Item(
+                      itemViewModel.CategoryId,
+                      itemViewModel.Description,
+                      itemViewModel.Code,
+                      itemViewModel.Name,
+                      itemViewModel.Brand,
+                      itemViewModel.Price,
+                      newFileName,
+                      imageContent);
 
-        public void Save()
-        {
-            this.context.SaveChanges();
+            this.context.Items.Add(item);
         }
     }
 }

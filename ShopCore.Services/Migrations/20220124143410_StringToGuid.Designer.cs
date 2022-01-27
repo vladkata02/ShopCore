@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopCore.Data.Context;
+using ShopCore.Services.Context;
 
-namespace ShopCore.Data.Migrations
+namespace ShopCore.Services.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20220105080415_Initial")]
-    partial class Initial
+    [Migration("20220124143410_StringToGuid")]
+    partial class StringToGuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,8 +34,8 @@ namespace ShopCore.Data.Migrations
                     b.Property<byte[]>("ImageContent")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
@@ -135,8 +135,8 @@ namespace ShopCore.Data.Migrations
                     b.Property<string>("Account")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -165,8 +165,8 @@ namespace ShopCore.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PriceValue")
                         .HasColumnType("decimal(18,2)");

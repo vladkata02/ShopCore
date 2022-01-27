@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using ShopCore.Data.Models;
-using ShopCore.Services.Interfaces;
-using ShopCore.Services.ViewModel;
-
-namespace ShopCore.Controllers
+﻿namespace ShopCore.Controllers
 {
-    public class AccountController : Controller
-    {
-        private IAccountRepository accountRepository;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Mvc;
+    using ShopCore.Services.Interfaces;
+    using ShopCore.Services.ViewModel;
 
-        public AccountController(IAccountRepository accountRepository)
+    public class UserController : Controller
+    {
+        private IUserRepository userRepository;
+        private IUnitOfWork unitOfWork;
+
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public IActionResult Register()
@@ -29,13 +30,8 @@ namespace ShopCore.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                User user = new User();
-                user.Username = model.UserName;
-                user.Password = model.Password;
-                user.Roles = "Manager,Admin";
-
-                this.accountRepository.AddAccount(user);
-                this.accountRepository.Save();
+                this.userRepository.Add(model);
+                this.unitOfWork.SaveChanges();
 
                 this.TempData["message"] = "User created successfully!";
             }
@@ -53,7 +49,7 @@ namespace ShopCore.Controllers
         {
             bool isUservalid = false;
 
-            User user = this.accountRepository.LoginCheck(model);
+            UserViewModel user = this.userRepository.LoginVerification(model);
 
             if (user != null)
             {
@@ -82,11 +78,11 @@ namespace ShopCore.Controllers
 
                 this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
 
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("Index", "Shopping");
             }
             else
             {
-                this.TempData["message"] = "Invalid UserName or Password!";
+                this.TempData["message"] = "Invalid username or password!";
             }
 
             return this.View();
@@ -97,7 +93,7 @@ namespace ShopCore.Controllers
         {
             this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return this.RedirectToAction("Login", "Account");
+            return this.RedirectToAction("Login", "User");
         }
     }
 }
