@@ -9,6 +9,6 @@
 
     public interface IEveryDayMailSenderRepository
     {
-        public List<ShoppingHistoryViewModel> GetTodaysOrders();
+        public void GetTodaysOrders(List<ShoppingHistoryViewModel> itemsSoldForTheDay);
     }
 }

@@ -19,42 +19,34 @@
             this.context = context;
         }
 
-        public List<ShoppingHistoryViewModel> GetTodaysOrders()
+        public void GetTodaysOrders(List<ShoppingHistoryViewModel> itemsSoldForTheDay)
         {
-            List<ShoppingHistoryViewModel> listOfTodayShoppingHistory = new List<ShoppingHistoryViewModel>();
-            foreach (var order in this.GetTodayOrderDetailsById())
+            foreach (var order in this.context.OrderDetails)
             {
                 var foundDate = this.FindOrderById(order.OrderId);
-                var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
-                ShoppingHistoryViewModel todayShoppingHistoryModel = new ShoppingHistoryViewModel(
+                if (foundDate.Date < DateTime.Today)
+                {
+                    continue;
+                }
+                else
+                {
+                    var foundElementByGuid = this.context.Items.FindItemByGuid(order.ItemId);
+                    ShoppingHistoryViewModel todayShoppingHistory = new ShoppingHistoryViewModel(
                     order.Id,
                     order.OrderId,
                     order.ItemId,
                     order.UnitPrice,
                     order.Total,
                     foundDate.Date,
-                    findElementById.ImageContent,
-                    findElementById.Brand,
-                    findElementById.Name,
+                    foundElementByGuid.ImageContent,
+                    foundElementByGuid.Brand,
+                    foundElementByGuid.Name,
                     order.Quantity,
                     order.Account);
 
-                listOfTodayShoppingHistory.Add(todayShoppingHistoryModel);
+                    itemsSoldForTheDay.Add(todayShoppingHistory);
+                }
             }
-
-            return listOfTodayShoppingHistory;
-        }
-
-        private IEnumerable<OrderDetail> GetTodayOrderDetailsById()
-        {
-            IEnumerable<Order> order = this.GetTodayOrdersByDate();
-            return this.context.OrderDetails.Where(x => order.Any(y => y.Id == x.OrderId));
-        }
-
-        private IEnumerable<Order> GetTodayOrdersByDate()
-        {
-            return this.context.Orders
-                .Where(element => element.Date == DateTime.Today);
         }
 
         private Order FindOrderById(int orderId)

@@ -1,38 +1,60 @@
 ﻿@{
     decimal TotalAmount = 0.00M;
 }
-<h2>Receipt about your last order from our site ShopCore</h2>
+<h2>Today's Orders</h2>
 <table class="table-condensed" style="width:100%">
+    <tr>
+        <td>
+        </td>
+        <td style="text-align: right">
+            <h3> Brand</h3>
+        </td>
+        <td style="text-align: right">
+            <h3> Name</h3>
+        </td>
+        <td style="text-align: right">
+            <h3> Quantity</h3>
+        </td>
+        <td style="text-align: right">
+            <h3>UnitPrice</h3>
+        </td>
+        <td style="text-align: right">
+            <h3>Total</h3>
+        </td>
+        <td style="text-align: right">
+            <h3>Account</h3>
+        </td>
+    </tr>
     @foreach (var item in Model)
     {
         TotalAmount += item.Total;
-    <tr>
-        <td>
-            @{
-                string imageBase64 = Convert.ToBase64String(item.ImageContent);
-                string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
-                <img src="@imageSrc" width="50" height="50" />
-            }
-        </td>
-        <td style="text-align: right">
-            @item.ItemBrand
-        </td>
-        <td style="text-align: right">
-            @item.ItemName
-        </td>
-        <td style="text-align: right">
-            @item.Quantity.ToString("x#,##0")
-        </td>
-        <td style="text-align: right">
-            @item.UnitPrice.ToString("#,##,00лв.")
-        </td>
-        <td style="text-align: right">
-            @item.Total.ToString("#,##,00лв.")
-        </td>
-        <td style="text-align: right">
-            @item.ItemName
-        </td>
-    </tr>
+        <tr>
+            <td>
+                @{
+                    string imageBase64 = Convert.ToBase64String(item.ImageContent);
+                    string imageSrc = string.Format("data:image/.;base64,{0}", imageBase64);
+                    <img src="@imageSrc" width="50" height="50" />
+                }
+            </td>
+            <td style="text-align: right">
+                @item.ItemBrand
+            </td>
+            <td style="text-align: right">
+                @item.ItemName
+            </td>
+            <td style="text-align: right">
+                @item.Quantity.ToString("x#,##0")
+            </td>
+            <td style="text-align: right">
+                @item.UnitPrice.ToString("#,##,00лв.")
+            </td>
+            <td style="text-align: right">
+                @item.Total.ToString("#,##,00лв.")
+            </td>
+            <td style="text-align: right">
+                @item.Account
+            </td>
+        </tr>
     }
     <tr style="border-top:2px solid blue">
         <td colspan="5" style="text-align: right">

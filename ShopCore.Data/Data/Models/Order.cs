@@ -8,7 +8,7 @@ namespace ShopCore.Data.Models
     {
         public int Id { get; set; }
 
-        public System.DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
         public string Number { get; set; }
 
