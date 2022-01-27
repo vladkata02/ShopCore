@@ -10,11 +10,11 @@
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
-    internal class EveryDayMailSenderRepository : IEveryDayMailSenderRepository
+    internal class MailSenderRepository : IMailSenderRepository
     {
         private ShopDBContext context;
 
-        public EveryDayMailSenderRepository(ShopDBContext context)
+        public MailSenderRepository(ShopDBContext context)
         {
             this.context = context;
         }

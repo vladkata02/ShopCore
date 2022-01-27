@@ -15,9 +15,9 @@
     public class MailSender
     {
         private readonly MailSettings mailSettings;
-        private IEveryDayMailSenderRepository everyDayMailSenderRepository;
+        private IMailSenderRepository everyDayMailSenderRepository;
 
-        public MailSender(IOptions<MailSettings> mailSettings, IEveryDayMailSenderRepository everyDayMailSenderRepository)
+        public MailSender(IOptions<MailSettings> mailSettings, IMailSenderRepository everyDayMailSenderRepository)
         {
             this.mailSettings = mailSettings.Value;
             this.everyDayMailSenderRepository = everyDayMailSenderRepository;

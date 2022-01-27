@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using ShopCore.Services.ViewModel;
 
-    public interface IEveryDayMailSenderRepository
+    public interface IMailSenderRepository
     {
         public void GetTodaysOrders(List<ShoppingHistoryViewModel> itemsSoldForTheDay);
     }
