@@ -12,12 +12,12 @@
     using ShopCore.Services.ViewModel;
     using static ShopCore.Services.Settings.MailSettings;
 
-    public class EveryDayMailSender
+    public class MailSender
     {
         private readonly MailSettings mailSettings;
         private IEveryDayMailSenderRepository everyDayMailSenderRepository;
 
-        public EveryDayMailSender(IOptions<MailSettings> mailSettings, IEveryDayMailSenderRepository everyDayMailSenderRepository)
+        public MailSender(IOptions<MailSettings> mailSettings, IEveryDayMailSenderRepository everyDayMailSenderRepository)
         {
             this.mailSettings = mailSettings.Value;
             this.everyDayMailSenderRepository = everyDayMailSenderRepository;
