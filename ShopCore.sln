@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Services", "ShopCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Utilities", "ShopCore.Utilities\ShopCore.Utilities.csproj", "{560F2609-5E31-4186-8F67-E0898197BB08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.Hangfire", "ShopCore.StatisticsMail\ShopCore.Hangfire.csproj", "{48D55BD1-9276-49AD-8235-000277E017DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCore.StatisticsMaill", "ShopCore.StatisticsMail\ShopCore.StatisticsMaill.csproj", "{48D55BD1-9276-49AD-8235-000277E017DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

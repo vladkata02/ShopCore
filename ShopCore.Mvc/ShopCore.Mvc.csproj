@@ -31,7 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
     <ProjectReference Include="..\ShopCore.Services\ShopCore.Services.csproj" />
-    <ProjectReference Include="..\ShopCore.StatisticsMail\ShopCore.Hangfire.csproj" />
+    <ProjectReference Include="..\ShopCore.StatisticsMail\ShopCore.StatisticsMaill.csproj" />
     <ProjectReference Include="..\ShopCore.Utilities\ShopCore.Utilities.csproj" />
   </ItemGroup>
 
