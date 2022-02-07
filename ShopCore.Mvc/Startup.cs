@@ -73,7 +73,7 @@ namespace ShopCore
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            RecurringJob.AddOrUpdate<EveryDayMailSender>("Today's activity", x => x.SendStatisticsMail(), "0 21 * * *");
+            RecurringJob.AddOrUpdate<MailSender>("Today's activity", x => x.SendStatisticsMail(), "0 21 * * *");
 
             app.UseEndpoints(endpoints =>
             {
