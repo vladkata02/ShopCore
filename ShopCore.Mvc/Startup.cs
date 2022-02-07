@@ -42,6 +42,7 @@ namespace ShopCore
             services.AddSession();
             services.AddMemoryCache();
             services.AddMvc();
+            services.AddHangfireServer();
             services.AddControllersWithViews();
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -52,7 +53,6 @@ namespace ShopCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -69,7 +69,6 @@ namespace ShopCore
             app.UseStaticFiles();
 
             app.UseHangfireDashboard();
-            app.UseHangfireServer();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
