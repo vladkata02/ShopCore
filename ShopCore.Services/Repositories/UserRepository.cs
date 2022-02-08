@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Data.Models;
     using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
@@ -12,10 +13,12 @@
 
     internal class UserRepository : IUserRepository
     {
+        private readonly ILogger<UserRepository> logger;
         private ShopDBContext context;
 
-        public UserRepository(ShopDBContext context)
+        public UserRepository(ShopDBContext context, ILogger<UserRepository> logger)
         {
+            this.logger = logger;
             this.context = context;
         }
 

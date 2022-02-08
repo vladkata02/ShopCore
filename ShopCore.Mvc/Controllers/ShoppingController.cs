@@ -8,6 +8,7 @@
     using MailKit.Net.Smtp;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using RazorEngine;
     using RazorEngine.Templating;
@@ -19,12 +20,14 @@
 
     public class ShoppingController : Controller
     {
+        private readonly ILogger<ShoppingController> logger;
         private readonly MailSettings mailSettings;
         private IShoppingRepository shoppingRepository;
         private IUnitOfWork unitOfWork;
 
-        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings, IUnitOfWork unitOfWork)
+        public ShoppingController(IShoppingRepository shoppingRepository, IOptions<MailSettings> mailSettings, IUnitOfWork unitOfWork, ILogger<ShoppingController> logger)
         {
+            this.logger = logger;
             this.shoppingRepository = shoppingRepository;
             this.mailSettings = mailSettings.Value;
             this.unitOfWork = unitOfWork;

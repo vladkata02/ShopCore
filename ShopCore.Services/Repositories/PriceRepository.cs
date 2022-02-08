@@ -7,6 +7,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Data.Models;
     using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
@@ -14,11 +15,13 @@
 
     internal class PriceRepository : IPriceRepository
     {
+        private readonly ILogger<PriceRepository> logger;
         private ShopDBContext context;
         private IUnitOfWork unitOfWork;
 
-        public PriceRepository(ShopDBContext context, IUnitOfWork unitOfWork)
+        public PriceRepository(ShopDBContext context, IUnitOfWork unitOfWork, ILogger<PriceRepository> logger)
         {
+            this.logger = logger;
             this.context = context;
             this.unitOfWork = unitOfWork;
         }
