@@ -37,7 +37,8 @@
                 entityUser.Id,
                 entityUser.Username,
                 entityUser.Password,
-                entityUser.Roles);
+                entityUser.Roles,
+                entityUser.FullName);
 
             return user;
         }

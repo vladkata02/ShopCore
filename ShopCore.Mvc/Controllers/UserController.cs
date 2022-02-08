@@ -64,6 +64,7 @@
                 var claims = new List<Claim>();
 
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                claims.Add(new Claim("FullName", user.FullName));
 
                 string[] roles = user.Roles.Split(",");
 
@@ -71,6 +72,7 @@
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
+
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

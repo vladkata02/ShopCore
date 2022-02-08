@@ -17,6 +17,8 @@ namespace ShopCore.Data.Models
 
         public string Roles { get; set; }
 
+        public string FullName { get; set; }
+
         public User()
         {
         }

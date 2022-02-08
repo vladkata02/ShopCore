@@ -13,9 +13,8 @@
 
     internal class MailSenderRepository : IMailSenderRepository
     {
-        ILogger<MailSenderRepository> logger;
+        private readonly ILogger<MailSenderRepository> logger;
         private ShopDBContext context;
-
 
         public MailSenderRepository(ShopDBContext context, ILogger<MailSenderRepository> logger)
         {

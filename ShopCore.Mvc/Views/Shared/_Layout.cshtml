@@ -1,5 +1,6 @@
 ﻿@{
     var username = Context.User.Identity.Name;
+    var fullName = Context.User.FindFirst("FullName").Value;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +23,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="ShoppingCart">Cart</a>
+                            <a class="nav-link text-dark" margin-right: 0; asp-area="" asp-controller="Shopping" asp-action="ShoppingCart">Cart</a>
                         </li>
                         @if (username == null)
                         {
@@ -39,13 +40,17 @@
                         }
                         @if (username != null)
                         {
+
                             <li class="nav-item">
+
                                 <form class="nav-link text-dark" asp-controller="User" asp-action="Logout" method="post">
                                     <input type="submit" value="Logout" />
                                 </form>
                             </li>
                         }
+
                     </ul>
+                    <h4 text-align: right;>Hello, @fullName!</h4>
                 </div>
             </div>
         </nav>
