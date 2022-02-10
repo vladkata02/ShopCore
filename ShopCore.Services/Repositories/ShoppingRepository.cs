@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Data.Models;
     using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
@@ -13,11 +14,13 @@
 
     internal class ShoppingRepository : IShoppingRepository
     {
+        private readonly ILogger<ShoppingRepository> logger;
         private ShopDBContext context;
         private IUnitOfWork unitOfWork;
 
-        public ShoppingRepository(ShopDBContext context, IUnitOfWork unitOfWork)
+        public ShoppingRepository(ShopDBContext context, IUnitOfWork unitOfWork, ILogger<ShoppingRepository> logger)
         {
+            this.logger = logger;
             this.context = context;
             this.unitOfWork = unitOfWork;
         }

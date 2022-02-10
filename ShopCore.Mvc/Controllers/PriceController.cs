@@ -5,15 +5,18 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
     public class PriceController : Controller
     {
+        private readonly ILogger<PriceController> logger;
         private IPriceRepository priceRepository;
 
-        public PriceController(IPriceRepository priceRepository)
+        public PriceController(IPriceRepository priceRepository, ILogger<PriceController> logger)
         {
+            this.logger = logger;
             this.priceRepository = priceRepository;
         }
 

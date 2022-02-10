@@ -11,7 +11,10 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.1.2" />
+    <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <PackageReference Include="MailKit" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.12">
@@ -19,6 +22,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
     <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -29,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShopCore.Data\ShopCore.Data.csproj" />
     <ProjectReference Include="..\ShopCore.Services\ShopCore.Services.csproj" />
+    <ProjectReference Include="..\ShopCore.StatisticsMail\ShopCore.StatisticsMaill.csproj" />
     <ProjectReference Include="..\ShopCore.Utilities\ShopCore.Utilities.csproj" />
   </ItemGroup>
 

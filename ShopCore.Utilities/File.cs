@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.IO;
-
-namespace ShopCore.Utilities
+﻿namespace ShopCore.Utilities
 {
+    using System;
+    using System.IO;
+    using Microsoft.AspNetCore.Http;
+
     public class File
     {
         public static string GetFileFullName(IFormFile files)
@@ -14,6 +14,7 @@ namespace ShopCore.Utilities
 
             return newFileName;
         }
+
         public static byte[] GetImageContent(IFormFile files)
         {
             byte[] imageContent = null;

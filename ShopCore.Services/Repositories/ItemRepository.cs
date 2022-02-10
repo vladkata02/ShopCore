@@ -7,6 +7,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Data.Models;
     using ShopCore.Services.Context;
     using ShopCore.Services.Interfaces;
@@ -14,10 +15,12 @@
 
     internal class ItemRepository : IItemRepository
     {
+        private readonly ILogger<ItemRepository> logger;
         private ShopDBContext context;
 
-        public ItemRepository(ShopDBContext context)
+        public ItemRepository(ShopDBContext context, ILogger<ItemRepository> logger)
         {
+            this.logger = logger;
             this.context = context;
         }
 

@@ -6,16 +6,19 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.ViewModel;
 
     public class UserController : Controller
     {
+        private readonly ILogger<UserController> logger;
         private IUserRepository userRepository;
         private IUnitOfWork unitOfWork;
 
-        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork, ILogger<UserController> logger)
         {
+            this.logger = logger;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
         }
@@ -61,6 +64,7 @@
                 var claims = new List<Claim>();
 
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                claims.Add(new Claim("FullName", user.FullName));
 
                 string[] roles = user.Roles.Split(",");
 
@@ -68,6 +72,7 @@
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
+
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

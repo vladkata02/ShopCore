@@ -7,17 +7,20 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using ShopCore.Services.Interfaces;
     using ShopCore.Services.Repositories;
     using ShopCore.Services.ViewModel;
 
     public class ItemController : Controller
     {
+        private readonly ILogger<ItemController> logger;
         private IItemRepository itemRepository;
         private IUnitOfWork unitOfWork;
 
-        public ItemController(IItemRepository itemRepository, IUnitOfWork unitOfWork)
+        public ItemController(IItemRepository itemRepository, IUnitOfWork unitOfWork, ILogger<ItemController> logger)
         {
+            this.logger = logger;
             this.itemRepository = itemRepository;
             this.unitOfWork = unitOfWork;
         }

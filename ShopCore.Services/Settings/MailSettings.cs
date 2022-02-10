@@ -12,11 +12,14 @@
         public enum TemplateType
         {
             Receipt,
+            DailyActivity,
         }
 
         public static string TemplateFolder { get; set; }
 
         public string From { get; set; }
+
+        public string To { get; set; }
 
         public string SmtpServer { get; set; }
 
@@ -24,15 +27,21 @@
 
         public static string GetFilePath(TemplateType template)
         {
+            string fileName;
             switch (template)
             {
                 case TemplateType.Receipt:
-                    var fileName = template;
-                    var templateWholePathe = string.Concat(MailSettings.TemplateFolder, fileName, ".cshtml");
-                    return templateWholePathe;
+                    fileName = template.ToString();
+                    break;
+                case TemplateType.DailyActivity:
+                    fileName = template.ToString();
+                    break;
                 default:
                     return null;
             }
+
+            var templateWholePath = string.Concat(MailSettings.TemplateFolder, fileName, ".cshtml");
+            return templateWholePath;
         }
     }
 }
