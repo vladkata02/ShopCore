@@ -3,8 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authentication.Facebook;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using ShopCore.Services.Interfaces;
@@ -42,6 +44,30 @@
             return this.View();
         }
 
+        [Route("facebook-login")]
+        public IActionResult FacebookLogin()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = this.Url.Action("FacebookResponse") };
+            return this.Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        }
+
+        [Route("facebook-response")]
+        public async Task<IActionResult> FacebookResponse()
+        {
+            var result = await this.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var claims = result.Principal.Identities
+                .FirstOrDefault().Claims.Select(claim => new
+                {
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value,
+                });
+
+            return this.RedirectToAction("Index", "Shopping");
+        }
+
         public IActionResult Login(string returnUrl)
         {
             return this.View();
@@ -72,7 +98,6 @@
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
-
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

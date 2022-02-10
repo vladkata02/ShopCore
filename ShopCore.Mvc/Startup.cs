@@ -37,7 +37,7 @@ namespace ShopCore
         {
             services.AddHangfire(options =>
             {
-                 options.UseMemoryStorage();
+                options.UseMemoryStorage();
             });
             services.AddSession();
             services.AddMemoryCache();
@@ -46,7 +46,15 @@ namespace ShopCore
             services.AddControllersWithViews();
             services.RegisterDataServices(this.Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = "/account/facebook-login";
+                    })
+                    .AddFacebook(options =>
+                    {
+                        options.AppId = "3066421953610679";
+                        options.AppSecret = "eb8e82d44b69d80538d25fc296faf4cb";
+                    });
             services.AddShopCoreServices();
             services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));
             services.AddControllers();
