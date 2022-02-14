@@ -1,5 +1,5 @@
 ﻿@{
-    var username = Context.User.Identity.Name;
+   var username = Context.User.Identity.Name;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" margin-right: 0; asp-area="" asp-controller="Shopping" asp-action="ShoppingCart">Cart</a>
                         </li>
-                        @if (username == null)
+                        @if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
@@ -37,17 +37,17 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Index">Add items</a>
                             </li>
                         }
-                        @if (username != null)
+                        @if (User.Identity.IsAuthenticated)
                         {
+                            var fullName = Context.User.FindFirst("FullName").Value;
 
-                    <li class="nav-item">
-
+                            <li class="nav-item">
                         <form class="nav-link text-dark" asp-controller="User" asp-action="Logout" method="post">
                             <input type="submit" value="Logout" />
                         </form>
                     </li>
                     <li class="nav-item">
-                      <h4 text-align: right;>Hello, @username!</h4>
+                      <h4 text-align: right;>Hello, @fullName!</h4>
                     </li>
                                 }
 

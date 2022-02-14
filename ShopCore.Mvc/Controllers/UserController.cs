@@ -44,14 +44,12 @@
             return this.View();
         }
 
-        [Route("facebook-login")]
         public IActionResult FacebookLogin()
         {
             var properties = new AuthenticationProperties { RedirectUri = this.Url.Action("FacebookResponse") };
             return this.Challenge(properties, FacebookDefaults.AuthenticationScheme);
         }
 
-        [Route("facebook-response")]
         public async Task<IActionResult> FacebookResponse()
         {
             var result = await this.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -64,7 +62,21 @@
                     claim.Type,
                     claim.Value,
                 });
+            string userName = this.HttpContext.User.Identity.Name.ToString();
 
+            this.userRepository.FacebookAdd(userName);
+
+            var claim = new List<Claim>();
+
+            claim.Add(new Claim("FullName", userName));
+            claim.Add(new Claim(ClaimTypes.Name, userName));
+
+            var identity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var props = new AuthenticationProperties();
+            props.IsPersistent = true;
+
+            this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
             return this.RedirectToAction("Index", "Shopping");
         }
 

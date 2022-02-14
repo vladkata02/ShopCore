@@ -2,20 +2,20 @@
 @{
     ViewBag.Title = "ShoppingCart";
     decimal TotalAmount = 0.00M;
-    var username = Context.User.Identity.Name;
+    var fullName = Context.User.FindFirst("FullName").Value;
 }
 
 
 @using (Html.BeginForm("AddOrder", "Shopping", FormMethod.Post))
 {
 
-    if (username == null)
+    if (!User.Identity.IsAuthenticated)
     {
         <h2>Log in first!</h2>
     }
     else
     {
-        <h2>@username's Shopping Cart</h2>
+        <h2>@fullName's Shopping Cart</h2>
         <table class="table-condensed" style="width:100%">
 
             @foreach (var item in Model)

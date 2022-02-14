@@ -52,8 +52,8 @@ namespace ShopCore
                     })
                     .AddFacebook(options =>
                     {
-                        options.AppId = "3066421953610679";
-                        options.AppSecret = "eb8e82d44b69d80538d25fc296faf4cb";
+                        options.AppId = this.Configuration["Facebook:AppId"];
+                        options.AppSecret = this.Configuration["Facebook:AppSecret"];
                     });
             services.AddShopCoreServices();
             services.Configure<MailSettings>(this.Configuration.GetSection("EmailConfiguration"));

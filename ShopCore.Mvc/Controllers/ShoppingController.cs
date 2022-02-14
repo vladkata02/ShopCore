@@ -44,7 +44,6 @@
             string userName = this.HttpContext.User.Identity.Name;
             this.shoppingRepository.AddItemToCart(itemId, userName);
             this.unitOfWork.SaveChanges();
-
             return this.Json(new { Success = true });
         }
 

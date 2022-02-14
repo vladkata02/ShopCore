@@ -15,11 +15,13 @@
     {
         private readonly ILogger<UserRepository> logger;
         private ShopDBContext context;
+        private IUnitOfWork unitOfWork;
 
-        public UserRepository(ShopDBContext context, ILogger<UserRepository> logger)
+        public UserRepository(ShopDBContext context, ILogger<UserRepository> logger, IUnitOfWork unitOfWork)
         {
             this.logger = logger;
             this.context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         public UserViewModel LoginVerification(LoginViewModel model)
@@ -43,10 +45,21 @@
             return user;
         }
 
+        public void FacebookAdd(string userName)
+        {
+            if (this.context.Users.Any(user => user.Username == userName))
+            {
+                return;
+            }
+
+            User user = new User(userName);
+            this.context.Users.Add(user);
+            this.unitOfWork.SaveChanges();
+        }
+
         public void Add(RegisterViewModel model)
         {
-            const string roles = "Manager,Admin";
-            User user = new User(model.UserName, model.Password, roles);
+            User user = new User(model.FullName, model.UserName, model.Password);
             this.context.Users.Add(user);
         }
     }

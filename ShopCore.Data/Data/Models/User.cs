@@ -19,15 +19,27 @@ namespace ShopCore.Data.Models
 
         public string FullName { get; set; }
 
+        public string LoginType { get; set; }
+
         public User()
         {
         }
 
-        public User(string userName, string password, string roles)
+        public User(string userName)
         {
+            this.FullName = userName;
+            this.Username = userName;
+            this.Roles = "client";
+            this.LoginType = "Facebook";
+        }
+
+        public User(string fullname, string userName, string password)
+        {
+            this.FullName = fullname;
             this.Username = userName;
             this.Password = password;
-            this.Roles = roles;
+            this.Roles = "client";
+            this.LoginType = "local";
         }
     }
 }

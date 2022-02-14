@@ -9,6 +9,9 @@
     public class RegisterViewModel
     {
         [Required]
+        public string FullName { get; set; }
+
+        [Required]
         public string UserName { get; set; }
 
         [Required]
@@ -17,5 +20,6 @@
         [Required]
         [System.ComponentModel.DataAnnotations.Compare("Password")]
         public string ConfirmPassword { get; set; }
+
     }
 }
