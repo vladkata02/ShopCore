@@ -21,14 +21,17 @@ namespace ShopCore.Data.Models
 
         public string LoginType { get; set; }
 
+        public string Email { get; set; }
+
         public User()
         {
         }
 
-        public User(string userName)
+        public User(string userName, string email)
         {
             this.FullName = userName;
             this.Username = userName;
+            this.Email = email;
             this.Roles = "client";
             this.LoginType = "Facebook";
         }

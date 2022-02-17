@@ -46,37 +46,61 @@
 
         public IActionResult FacebookLogin()
         {
-            var properties = new AuthenticationProperties { RedirectUri = this.Url.Action("FacebookResponse") };
+            var properties = new AuthenticationProperties { RedirectUri = this.Url.Action("FacebookLoginResponse") };
+
             return this.Challenge(properties, FacebookDefaults.AuthenticationScheme);
         }
 
-        public async Task<IActionResult> FacebookResponse()
+        public IActionResult FacebookRegister()
         {
-            var result = await this.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var properties = new AuthenticationProperties { RedirectUri = this.Url.Action("FacebookRegisterResponse") };
 
-            var claims = result.Principal.Identities
-                .FirstOrDefault().Claims.Select(claim => new
-                {
-                    claim.Issuer,
-                    claim.OriginalIssuer,
-                    claim.Type,
-                    claim.Value,
-                });
+            return this.Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult FacebookLoginResponse()
+        {
             string userName = this.HttpContext.User.Identity.Name.ToString();
-
-            this.userRepository.FacebookAdd(userName);
+            string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            if (!this.userRepository.UserExists(email))
+            {
+                this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                this.TempData["message"] = "This user don't have Facebook registered account!";
+                return this.RedirectToAction("Register", "User");
+            }
 
             var claim = new List<Claim>();
-
             claim.Add(new Claim("FullName", userName));
             claim.Add(new Claim(ClaimTypes.Name, userName));
 
-            var identity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            var props = new AuthenticationProperties();
-            props.IsPersistent = true;
+            this.Claims(claim);
 
-            this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
+            return this.RedirectToAction("Index", "Shopping");
+        }
+
+        // TODO:
+        // Remove email input in request cart and places where needed,
+
+        public IActionResult FacebookRegisterResponse()
+        {
+            string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+
+            if (this.userRepository.UserExists(email))
+            {
+                this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                this.TempData["message"] = "This user already have Facebook registered account!";
+                return this.RedirectToAction("Register", "User");
+            }
+
+            string userName = this.HttpContext.User.Identity.Name.ToString();
+
+            this.userRepository.FacebookAdd(userName, email);
+            var claim = new List<Claim>();
+            claim.Add(new Claim("FullName", userName));
+            claim.Add(new Claim(ClaimTypes.Name, userName));
+
+            this.Claims(claim);
+
             return this.RedirectToAction("Index", "Shopping");
         }
 
@@ -104,21 +128,7 @@
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
                 claims.Add(new Claim("FullName", user.FullName));
 
-                string[] roles = user.Roles.Split(",");
-
-                foreach (string role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var principal = new ClaimsPrincipal(identity);
-
-                var props = new AuthenticationProperties();
-                props.IsPersistent = model.RememberMe;
-
-                this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
+                this.Claims(claims);
 
                 return this.RedirectToAction("Index", "Shopping");
             }
@@ -136,6 +146,15 @@
             this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return this.RedirectToAction("Login", "User");
+        }
+
+        private void Claims(List<Claim> claim)
+        {
+            var identity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var props = new AuthenticationProperties();
+            props.IsPersistent = true;
+            this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
         }
     }
 }

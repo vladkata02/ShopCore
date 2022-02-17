@@ -29,6 +29,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                            </li>
                         }
 
                         @if (username == "admin")
@@ -42,16 +45,16 @@
                             var fullName = Context.User.FindFirst("FullName").Value;
 
                             <li class="nav-item">
-                        <form class="nav-link text-dark" asp-controller="User" asp-action="Logout" method="post">
-                            <input type="submit" value="Logout" />
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                      <h4 text-align: right;>Hello, @fullName!</h4>
-                    </li>
-                                }
+                                <form class="nav-link text-dark" asp-controller="User" asp-action="Logout" method="post">
+                                    <input type="submit" value="Logout" />
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <h4 text-align: right;>Hello, @fullName!</h4>
+                            </li>
+                        }
 
-                        </ul>
+                    </ul>
                    
                 </div>
             </div>

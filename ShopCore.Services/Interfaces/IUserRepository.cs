@@ -11,7 +11,9 @@
     {
         void Add(RegisterViewModel model);
 
-        void FacebookAdd(string userName);
+        void FacebookAdd(string userName, string email);
+
+        bool UserExists(string email);
 
         UserViewModel LoginVerification(LoginViewModel model);
     }

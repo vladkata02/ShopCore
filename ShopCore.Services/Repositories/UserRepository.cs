@@ -45,14 +45,21 @@
             return user;
         }
 
-        public void FacebookAdd(string userName)
+        public bool UserExists(string email)
         {
-            if (this.context.Users.Any(user => user.Username == userName))
+            if (this.context.Users.Any(user => user.Email == email && user.LoginType == "Facebook"))
             {
-                return;
+                return true;
             }
+            else
+            {
+                return false;
+            }
+        }
 
-            User user = new User(userName);
+        public void FacebookAdd(string userName, string email)
+        {
+            User user = new User(userName, email);
             this.context.Users.Add(user);
             this.unitOfWork.SaveChanges();
         }

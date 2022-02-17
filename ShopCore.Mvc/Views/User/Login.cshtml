@@ -4,35 +4,36 @@
 <h1>Login</h1>
 <form asp-controller="User" asp-action="Login"
       method="post">
-    <table>
-        <tr>
-            <td><label asp-for="UserName"></label></td>
-            <td><input asp-for="UserName" /></td>
-        </tr>
-        <tr>
-            <td><label asp-for="Password"></label></td>
-            <td><input asp-for="Password" type="password" /></td>
-        </tr>
-        <tr>
-            <td><label asp-for="RememberMe"></label></td>
-            <td><input asp-for="RememberMe" /></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Login" class="btn btn-secondary" />
-                <button name="register" class="btn btn-secondary"
-                        asp-controller="User" asp-action="Register">
-                    <span>Register</span>
-                </button>
-            </td>
-        </tr>
-    </table>
-    <button name="facebookLogin" class="button btn-primary" style="border-radius: 3px; font-size: 19px;"
-            asp-controller="User" asp-action="FacebookLogin">
-        <span>Login with Facebook</span>
-    </button>
-    <div asp-validation-summary="All"></div>
-    <br />
-    <div>@TempData["message"]</div>
-
+    <div class="form-group" style="background-color: lightgray; border-radius: 3px; width: 30%">
+        <table>
+            <tr>
+                <td><label asp-for="UserName"></label></td>
+                <td><input asp-for="UserName" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Password"></label></td>
+                <td><input asp-for="Password" type="password" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="RememberMe"></label></td>
+                <td><input asp-for="RememberMe" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Login" class="btn btn-secondary" />
+                    <button name="register" class="btn btn-secondary"
+                            asp-controller="User" asp-action="Register">
+                        <span>Register</span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <button name="facebookLogin" class="button btn-primary" style="border-radius: 3px; font-size: 19px;"
+                asp-controller="User" asp-action="FacebookLogin">
+            <span>Login with Facebook</span>
+        </button>
+        <div asp-validation-summary="All"></div>
+        <br />
+        <div>@TempData["message"]</div>
+    </div>
 </form>
