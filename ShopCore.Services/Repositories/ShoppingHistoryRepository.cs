@@ -25,10 +25,10 @@
             this.unitOfWork = unitOfWork;
         }
 
-        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName)
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string email, string typeLogin)
         {
             List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
-            foreach (var order in this.FindAccountOrders(userName))
+            foreach (var order in this.FindAccountOrders(email, typeLogin))
             {
                 var foundDate = this.FindOrderById(order.OrderId);
                 var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
@@ -43,7 +43,8 @@
                     findElementById.Brand,
                     findElementById.Name,
                     order.Quantity,
-                    userName);
+                    typeLogin,
+                    email);
 
                 listOfShoppingHistory.Add(objectShoppingHistoryModel);
             }
@@ -51,10 +52,10 @@
             return listOfShoppingHistory;
         }
 
-        private IEnumerable<OrderDetail> FindAccountOrders(string userName)
+        private IEnumerable<OrderDetail> FindAccountOrders(string email, string typeLogin)
         {
             return this.context.OrderDetails
-                .Where(element => element.Account == userName);
+                .Where(element => element.Email == email && element.TypeLogin == typeLogin);
         }
 
         private Order FindOrderById(int orderId)

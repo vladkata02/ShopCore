@@ -21,9 +21,11 @@
 
         public string ItemBrand { get; set; }
 
-        public string Account { get; set; }
+        public string Email { get; set; }
 
-        public ShoppingCartViewModel(Guid itemId, decimal unitPrice, decimal total, byte[] imageContent, string itemBrand, string itemName, decimal quantity, string userName)
+        public string TypeLogin { get; set; }
+
+        public ShoppingCartViewModel(Guid itemId, decimal unitPrice, decimal total, byte[] imageContent, string itemBrand, string itemName, decimal quantity, string email, string typeLogin)
         {
             this.ItemId = itemId;
             this.UnitPrice = unitPrice;
@@ -32,7 +34,8 @@
             this.ItemBrand = itemBrand;
             this.ItemName = itemName;
             this.Quantity = quantity;
-            this.Account = userName;
+            this.Email = email;
+            this.TypeLogin = typeLogin;
         }
     }
 }

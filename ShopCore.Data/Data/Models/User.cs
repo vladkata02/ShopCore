@@ -36,11 +36,12 @@ namespace ShopCore.Data.Models
             this.LoginType = "Facebook";
         }
 
-        public User(string fullname, string userName, string password)
+        public User(string fullname, string userName, string password, string email)
         {
             this.FullName = fullname;
             this.Username = userName;
             this.Password = password;
+            this.Email = email;
             this.Roles = "client";
             this.LoginType = "local";
         }

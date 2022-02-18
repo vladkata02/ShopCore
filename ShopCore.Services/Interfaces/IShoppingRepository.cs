@@ -11,16 +11,16 @@
     {
         IEnumerable<ShoppingViewModel> GetItems();
 
-        void AddItemToCart(Guid itemId, string userName);
+        void AddItemToCart(Guid itemId, string email, string typeLogin);
 
-        List<ShoppingCartViewModel> DisplayShoppingCart(string userName);
+        List<ShoppingCartViewModel> DisplayShoppingCart(string email, string typeLogin);
 
         int AddOrderTime();
 
-        void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail);
+        void AddOrder(int orderId, List<ShoppingCartViewModel> receiptForMail, string email, string typeLogin);
 
-        void ClearCart(string userName);
+        void ClearCart(string email, string typeLogin);
 
-        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName);
+        List<ShoppingHistoryViewModel> GetShoppingHistory(string email, string typeLogin);
     }
 }

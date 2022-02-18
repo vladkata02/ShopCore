@@ -44,11 +44,11 @@
                     }).ToList();
         }
 
-        public void AddItemToCart(Guid itemId, string userName)
+        public void AddItemToCart(Guid itemId, string email, string typeLogin)
         {
             Item item = this.context.Items.FindItemByGuid(itemId);
 
-            bool ifAnyItemExistId = this.IfItemExistInCartById(itemId, userName);
+            bool ifAnyItemExistId = this.IfItemExistInCartById(itemId, email, typeLogin);
             if (!ifAnyItemExistId)
             {
                 Cart shoppingCart = new Cart(
@@ -56,23 +56,24 @@
                     itemId,
                     item.Name,
                     item.Price,
-                    userName,
-                    item.ImageContent);
+                    item.ImageContent,
+                    typeLogin,
+                    email);
 
                 this.AddToCartItem(shoppingCart);
             }
             else
             {
-                var foundItem = this.FindCartItemByIdAndUserName(itemId, userName);
+                var foundItem = this.FindCartItemByIdEmailAndTypeLogin(itemId, email, typeLogin);
                 foundItem.Quantity++;
                 foundItem.Total = foundItem.Quantity * foundItem.UnitPrice;
             }
         }
 
-        public List<ShoppingCartViewModel> DisplayShoppingCart(string userName)
+        public List<ShoppingCartViewModel> DisplayShoppingCart(string email, string typeLogin)
         {
             List<ShoppingCartViewModel> listOfCartItems = new List<ShoppingCartViewModel>();
-            foreach (var cartItem in this.GetAccountRelatedCarts(userName))
+            foreach (var cartItem in this.GetAccountRelatedCarts(email, typeLogin))
             {
                 var findElementById = this.context.Items.FindItemByGuid(cartItem.ItemId);
                 ShoppingCartViewModel cart = new ShoppingCartViewModel(
@@ -83,7 +84,8 @@
                     findElementById.Brand,
                     findElementById.Name,
                     cartItem.Quantity,
-                    userName);
+                    typeLogin,
+                    email);
 
                 listOfCartItems.Add(cart);
             }
@@ -100,9 +102,9 @@
             return order.Id;
         }
 
-        public void AddOrder(string userName, int orderId, List<ShoppingCartViewModel> receiptForMail)
+        public void AddOrder(int orderId, List<ShoppingCartViewModel> receiptForMail, string email, string typeLogin)
         {
-            foreach (var item in this.GetAccountRelatedCarts(userName))
+            foreach (var item in this.GetAccountRelatedCarts(email, typeLogin))
             {
                 OrderDetail orderDetails = new OrderDetail(
                     item.Total,
@@ -110,7 +112,8 @@
                     orderId,
                     item.Quantity,
                     item.UnitPrice,
-                    userName);
+                    email,
+                    typeLogin);
 
                 var currentItem = this.context.Items.FindItemByGuid(item.ItemId);
                 ShoppingCartViewModel cartForMail = new ShoppingCartViewModel(
@@ -121,7 +124,8 @@
                     currentItem.Brand,
                     currentItem.Name,
                     item.Quantity,
-                    userName);
+                    email,
+                    typeLogin);
 
                 receiptForMail.Add(cartForMail);
 
@@ -129,18 +133,18 @@
             }
         }
 
-        public void ClearCart(string userName)
+        public void ClearCart(string email, string typeLogin)
         {
-            foreach (var item in this.GetAccountRelatedCarts(userName))
+            foreach (var item in this.GetAccountRelatedCarts(email, typeLogin))
             {
                 this.context.Carts.Remove(item);
             }
         }
 
-        public List<ShoppingHistoryViewModel> GetShoppingHistory(string userName)
+        public List<ShoppingHistoryViewModel> GetShoppingHistory(string email, string typeLogin)
         {
             List<ShoppingHistoryViewModel> listOfShoppingHistory = new List<ShoppingHistoryViewModel>();
-            foreach (var order in this.GetAccountOrders(userName))
+            foreach (var order in this.GetAccountOrders(email, typeLogin))
             {
                 var foundDate = this.FindOrderById(order.OrderId);
                 var findElementById = this.context.Items.FindItemByGuid(order.ItemId);
@@ -155,7 +159,8 @@
                     findElementById.Brand,
                     findElementById.Name,
                     order.Quantity,
-                    userName);
+                    typeLogin,
+                    email);
 
                 listOfShoppingHistory.Add(shoppingHistoryModel);
             }
@@ -170,10 +175,10 @@
                 .FirstOrDefault();
         }
 
-        private bool IfItemExistInCartById(Guid itemId, string userName)
+        private bool IfItemExistInCartById(Guid itemId, string email, string typeLogin)
         {
             return this.context.Carts
-                .Any(model => model.ItemId == itemId && model.Account == userName);
+                .Any(model => model.ItemId == itemId && model.TypeLogin == typeLogin && model.Email == email);
         }
 
         private int TableCountPlusOne()
@@ -186,22 +191,22 @@
             this.context.Carts.Add(objShoppingCartModel);
         }
 
-        private Cart FindCartItemByIdAndUserName(Guid itemId, string userName)
+        private Cart FindCartItemByIdEmailAndTypeLogin(Guid itemId, string email, string typeLogin)
         {
             return this.context.Carts
-                .Single(model => model.ItemId == itemId && model.Account == userName);
+                .Single(model => model.ItemId == itemId && model.TypeLogin == typeLogin && model.Email == email);
         }
 
-        private IEnumerable<Cart> GetAccountRelatedCarts(string userName)
+        private IEnumerable<Cart> GetAccountRelatedCarts(string email, string typeLogin)
         {
             return this.context.Carts
-                .Where(element => element.Account == userName);
+                .Where(element => element.Email == email && element.TypeLogin == typeLogin);
         }
 
-        private IEnumerable<OrderDetail> GetAccountOrders(string userName)
+        private IEnumerable<OrderDetail> GetAccountOrders(string email, string typeLogin)
         {
             return this.context.OrderDetails
-                .Where(element => element.Account == userName);
+                .Where(element => element.Email == email && element.TypeLogin == typeLogin);
         }
     }
 }

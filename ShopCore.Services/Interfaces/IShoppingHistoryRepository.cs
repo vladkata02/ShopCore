@@ -9,6 +9,6 @@
 
     public interface IShoppingHistoryRepository
     {
-        List<ShoppingHistoryViewModel> GetShoppingHistory(string userName);
+        List<ShoppingHistoryViewModel> GetShoppingHistory(string email, string typeLogin);
     }
 }

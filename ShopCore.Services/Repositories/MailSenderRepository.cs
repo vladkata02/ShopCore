@@ -45,7 +45,8 @@
                     foundElementByGuid.Brand,
                     foundElementByGuid.Name,
                     order.Quantity,
-                    order.Account);
+                    order.Email,
+                    order.TypeLogin);
 
                     itemsSoldForTheDay.Add(todayShoppingHistory);
                 }

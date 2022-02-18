@@ -18,13 +18,16 @@
 
         public string FullName { get; set; }
 
-        public UserViewModel(int id, string userName, string password, string roles, string fullName)
+        public string Email { get; set; }
+
+        public UserViewModel(int id, string userName, string password, string roles, string fullName, string email)
         {
             this.Id = id;
             this.Username = userName;
             this.Password = password;
             this.Roles = roles;
             this.FullName = fullName;
+            this.Email = email;
         }
     }
 }

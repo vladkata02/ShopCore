@@ -19,11 +19,12 @@
             this.shoppingHistoryRepository = shoppingHistoryRepository;
         }
 
-        [HttpGet("{id}")]
-        public List<ShoppingHistoryViewModel> Get(string id)
+        [HttpGet("{id}/{typeLogin}")]
+        public List<ShoppingHistoryViewModel> Get(string id, string login)
         {
             string userName = id.ToString();
-            return this.shoppingHistoryRepository.GetShoppingHistory(userName);
+            string typeLogin = login.ToString();
+            return this.shoppingHistoryRepository.GetShoppingHistory(userName, typeLogin);
         }
     }
 }

@@ -71,7 +71,9 @@
 
             var claim = new List<Claim>();
             claim.Add(new Claim("FullName", userName));
+            claim.Add(new Claim("TypeLogin", "Facebook"));
             claim.Add(new Claim(ClaimTypes.Name, userName));
+            claim.Add(new Claim(ClaimTypes.Email, email));
 
             this.Claims(claim);
 
@@ -80,7 +82,6 @@
 
         // TODO:
         // Remove email input in request cart and places where needed,
-
         public IActionResult FacebookRegisterResponse()
         {
             string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
@@ -97,7 +98,9 @@
             this.userRepository.FacebookAdd(userName, email);
             var claim = new List<Claim>();
             claim.Add(new Claim("FullName", userName));
+            claim.Add(new Claim("TypeLogin", "Facebook"));
             claim.Add(new Claim(ClaimTypes.Name, userName));
+            claim.Add(new Claim(ClaimTypes.Email, email));
 
             this.Claims(claim);
 
@@ -126,7 +129,9 @@
                 var claims = new List<Claim>();
 
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
                 claims.Add(new Claim("FullName", user.FullName));
+                claims.Add(new Claim("TypeLogin", "Local"));
 
                 this.Claims(claims);
 

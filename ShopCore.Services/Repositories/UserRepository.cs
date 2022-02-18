@@ -40,7 +40,8 @@
                 entityUser.Username,
                 entityUser.Password,
                 entityUser.Roles,
-                entityUser.FullName);
+                entityUser.FullName,
+                entityUser.Email);
 
             return user;
         }
@@ -66,7 +67,7 @@
 
         public void Add(RegisterViewModel model)
         {
-            User user = new User(model.FullName, model.UserName, model.Password);
+            User user = new User(model.FullName, model.UserName, model.Password, model.Email);
             this.context.Users.Add(user);
         }
     }

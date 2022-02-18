@@ -20,7 +20,9 @@
 
         public decimal Total { get; set; }
 
-        public string Account { get; set; }
+        public string Email { get; set; }
+
+        public string TypeLogin { get; set; }
 
         public string ItemName { get; set; }
 
@@ -30,14 +32,15 @@
         {
         }
 
-        public Cart(int id, Guid itemId, string name, decimal price, string userName, byte[] imageContent)
+        public Cart(int id, Guid itemId, string name, decimal price, byte[] imageContent, string typeLogin, string email)
         {
             this.Id = id;
             this.ItemId = itemId;
             this.Quantity = 1;
             this.UnitPrice = price;
             this.Total = price;
-            this.Account = userName;
+            this.Email = email;
+            this.TypeLogin = typeLogin;
             this.ItemName = name;
             this.ImageContent = imageContent;
         }

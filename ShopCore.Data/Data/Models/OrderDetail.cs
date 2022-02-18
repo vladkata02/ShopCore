@@ -18,20 +18,23 @@ namespace ShopCore.Data.Models
 
         public decimal Total { get; set; }
 
-        public string Account { get; set; }
+        public string Email { get; set; }
+
+        public string TypeLogin { get; set; }
 
         public OrderDetail()
         {
         }
 
-        public OrderDetail(decimal total, Guid itemId, int orderId, decimal quantity, decimal unitPrice, string userName)
+        public OrderDetail(decimal total, Guid itemId, int orderId, decimal quantity, decimal unitPrice, string email, string typeLogin)
         {
             this.Total = total;
             this.ItemId = itemId;
             this.OrderId = orderId;
             this.Quantity = quantity;
             this.UnitPrice = unitPrice;
-            this.Account = userName;
+            this.Email = email;
+            this.TypeLogin = typeLogin;
         }
     }
 }

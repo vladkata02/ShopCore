@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace ShopCore.Services.Migrations
+﻿namespace ShopCore.Services.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class LoginType : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

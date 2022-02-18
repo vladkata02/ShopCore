@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Net.Mail;
+    using System.Security.Claims;
     using MailKit.Net.Smtp;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -41,29 +42,39 @@
         [HttpPost]
         public JsonResult Index(Guid itemId)
         {
-            string userName = this.HttpContext.User.Identity.Name;
-            this.shoppingRepository.AddItemToCart(itemId, userName);
+            string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            string typeLogin = this.HttpContext.User.FindFirst("TypeLogin").Value;
+            this.shoppingRepository.AddItemToCart(itemId, email, typeLogin);
             this.unitOfWork.SaveChanges();
             return this.Json(new { Success = true });
         }
 
         public IActionResult ShoppingCart()
         {
-            string userName = this.HttpContext.User.Identity.Name;
-
-            return this.View(this.shoppingRepository.DisplayShoppingCart(userName));
+            if (this.User.Identity.IsAuthenticated)
+            {
+                string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+                string typeLogin = this.HttpContext.User.FindFirst("TypeLogin").Value;
+                return this.View(this.shoppingRepository.DisplayShoppingCart(email, typeLogin));
+            }
+            else
+            {
+                return this.View();
+            }
         }
 
         [HttpPost]
-        public IActionResult AddOrder(string email)
+        public IActionResult AddOrder()
         {
-            string userName = this.HttpContext.User.Identity.Name;
+            string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            string typeLogin = this.HttpContext.User.FindFirst("TypeLogin").Value;
+
             int orderId = this.shoppingRepository.AddOrderTime();
             this.unitOfWork.SaveChanges();
 
             List<ShoppingCartViewModel> receiptForMail = new List<ShoppingCartViewModel>();
 
-            this.shoppingRepository.AddOrder(userName, orderId, receiptForMail);
+            this.shoppingRepository.AddOrder(orderId, receiptForMail, email, typeLogin);
 
             TemplateType template = TemplateType.Receipt;
             string templateContent = System.IO.File.ReadAllText(MailSettings.GetFilePath(template));
@@ -77,7 +88,7 @@
             var smtpClient = new SmtpClient(this.mailSettings.SmtpServer, this.mailSettings.Port);
             smtpClient.Send(mail);
 
-            this.shoppingRepository.ClearCart(userName);
+            this.shoppingRepository.ClearCart(email, typeLogin);
 
             this.unitOfWork.SaveChanges();
             return this.RedirectToAction("Index");
@@ -85,9 +96,10 @@
 
         public IActionResult ShoppingHistory()
         {
-            string userName = this.HttpContext.User.Identity.Name;
+            string email = this.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            string typeLogin = this.HttpContext.User.FindFirst("TypeLogin").Value;
 
-            return this.View(this.shoppingRepository.GetShoppingHistory(userName));
+            return this.View(this.shoppingRepository.GetShoppingHistory(email, typeLogin));
         }
     }
 }

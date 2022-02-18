@@ -27,9 +27,11 @@
 
         public int OrderNumber { get; set; }
 
-        public string Account { get; set; }
+        public string Email { get; set; }
 
-        public ShoppingHistoryViewModel(int id, int orderId, Guid itemId, decimal unitPrice, decimal total, DateTime date, byte[] imageContent, string itemBrand, string itemName, decimal quantity, string userName)
+        public string TypeLogin { get; set; }
+
+        public ShoppingHistoryViewModel(int id, int orderId, Guid itemId, decimal unitPrice, decimal total, DateTime date, byte[] imageContent, string itemBrand, string itemName, decimal quantity, string email, string typeLogin)
         {
             this.OrderDetailId = id;
             this.OrderNumber = orderId;
@@ -41,7 +43,8 @@
             this.ItemBrand = itemBrand;
             this.ItemName = itemName;
             this.Quantity = quantity;
-            this.Account = userName;
+            this.Email = email;
+            this.TypeLogin = typeLogin;
         }
     }
 }
