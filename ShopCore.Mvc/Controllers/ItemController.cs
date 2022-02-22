@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -25,6 +26,7 @@
             this.unitOfWork = unitOfWork;
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             IList<CategoryViewModel> listOfCategories = this.itemRepository.GetCategories();

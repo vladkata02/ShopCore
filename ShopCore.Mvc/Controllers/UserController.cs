@@ -73,6 +73,7 @@
             claim.Add(new Claim("FullName", userName));
             claim.Add(new Claim("TypeLogin", "Facebook"));
             claim.Add(new Claim(ClaimTypes.Name, userName));
+            claim.Add(new Claim(ClaimTypes.Role, "client"));
             claim.Add(new Claim(ClaimTypes.Email, email));
 
             this.Claims(claim);
@@ -100,6 +101,7 @@
             claim.Add(new Claim("FullName", userName));
             claim.Add(new Claim("TypeLogin", "Facebook"));
             claim.Add(new Claim(ClaimTypes.Name, userName));
+            claim.Add(new Claim(ClaimTypes.Role, "client"));
             claim.Add(new Claim(ClaimTypes.Email, email));
 
             this.Claims(claim);
@@ -129,6 +131,7 @@
                 var claims = new List<Claim>();
 
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                claims.Add(new Claim(ClaimTypes.Role, user.Roles));
                 claims.Add(new Claim(ClaimTypes.Email, user.Email));
                 claims.Add(new Claim("FullName", user.FullName));
                 claims.Add(new Claim("TypeLogin", "Local"));
