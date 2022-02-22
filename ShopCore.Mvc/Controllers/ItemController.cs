@@ -26,7 +26,7 @@
             this.unitOfWork = unitOfWork;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,manager")]
         public IActionResult Index()
         {
             IList<CategoryViewModel> listOfCategories = this.itemRepository.GetCategories();

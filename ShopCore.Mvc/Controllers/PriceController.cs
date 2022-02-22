@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using ShopCore.Services.Interfaces;
@@ -20,12 +21,14 @@
             this.priceRepository = priceRepository;
         }
 
+        [Authorize(Roles = "admin,manager")]
         [HttpPost]
         public IActionResult Index(Guid itemGuid)
         {
             return this.View(this.priceRepository.GetPriceEditor(itemGuid));
         }
 
+        [Authorize(Roles = "admin,manager")]
         public IActionResult PriceHistory(PriceEditorViewModel priceEditor, Guid itemGuid)
         {
             this.priceRepository.ChangePrice(priceEditor, itemGuid);
